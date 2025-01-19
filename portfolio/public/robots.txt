@@ -1,0 +1,29 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+# Host
+Host: https://rushikeshnimkar.xyz
+
+# Sitemaps
+Sitemap: https://rushikeshnimkar.xyz/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 10
+
+# Google Bot
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 5
+
+# Bing Bot
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 5
+
+# DuckDuckGo Bot
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 5 
