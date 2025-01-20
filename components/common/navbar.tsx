@@ -9,6 +9,7 @@ export function Navbar() {
   const [active, setActive] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [currentSection, setCurrentSection] = useState<string>("");
+  const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -151,13 +152,13 @@ export function Navbar() {
       <div className="md:hidden fixed top-4 inset-x-0 z-50">
         <div className="flex items-center justify-between px-4">
           <motion.button
-            className="p-2 rounded-full bg-neutral-900/90 backdrop-blur-sm text-neutral-200"
+            className="p-3 rounded-xl bg-neutral-900/90 backdrop-blur-sm text-neutral-200 border border-neutral-800"
             onClick={toggleMobileMenu}
             whileTap={{ scale: 0.95 }}
           >
-            {isMobileMenuOpen ? <X size={24} /> : <MenuIcon size={24} />}
+            {isMobileMenuOpen ? <X size={20} /> : <MenuIcon size={20} />}
           </motion.button>
-          <div className="text-sm font-bold text-blue-500">
+          <div className="text-sm font-medium bg-neutral-900/90 backdrop-blur-sm text-blue-500 py-2 px-4 rounded-xl border border-neutral-800">
             {currentSection && currentSection.charAt(0).toUpperCase() + currentSection.slice(1)}
           </div>
         </div>
@@ -168,16 +169,16 @@ export function Navbar() {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="absolute top-16 inset-x-4 rounded-2xl bg-neutral-900/90 backdrop-blur-md p-4 shadow-xl"
+              className="absolute top-16 inset-x-4 rounded-2xl bg-neutral-900/95 backdrop-blur-md p-3 shadow-xl border border-neutral-800"
             >
-              <div className="flex flex-col space-y-4">
+              <div className="flex flex-col space-y-2">
                 <MobileLink 
                   href="#home" 
+                  onClick={() => setIsMobileMenuOpen(false)}
                   className={cn(
-                    "transition-colors duration-200",
                     isActive("#home")
-                      ? "text-blue-500 font-bold bg-blue-500/10 border-l-4 border-blue-500 pl-4" 
-                      : "text-neutral-200"
+                      ? "text-blue-500 font-medium bg-blue-500/10 shadow-inner" 
+                      : "text-neutral-200 hover:bg-neutral-800/50"
                   )}
                 >
                   Home
@@ -185,11 +186,11 @@ export function Navbar() {
 
                 <MobileLink 
                   href="#projects"
+                  onClick={() => setIsMobileMenuOpen(false)}
                   className={cn(
-                    "transition-colors duration-200",
                     isActive("#projects") 
-                      ? "text-blue-500 font-bold bg-blue-500/10 border-l-4 border-blue-500 pl-4" 
-                      : "text-neutral-200"
+                      ? "text-blue-500 font-medium bg-blue-500/10 shadow-inner" 
+                      : "text-neutral-200 hover:bg-neutral-800/50"
                   )}
                 >
                   Projects
@@ -197,80 +198,74 @@ export function Navbar() {
 
                 <MobileMenuItem 
                   title="About"
-                  isActive={isAboutActive()}
-                  onClick={() => setActive(active === "About" ? null : "About")}
+                  isActive={isAboutDropdownOpen}
+                  onClick={() => setIsAboutDropdownOpen(!isAboutDropdownOpen)}
                 >
-                  {isAboutActive() && (
-                    <motion.div 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="mt-2 ml-4 flex flex-col space-y-2"
-                    >
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="mt-2 ml-3 flex flex-col space-y-2">
                       <MobileLink 
                         href="#about"
+                        onClick={() => {
+                          setIsMobileMenuOpen(false);
+                          setIsAboutDropdownOpen(false);
+                        }}
                         className={cn(
-                          "transition-colors duration-200",
                           currentSection === "about"
-                            ? "text-blue-500 font-bold bg-blue-500/10 border-l-4 border-blue-500 pl-4" 
-                            : "text-neutral-200"
+                            ? "text-blue-500 font-medium bg-blue-500/10 shadow-inner" 
+                            : "text-neutral-300 hover:bg-neutral-800/50"
                         )}
                       >
                         About Me
                       </MobileLink>
                       <MobileLink 
                         href="#experience"
+                        onClick={() => {
+                          setIsMobileMenuOpen(false);
+                          setIsAboutDropdownOpen(false);
+                        }}
                         className={cn(
-                          "transition-colors duration-200",
                           currentSection === "experience"
-                            ? "text-blue-500 font-bold bg-blue-500/10 border-l-4 border-blue-500 pl-4" 
-                            : "text-neutral-200"
+                            ? "text-blue-500 font-medium bg-blue-500/10 shadow-inner" 
+                            : "text-neutral-300 hover:bg-neutral-800/50"
                         )}
                       >
                         Experience
                       </MobileLink>
                       <MobileLink 
                         href="#skills"
+                        onClick={() => {
+                          setIsMobileMenuOpen(false);
+                          setIsAboutDropdownOpen(false);
+                        }}
                         className={cn(
-                          "transition-colors duration-200",
                           currentSection === "skills"
-                            ? "text-blue-500 font-bold bg-blue-500/10 border-l-4 border-blue-500 pl-4" 
-                            : "text-neutral-200"
+                            ? "text-blue-500 font-medium bg-blue-500/10 shadow-inner" 
+                            : "text-neutral-300 hover:bg-neutral-800/50"
                         )}
                       >
                         Skills
                       </MobileLink>
-                    </motion.div>
-                  )}
+                    </div>
+                  </motion.div>
                 </MobileMenuItem>
 
-                <MobileMenuItem 
-                  title="Contact"
-                  isActive={isActive("#contact")}
-                  onClick={() => setActive(active === "Contact" ? null : "Contact")}
-                >
-                  {isActive("#contact") && (
-                    <motion.div 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="mt-2 ml-4 flex flex-col space-y-2"
-                    >
-                      <MobileLink 
-                        href="#contact"
-                        className={cn(
-                          "transition-colors duration-200",
-                          isActive("#contact") 
-                            ? "text-blue-500 font-bold bg-blue-500/10 border-l-4 border-blue-500 pl-4" 
-                            : "text-neutral-200"
-                        )}
-                      >
-                        Contact Me
-                      </MobileLink>
-                      <MobileLink href="mailto:your@email.com">Email</MobileLink>
-                      <MobileLink href="https://linkedin.com/in/yourusername">LinkedIn</MobileLink>
-                      <MobileLink href="https://github.com/yourusername">GitHub</MobileLink>
-                    </motion.div>
+                <MobileLink 
+                  href="#contact"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={cn(
+                    isActive("#contact") 
+                      ? "text-blue-500 font-medium bg-blue-500/10 shadow-inner" 
+                      : "text-neutral-200 hover:bg-neutral-800/50"
                   )}
-                </MobileMenuItem>
+                >
+                  Contact
+                </MobileLink>
               </div>
             </motion.div>
           )}
@@ -280,7 +275,7 @@ export function Navbar() {
   );
 }
 
-// New Mobile Components
+// Mobile-specific components
 const MobileMenuItem = ({ 
   title, 
   children, 
@@ -296,29 +291,56 @@ const MobileMenuItem = ({
     <button
       onClick={onClick}
       className={cn(
-        "w-full text-left p-2 rounded-lg text-sm font-medium transition-colors",
-        isActive ? "text-blue-500 bg-blue-500/10" : "text-neutral-200 hover:bg-neutral-800/50"
+        "w-full text-left p-3 rounded-xl text-sm font-medium transition-all duration-200",
+        isActive 
+          ? "text-blue-500 bg-blue-500/10 shadow-inner" 
+          : "text-neutral-200 hover:bg-neutral-800/50"
       )}
     >
-      {title}
+      <div className="flex items-center justify-between">
+        <span>{title}</span>
+        <motion.span
+          animate={{ rotate: isActive ? 180 : 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <svg 
+            className="w-4 h-4 opacity-60" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth={2} 
+              d="M19 9l-7 7-7-7" 
+            />
+          </svg>
+        </motion.span>
+      </div>
     </button>
-    {children}
+    <AnimatePresence>
+      {isActive && children}
+    </AnimatePresence>
   </motion.div>
 );
 
 const MobileLink = ({ 
   href, 
   children,
-  className 
+  className,
+  onClick
 }: { 
   href: string; 
   children: React.ReactNode;
   className?: string;
+  onClick?: () => void;
 }) => (
   <a
     href={href}
+    onClick={onClick}
     className={cn(
-      "text-sm text-neutral-300 hover:text-blue-500 transition-colors p-2 rounded-lg hover:bg-neutral-800/50",
+      "block text-sm transition-all duration-200 p-3 rounded-xl",
       className
     )}
   >

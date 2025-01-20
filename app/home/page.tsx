@@ -31,22 +31,22 @@ function HeroSection() {
   }, []);
 
   return (
-    <main id="home" className="container mx-auto px-4 min-h-screen flex items-center justify-center pt-20 md:pt-0">
-      <div className="flex flex-col md:flex-row items-center justify-between gap-12 max-w-7xl w-full py-8 md:py-0">
+    <main id="home" className="container mx-auto px-4 min-h-screen flex items-center justify-center pt-24 md:pt-0">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 max-w-7xl w-full py-8 md:py-0">
         {/* Text Content */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
-          className="flex-1 text-center md:text-left md:max-w-[60%]"
+          className="flex-1 text-center md:text-left space-y-6 md:space-y-8"
         >
           <motion.h1 
-            className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 md:mb-8"
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-6xl font-bold"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
           >
-            Hi, I&apos;m <br/>
+            Hi, I&apos;m <br className="hidden sm:block"/>
             <motion.span 
               className="text-blue-500 inline-block"
               animate={glitchAnimation}
@@ -63,7 +63,7 @@ function HeroSection() {
           </motion.h1>
           
           <motion.p 
-            className="text-lg sm:text-xl md:text-2xl text-gray-400 mb-4 md:mb-6"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-400"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
@@ -72,7 +72,7 @@ function HeroSection() {
           </motion.p>
 
           <motion.p 
-            className="text-base sm:text-lg text-gray-500 mb-8 md:mb-12"
+            className="text-sm sm:text-base md:text-lg text-gray-500 max-w-xl mx-auto md:mx-0"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
@@ -84,14 +84,19 @@ function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7 }}
-            className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center md:items-start"
+            className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6"
           >
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-              <a href="/Rushikesh_Nimkar.pdf" target="_blank" rel="noopener noreferrer" className="px-8 py-3 bg-blue-500 rounded-full hover:bg-blue-600 transition-colors flex items-center gap-2">
+              <a 
+                href="/Rushikesh_Nimkar.pdf" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="w-full sm:w-auto px-6 py-3 bg-blue-500 rounded-full hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 text-sm md:text-base"
+              >
                 <span>View CV</span>
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
-                  className="h-5 w-5" 
+                  className="h-4 w-4 md:h-5 md:w-5" 
                   viewBox="0 0 24 24" 
                   fill="none" 
                   stroke="currentColor" 
@@ -107,45 +112,46 @@ function HeroSection() {
               </a>
               <a 
                 href="#contact" 
-                className="px-8 py-3 border border-blue-500 rounded-full hover:bg-blue-500/10 transition-colors flex items-center gap-2"
+                className="w-full sm:w-auto px-6 py-3 border border-blue-500 rounded-full hover:bg-blue-500/10 transition-colors flex items-center justify-center gap-2 text-sm md:text-base"
               >
                 <span>Contact Me</span>
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 md:h-5 md:w-5" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
                 </svg>
               </a>
             </div>
 
             <motion.div 
-              className="flex gap-4 items-center mt-6 sm:mt-4"
+              className="flex gap-4 items-center mt-4 sm:mt-0"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8 }}
             >
               <a href="https://github.com/Rushikeshnimkar" target="_blank" rel="noopener noreferrer" 
                 className="text-gray-400 hover:text-blue-500 transition-colors">
-                <FaGithub size={24} />
+                <FaGithub size={20} />
               </a>
               <a href="https://www.linkedin.com/in/rushikesh-nimkar-0961361ba/" target="_blank" rel="noopener noreferrer"
                 className="text-gray-400 hover:text-blue-500 transition-colors">
-                <FaLinkedin size={24} />
+                <FaLinkedin size={20} />
               </a>
               <a href="https://x.com/RushikeshN22296" target="_blank" rel="noopener noreferrer"
                 className="text-gray-400 hover:text-blue-500 transition-colors">
-                <FaXTwitter size={24} />
+                <FaXTwitter size={20} />
               </a>
             </motion.div>
           </motion.div>
         </motion.div>
 
         {/* Profile Image Section */}
-        <div className="flex-1 md:max-w-[40%] flex justify-center relative mt-8 md:mt-0">
+        <div className="flex-1 flex justify-center relative mt-8 md:mt-0">
           <motion.div
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
+            className="relative"
           >
-            <div className="relative w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80">
+            <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72">
               <div className="absolute inset-0 bg-blue-500/20 rounded-full filter blur-[40px]" />
               <motion.div
                 animate={{ 
@@ -206,7 +212,7 @@ function HeroSection() {
           
           {/* Bitcoin Symbol */}
           <motion.div 
-            className="absolute -bottom-12 right-0 scale-100"
+            className="absolute -bottom-8 right-0 sm:-bottom-10 md:-bottom-12 scale-75 sm:scale-90 md:scale-100"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 0.5 }}
@@ -216,36 +222,38 @@ function HeroSection() {
         </div>
       </div>
 
-      {/* Floating Elements */}
-      <motion.div
-        animate={{ 
-          y: [0, -20, 0],
-          rotate: [0, 5, 0]
-        }}
-        transition={{ 
-          duration: 5,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        className="absolute top-40 right-20 hidden md:block"
-      >
-        <div className="w-20 h-20 rounded-full bg-blue-500/20 blur-xl" />
-      </motion.div>
+      {/* Floating Elements - Only show on larger screens */}
+      <div className="hidden lg:block">
+        <motion.div
+          animate={{ 
+            y: [0, -20, 0],
+            rotate: [0, 5, 0]
+          }}
+          transition={{ 
+            duration: 5,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          className="absolute top-40 right-20"
+        >
+          <div className="w-20 h-20 rounded-full bg-blue-500/20 blur-xl" />
+        </motion.div>
 
-      <motion.div
-        animate={{ 
-          y: [0, 20, 0],
-          rotate: [0, -5, 0]
-        }}
-        transition={{ 
-          duration: 4,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        className="absolute bottom-40 left-20 hidden md:block"
-      >
-        <div className="w-32 h-32 rounded-full bg-purple-500/20 blur-xl" />
-      </motion.div>
+        <motion.div
+          animate={{ 
+            y: [0, 20, 0],
+            rotate: [0, -5, 0]
+          }}
+          transition={{ 
+            duration: 4,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          className="absolute bottom-40 left-20"
+        >
+          <div className="w-32 h-32 rounded-full bg-purple-500/20 blur-xl" />
+        </motion.div>
+      </div>
     </main>
   );
 }
