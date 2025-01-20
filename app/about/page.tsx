@@ -69,10 +69,10 @@ export default function About() {
                 Currently I&apos;m diving into Machine Learning after watching many cool projects built around image generators and i&apos;m ready to dive into it
               </p>
 
-              <p className="text-lg md:text-xl text-neutral-300 leading-relaxed">
+              <div className="text-lg md:text-xl text-neutral-300 leading-relaxed">
                 When i&apos;m not coding, i usually 
-                <FlipWords words={words} className="text-white" /> <br />
-              </p>
+                <FlipWords words={words} className="text-white" />
+              </div>
 
               <motion.div 
                 initial={{ opacity: 0 }}

@@ -70,14 +70,14 @@ export async function POST(req: Request) {
     };
 
     const info = await transporter.sendMail(mailOptions);
-    console.log('Message sent: %s', info.messageId);
+   
 
     return NextResponse.json(
       { message: 'Email sent successfully', id: info.messageId },
       { status: 200 }
     );
   } catch (error) {
-    console.error('Error:', error);
+  
     if (error instanceof Error) {
       return NextResponse.json(
         { error: 'Failed to send email', details: error.message },

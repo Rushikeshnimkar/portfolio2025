@@ -118,7 +118,7 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
         // Get main content excluding specific sections
         const mainElement = document.querySelector('main');
         if (!mainElement) {
-          console.log('Main element not found');
+          
           return;
         }
 
@@ -152,7 +152,7 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
           .replace(/\s+/g, ' ')
           .trim();
 
-        console.log('Cleaned text content:', textContent);
+      
         
         setWebsiteContent(textContent);
         await initializeSession();
@@ -160,7 +160,7 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
     };
 
     initializeChat().catch(error => {
-      console.error('Error in initializeChat:', error);
+      
     });
   }, [isOpen]);
 
@@ -218,7 +218,7 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
         Message: ${userMessage.content}
       `;
 
-      console.log('Sending prompt to AI:', prompt);
+    
 
       const stream = await session.promptStreaming(prompt);
       let fullResponse = "";
