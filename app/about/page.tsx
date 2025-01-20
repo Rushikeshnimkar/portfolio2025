@@ -2,7 +2,6 @@
 import { motion } from "framer-motion";
 import { FlipWords } from "@/components/ui/flip-words";
 import { SparklesCore } from "@/components/ui/sparkles";
-
 export default function About() {
     const words = [
         "play video games",
