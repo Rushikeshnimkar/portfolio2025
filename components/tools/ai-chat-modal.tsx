@@ -5,16 +5,46 @@ import { motion, AnimatePresence } from "framer-motion";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 
+// Type declarations
+interface AIModelCapabilities {
+  available: string;
+  // Add other capability properties as needed
+}
+
+interface AIModelSession {
+  promptStreaming: (prompt: string) => AsyncIterableIterator<string>;
+  // Add other session properties as needed
+}
+
+interface AILanguageModel {
+  create: () => Promise<AIModelSession>;
+  capabilities: () => Promise<AIModelCapabilities>;
+  promptStreaming: (prompt: string) => Promise<AsyncIterableIterator<string>>;
+}
+
+declare global {
+  interface Window {
+    ai?: {
+      languageModel: AILanguageModel;
+    };
+  }
+}
+
 interface Message {
   type: "user" | "assistant";
   content: string;
   timestamp: Date;
 }
 
-export function AIChatModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+interface AIChatModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
-  const [session, setSession] = useState<any>(null);
+  const [session, setSession] = useState<AIModelSession | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [websiteContent, setWebsiteContent] = useState("");
@@ -25,9 +55,10 @@ export function AIChatModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  useEffect(scrollToBottom, [messages]);
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
-  // Focus input when modal opens
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => {
@@ -37,71 +68,118 @@ export function AIChatModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
   }, [isOpen]);
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && isOpen) {
-      if (!window.ai?.languageModel) {
-        setError(`
-          <div class="space-y-4">
-            <div class="flex items-center space-x-2 text-yellow-500">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span class="font-medium">Gemini Nano Setup Required</span>
-            </div>
+    const initializeChat = async () => {
+      if (typeof window !== 'undefined' && isOpen) {
+        if (!window.ai?.languageModel) {
+          setError(`
+            <div class="space-y-4">
+              <div class="flex items-center space-x-2 text-yellow-500">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="font-medium">Gemini Nano Setup Required</span>
+              </div>
 
-            <div class="space-y-3">
-              <p class="text-neutral-300">System Requirements:</p>
-              <ul class="space-y-1 text-neutral-300 text-sm list-disc list-inside pl-2">
-                <li>Chrome Version 128.0.6545.0 or above (Dev/Canary)</li>
-                <li>Windows 10/11 or MacOS 13+</li>
-                <li>Non-metered internet connection</li>
-              </ul>
-            </div>
+              <div class="space-y-3">
+                <p class="text-neutral-300">System Requirements:</p>
+                <ul class="space-y-1 text-neutral-300 text-sm list-disc list-inside pl-2">
+                  <li>Chrome Version 128.0.6545.0 or above (Dev/Canary)</li>
+                  <li>Windows 10/11 or MacOS 13+</li>
+                  <li>Non-metered internet connection</li>
+                </ul>
+              </div>
 
-            <div class="space-y-3">
-              <p class="text-neutral-300">Setup Steps:</p>
-              <ol class="space-y-2 list-decimal list-inside text-neutral-300 text-sm">
-                <li>Download <a href="https://www.google.com/chrome/dev/" class="text-blue-400 hover:underline" target="_blank">Chrome Dev</a> or Canary</li>
-                <li>Visit <code class="bg-neutral-800 px-2 py-0.5 rounded">chrome://flags/#prompt-api-for-gemini-nano</code></li>
-                <li>Enable "Generative AI features"</li>
-                <li>Relaunch Chrome</li>
-                <li>Visit <code class="bg-neutral-800 px-2 py-0.5 rounded">chrome://components</code></li>
-                <li>Check for updates to download Gemini Nano</li>
-              </ol>
-            </div>
+              <div class="space-y-3">
+                <p class="text-neutral-300">Setup Steps:</p>
+                <ol class="space-y-2 list-decimal list-inside text-neutral-300 text-sm">
+                  <li>Download <a href="https://www.google.com/chrome/dev/" class="text-blue-400 hover:underline" target="_blank">Chrome Dev</a> or Canary</li>
+                  <li>Visit <code class="bg-neutral-800 px-2 py-0.5 rounded">chrome://flags/#prompt-api-for-gemini-nano</code></li>
+                  <li>Enable "Generative AI features"</li>
+                  <li>Relaunch Chrome</li>
+                  <li>Visit <code class="bg-neutral-800 px-2 py-0.5 rounded">chrome://components</code></li>
+                  <li>Check for updates to download Gemini Nano</li>
+                </ol>
+              </div>
 
-            <div class="bg-neutral-800/50 rounded-lg p-3 mt-2 space-y-2">
-              <p class="text-neutral-400 text-xs">
-                <strong>Note:</strong> Currently only supported on desktop Chrome (Dev/Canary).
-              </p>
-              <p class="text-neutral-400 text-xs">
-                <strong>Troubleshooting:</strong> If setup fails, try relaunching Chrome and checking components again.
-              </p>
+              <div class="bg-neutral-800/50 rounded-lg p-3 mt-2 space-y-2">
+                <p class="text-neutral-400 text-xs">
+                  <strong>Note:</strong> Currently only supported on desktop Chrome (Dev/Canary).
+                </p>
+                <p class="text-neutral-400 text-xs">
+                  <strong>Troubleshooting:</strong> If setup fails, try relaunching Chrome and checking components again.
+                </p>
+              </div>
             </div>
-          </div>
-        `);
-        return;
+          `);
+          return;
+        }
+        
+        // Get main content excluding specific sections
+        const mainElement = document.querySelector('main');
+        if (!mainElement) {
+          console.log('Main element not found');
+          return;
+        }
+
+        // Clone the main content
+        const mainContent = mainElement.cloneNode(true) as HTMLElement;
+        
+        // Remove unwanted sections
+        const elementsToRemove = [
+          '[data-chat-modal]',
+          '#contact',
+          '[data-contact-section]',
+          'form',
+          '.contact-section',
+          'script',
+          'style',
+          'noscript',
+          'iframe'
+        ];
+        
+        elementsToRemove.forEach(selector => {
+          const elements = mainContent.querySelectorAll(selector);
+          elements.forEach(element => element.remove());
+        });
+
+        // Extract text content and clean it up
+        const textContent = mainContent.innerText
+          .split('\n')
+          .map(line => line.trim())
+          .filter(line => line.length > 0)
+          .join(' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+
+        console.log('Cleaned text content:', textContent);
+        
+        setWebsiteContent(textContent);
+        await initializeSession();
       }
-      // Get website content when modal opens
-      const content = document.body.innerText;
-      setWebsiteContent(content);
-      initializeSession();
-    }
+    };
+
+    initializeChat().catch(error => {
+      console.error('Error in initializeChat:', error);
+    });
   }, [isOpen]);
 
   const initializeSession = async () => {
     try {
-      const newSession = await window.ai?.languageModel.create();
-      setSession(newSession);
-      setMessages([
-        {
-          type: "assistant",
-          content: "👋 Hey! I'm Rushikesh. What would you like to know about my work?",
-          timestamp: new Date(),
-        },
-      ]);
-    } catch (err: any) {
-      setError("Failed to initialize: " + err.message);
+      if (window.ai?.languageModel) {
+        const newSession = await window.ai.languageModel.create();
+        setSession(newSession);
+        setMessages([
+          {
+            type: "assistant",
+            content: "👋 Hey! I'm Rushikesh. What would you like to know about my work?",
+            timestamp: new Date(),
+          },
+        ]);
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to initialize';
+      setError("Failed to initialize: " + errorMessage);
     }
   };
 
@@ -109,17 +187,17 @@ export function AIChatModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
     e.preventDefault();
     if (!input.trim() || !session || isLoading) return;
 
-    const userMessage = { 
-      type: "user", 
+    const userMessage: Message = {
+      type: "user",
       content: input.trim(),
       timestamp: new Date(),
-    } as Message;
-    
-    const assistantMessage = { 
-      type: "assistant", 
+    };
+
+    const assistantMessage: Message = {
+      type: "assistant",
       content: "...",
       timestamp: new Date(),
-    } as Message;
+    };
 
     setMessages((prev) => [...prev, userMessage, assistantMessage]);
     setInput("");
@@ -133,11 +211,14 @@ export function AIChatModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
 
         Rules:
         1. Speak as Rushikesh using "I" and "my"
+        2. Keep responses under 2 sentences
         3. Focus on skills and projects
         4. If unsure, say "Contact me directly"
 
         Message: ${userMessage.content}
       `;
+
+      console.log('Sending prompt to AI:', prompt);
 
       const stream = await session.promptStreaming(prompt);
       let fullResponse = "";
@@ -150,11 +231,12 @@ export function AIChatModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
           )
         );
       }
-    } catch (err: any) {
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred';
       setMessages((prev) =>
         prev.map((msg, idx) =>
           idx === prev.length - 1
-            ? { ...msg, content: `Error: ${err.message}` }
+            ? { ...msg, content: `Error: ${errorMessage}` }
             : msg
         )
       );
@@ -166,7 +248,7 @@ export function AIChatModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      handleSubmit(e);
+      handleSubmit(e as unknown as React.FormEvent);
     }
   };
 
@@ -174,6 +256,7 @@ export function AIChatModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
     <AnimatePresence>
       {isOpen && (
         <motion.div
+          data-chat-modal
           initial={{ x: '100%', opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: '100%', opacity: 0 }}
@@ -182,7 +265,6 @@ export function AIChatModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
           onClick={(e) => e.stopPropagation()}
         >
           <div className="bg-gradient-to-b from-neutral-900 to-black border border-neutral-800 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-lg">
-            {/* Header - Now clickable to close */}
             <div 
               onClick={onClose}
               className="border-b border-neutral-800/50 p-3 flex items-center space-x-3 bg-black/50 backdrop-blur-sm cursor-pointer hover:bg-neutral-800/30 transition-colors"
@@ -196,7 +278,6 @@ export function AIChatModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
               </div>
             </div>
 
-            {/* Chat Content */}
             <div className="h-[400px] flex flex-col">
               <div className="flex-1 overflow-y-auto p-3 space-y-3">
                 {error ? (
@@ -230,7 +311,7 @@ export function AIChatModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                         <div 
                           className="prose prose-invert prose-xs max-w-none text-sm"
                           dangerouslySetInnerHTML={{
-                            __html: DOMPurify.sanitize(marked.parse(message.content))
+                            __html: DOMPurify.sanitize(marked.parse(message.content).toString())
                           }}
                         />
                         <div className="mt-1 text-[10px] text-neutral-400 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -252,7 +333,6 @@ export function AIChatModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                 <div ref={messagesEndRef} />
               </div>
 
-              {/* Input Form */}
               <div className="border-t border-neutral-800/50 p-3 bg-black/30 backdrop-blur-sm">
                 <form onSubmit={handleSubmit} className="flex gap-2">
                   <textarea
