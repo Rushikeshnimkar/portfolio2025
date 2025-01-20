@@ -159,7 +159,7 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
       }
     };
 
-    initializeChat().catch(error => {
+    initializeChat().catch(() => {
       
     });
   }, [isOpen]);
