@@ -17,6 +17,17 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Rushikesh Nimkar",
+  icons: {
+    icon: [
+      { url: '/profile.png' },
+      { url: '/profile.png', sizes: '16x16', type: 'image/png' },
+      { url: '/profile.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/profile.png' },
+      { url: '/profile.png', sizes: '180x180', type: 'image/png' },
+    ],
+  },
   description: "Full Stack Developer specializing in modern web technologies. Experienced in building scalable applications with a focus on blockchain technology.",
   openGraph: {
     title: "Rushikesh Nimkar - Full Stack Developer",
