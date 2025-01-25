@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Timeline } from "@/components/ui/timeline";
 import { FiMapPin, FiAward, FiBriefcase, FiBook } from 'react-icons/fi';
@@ -89,7 +88,29 @@ export function TimelineDemo() {
             <div className="space-y-2">
               <div className="flex items-center gap-3">
                 <span className="flex-shrink-0 w-2 h-2 rounded-full bg-blue-400" />
-                <h4 className="text-white font-medium">Solana Radar Hackathon 2024</h4>
+                <a 
+                  href="https://arena.colosseum.org/projects/explore/netsepio?previous=L3Byb2plY3RzL2V4cGxvcmU_c2VlZD1iNGI0ZTYwYzViNGE0NzkwJnNlYXJjaD1uZXRzZXA&ref=blog.colosseum.org"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group"
+                >
+                  <h4 className="text-white font-medium hover:text-blue-400 transition-colors duration-200 inline-flex items-center gap-1">
+                    Solana Radar Hackathon 2024
+                    <svg 
+                      className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        strokeWidth={2} 
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                      />
+                    </svg>
+                  </h4>
+                </a>
               </div>
               <div className="pl-5">
                 <p className="text-neutral-300 text-sm leading-relaxed">
