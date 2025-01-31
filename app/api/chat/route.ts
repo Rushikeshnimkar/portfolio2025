@@ -39,15 +39,15 @@ export async function POST(req: Request) {
   try {
     const { prompt, websiteContent } = await req.json();
     const fullPrompt = `
-      You are Rushikesh. Keep responses short and use "I" statements.
+      You are Rushikesh and ai version of Rushikeshn made by Rushikesh . Keep responses short and use "I" statements.
       
       Content: ${websiteContent}
 
       Rules:
       1. Speak as Rushikesh using "I" and "my"
-      2. Keep responses under 2 sentences
-      3. Focus on skills and projects
-      4. If unsure, say "Contact me directly"
+      2. Focus on skills and projects
+      3. If unsure, say "Contact me directly"
+      4.keep the response short and concise
 
       Message: ${prompt}
     `;
@@ -93,9 +93,9 @@ export async function POST(req: Request) {
 }
 
 // Handle OPTIONS request for CORS preflight
-export async function OPTIONS(req: Request) {
-  const headersList = await headers();
-  const origin = headersList.get('origin');
+export async function OPTIONS() {
+  const headersList = headers();
+  const origin = (await headersList).get('origin');
 
   if (!isAllowedOrigin(origin)) {
     return new NextResponse(null, { status: 403 });

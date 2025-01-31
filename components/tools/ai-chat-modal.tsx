@@ -5,26 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 
-// Type declarations
-interface AIModelCapabilities {
-  available: string;
-  // Add other capability properties as needed
-}
-
-interface AIModelSession {
-  generateContent: (prompt: string) => Promise<any>;
-}
-
-interface AILanguageModel {
-  create: () => Promise<AIModelSession>;
-  capabilities: () => Promise<AIModelCapabilities>;
-  promptStreaming: (prompt: string) => Promise<AsyncIterableIterator<string>>;
-}
-
-declare global {
-  // Remove window.ai declaration
-}
-
 interface Message {
   type: "user" | "assistant";
   content: string;
@@ -39,7 +19,6 @@ interface AIChatModalProps {
 export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
-  const [session, setSession] = useState<AIModelSession | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [websiteContent, setWebsiteContent] = useState("");
@@ -67,9 +46,7 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
       if (isOpen) {
         // Get main content excluding specific sections
         const mainElement = document.querySelector('main');
-        if (!mainElement) {
-          return;
-        }
+        if (!mainElement) return;
 
         // Clone the main content
         const mainContent = mainElement.cloneNode(true) as HTMLElement;
@@ -102,33 +79,23 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
           .trim();
 
         setWebsiteContent(textContent);
-        await initializeSession();
+        
+        // Set initial message
+        setMessages([
+          {
+            type: "assistant",
+            content: "👋 Hey! I'm Rushikesh. What would you like to know about my work?",
+            timestamp: new Date(),
+          },
+        ]);
       }
     };
 
-    initializeChat().catch(console.error);
+    initializeChat().catch(error => {
+      console.error('Failed to initialize chat:', error);
+      setError("Failed to initialize chat. Please try again.");
+    });
   }, [isOpen]);
-
-  const initializeSession = async () => {
-    try {
-      // Initialize Gemini API client
-      const { GoogleGenerativeAI } = await import("@google/generative-ai");
-      const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY!);
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-      
-      setSession({ generateContent: (prompt) => model.generateContent(prompt) });
-      setMessages([
-        {
-          type: "assistant",
-          content: "👋 Hey! I'm Rushikesh. What would you like to know about my work?",
-          timestamp: new Date(),
-        },
-      ]);
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to initialize';
-      setError("Failed to initialize: " + errorMessage);
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -216,7 +183,6 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
               </div>
               <div>
                 <h2 className="text-sm font-semibold text-white">Chat with Rushikesh (AI)</h2>
-
               </div>
             </div>
 
@@ -316,3 +282,4 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
     </AnimatePresence>
   );
 }
+
