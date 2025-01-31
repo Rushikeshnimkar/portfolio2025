@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Footer } from "../components/common/footer";
 import { Navbar } from "../components/common/navbar";
+import { Analytics } from "@vercel/analytics/react"
+import ConsoleMessage from '@/components/console-message';
 
 import "./globals.css";
 
@@ -82,8 +84,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+         <ConsoleMessage />
         <Navbar />
         {children}
+        <Analytics />
         <Footer />
       </body>
     </html>

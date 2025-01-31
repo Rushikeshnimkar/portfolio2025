@@ -12,8 +12,7 @@ interface AIModelCapabilities {
 }
 
 interface AIModelSession {
-  promptStreaming: (prompt: string) => AsyncIterableIterator<string>;
-  // Add other session properties as needed
+  generateContent: (prompt: string) => Promise<any>;
 }
 
 interface AILanguageModel {
@@ -23,11 +22,7 @@ interface AILanguageModel {
 }
 
 declare global {
-  interface Window {
-    ai?: {
-      languageModel: AILanguageModel;
-    };
-  }
+  // Remove window.ai declaration
 }
 
 interface Message {
@@ -69,56 +64,10 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
 
   useEffect(() => {
     const initializeChat = async () => {
-      if (typeof window !== 'undefined' && isOpen) {
-        if (!window.ai?.languageModel) {
-          setError(`
-            <div class="space-y-4">
-              <div class="flex items-center space-x-2 text-yellow-500">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span class="font-medium">Gemini Nano Setup Required</span>
-              </div>
-
-              <div class="space-y-3">
-                <p class="text-neutral-300">System Requirements:</p>
-                <ul class="space-y-1 text-neutral-300 text-sm list-disc list-inside pl-2">
-                  <li>Chrome Version 128.0.6545.0 or above (Dev/Canary)</li>
-                  <li>Windows 10/11 or MacOS 13+</li>
-                  <li>Non-metered internet connection</li>
-                </ul>
-              </div>
-
-              <div class="space-y-3">
-                <p class="text-neutral-300">Setup Steps:</p>
-                <ol class="space-y-2 list-decimal list-inside text-neutral-300 text-sm">
-                  <li>Download <a href="https://www.google.com/chrome/dev/" class="text-blue-400 hover:underline" target="_blank">Chrome Dev</a> or Canary</li>
-                  <li>Visit <code class="bg-neutral-800 px-2 py-0.5 rounded">chrome://flags/#prompt-api-for-gemini-nano</code></li>
-                  <li>Enable "Generative AI features"</li>
-                  <li>Relaunch Chrome</li>
-                  <li>Visit <code class="bg-neutral-800 px-2 py-0.5 rounded">chrome://components</code></li>
-                  <li>Check for updates to download Gemini Nano</li>
-                </ol>
-              </div>
-
-              <div class="bg-neutral-800/50 rounded-lg p-3 mt-2 space-y-2">
-                <p class="text-neutral-400 text-xs">
-                  <strong>Note:</strong> Currently only supported on desktop Chrome (Dev/Canary).
-                </p>
-                <p class="text-neutral-400 text-xs">
-                  <strong>Troubleshooting:</strong> If setup fails, try relaunching Chrome and checking components again.
-                </p>
-              </div>
-            </div>
-          `);
-          return;
-        }
-        
+      if (isOpen) {
         // Get main content excluding specific sections
         const mainElement = document.querySelector('main');
         if (!mainElement) {
-          
           return;
         }
 
@@ -152,31 +101,29 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
           .replace(/\s+/g, ' ')
           .trim();
 
-      
-        
         setWebsiteContent(textContent);
         await initializeSession();
       }
     };
 
-    initializeChat().catch(() => {
-      
-    });
+    initializeChat().catch(console.error);
   }, [isOpen]);
 
   const initializeSession = async () => {
     try {
-      if (window.ai?.languageModel) {
-        const newSession = await window.ai.languageModel.create();
-        setSession(newSession);
-        setMessages([
-          {
-            type: "assistant",
-            content: "👋 Hey! I'm Rushikesh. What would you like to know about my work?",
-            timestamp: new Date(),
-          },
-        ]);
-      }
+      // Initialize Gemini API client
+      const { GoogleGenerativeAI } = await import("@google/generative-ai");
+      const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY!);
+      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+      
+      setSession({ generateContent: (prompt) => model.generateContent(prompt) });
+      setMessages([
+        {
+          type: "assistant",
+          content: "👋 Hey! I'm Rushikesh. What would you like to know about my work?",
+          timestamp: new Date(),
+        },
+      ]);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to initialize';
       setError("Failed to initialize: " + errorMessage);
@@ -185,7 +132,7 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || !session || isLoading) return;
+    if (!input.trim() || isLoading) return;
 
     const userMessage: Message = {
       type: "user",
@@ -204,33 +151,28 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
     setIsLoading(true);
 
     try {
-      const prompt = `
-        You are Rushikesh. Keep responses short and use "I" statements.
-        
-        Content: ${websiteContent}
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt: userMessage.content,
+          websiteContent
+        }),
+      });
 
-        Rules:
-        1. Speak as Rushikesh using "I" and "my"
-        2. Keep responses under 2 sentences
-        3. Focus on skills and projects
-        4. If unsure, say "Contact me directly"
-
-        Message: ${userMessage.content}
-      `;
-
-    
-
-      const stream = await session.promptStreaming(prompt);
-      let fullResponse = "";
-
-      for await (const chunk of stream) {
-        fullResponse = chunk.trim();
-        setMessages((prev) =>
-          prev.map((msg, idx) =>
-            idx === prev.length - 1 ? { ...msg, content: fullResponse } : msg
-          )
-        );
+      if (!response.ok) {
+        throw new Error('Failed to get response');
       }
+
+      const data = await response.json();
+      
+      setMessages((prev) =>
+        prev.map((msg, idx) =>
+          idx === prev.length - 1 ? { ...msg, content: data.response } : msg
+        )
+      );
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'An error occurred';
       setMessages((prev) =>
@@ -273,8 +215,8 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
                 <span className="text-sm">✨</span>
               </div>
               <div>
-                <h2 className="text-sm font-semibold text-white">Chat with Gemini Nano</h2>
-                <p className="text-xs text-neutral-400">Powered by Google AI</p>
+                <h2 className="text-sm font-semibold text-white">Chat with Rushikesh (AI)</h2>
+
               </div>
             </div>
 
