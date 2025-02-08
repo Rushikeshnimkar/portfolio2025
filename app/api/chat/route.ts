@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { headers } from 'next/headers';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 const calculateCharCount = (text: string) => text.length;
 
@@ -13,7 +13,7 @@ function isAllowedOrigin(origin: string | null) {
     'https://rushikeshnimkar.xyz',
     'https://www.rushikeshnimkar.xyz',
     // // Include localhost for development
-    // 'http://localhost:3000'
+    // 'http://localhost:3001'
   ];
   return origin && allowedOrigins.includes(origin);
 }
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
   try {
     const { prompt, websiteContent } = await req.json();
     const fullPrompt = `
-      You are Rushikesh and ai version of Rushikeshn made by Rushikesh . Keep responses short and use "I" statements.
+      You are Rushikesh Nimkar and ai version of Rushikesh made by Rushikesh . Keep responses short and use "I" statements.
       
       Content: ${websiteContent}
 
@@ -47,7 +47,6 @@ export async function POST(req: Request) {
       1. Speak as Rushikesh using "I" and "my"
       2. Focus on skills and projects
       3. If unsure, say "Contact me directly"
-      4.keep the response short and concise
 
       Message: ${prompt}
     `;

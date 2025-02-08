@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
+    "@heroicons/react": "^2.2.0",
     "@tabler/icons-react": "^3.28.1",
     "@vercel/analytics": "^1.4.1",
     "class-variance-authority": "^0.7.1",

@@ -3,31 +3,9 @@ import nodemailer from 'nodemailer';
 
 export async function POST(req: Request) {
   try {
-    const { name, email, subject, message } = await req.json();
+    const { content, prompt } = await req.json();
 
-    // Verify email first
-    const verificationResponse = await fetch(
-      `https://emailvalidation.abstractapi.com/v1/?api_key=${process.env.ABSTRACT_API_KEY}&email=${email}`
-    );
-    
-    if (!verificationResponse.ok) {
-      throw new Error('Email verification service unavailable');
-    }
-
-    const verificationData = await verificationResponse.json();
-    
-    const isEmailValid = verificationData.is_valid_format.value && 
-                        verificationData.deliverability === "DELIVERABLE" && 
-                        !verificationData.is_disposable_email.value;
-
-    if (!isEmailValid) {
-      return NextResponse.json(
-        { error: 'Please enter a valid email address' },
-        { status: 400 }
-      );
-    }
-
-    // Create transporter with detailed configuration
+    // Create transporter
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 465,
@@ -41,53 +19,42 @@ export async function POST(req: Request) {
       }
     });
 
-    // Verify transporter configuration
+    // Verify transporter
     await transporter.verify();
 
     const mailOptions = {
-      from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
+      from: `"AI Email Generator" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_USER,
-      replyTo: email,
-      subject: `Portfolio Contact: ${subject}`,
-      text: `
-        Name: ${name}
-        Email: ${email}
-        Subject: ${subject}
-        Message: ${message}
-      `,
+      subject: `AI Generated Email: ${prompt.substring(0, 50)}...`,
+      text: content,
       html: `
         <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px;">
-          <h2 style="color: #333;">New Contact Form Submission</h2>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Subject:</strong> ${subject}</p>
-          <p><strong>Message:</strong></p>
-          <div style="padding: 15px; background: #f5f5f5; border-radius: 5px;">
-            ${message.replace(/\n/g, '<br>')}
+          <h2 style="color: #333;">AI Generated Email</h2>
+          <p><strong>Prompt:</strong> ${prompt}</p>
+          <div style="margin-top: 20px; padding: 15px; background: #f5f5f5; border-radius: 5px;">
+            ${content.replace(/\n/g, '<br>')}
           </div>
         </div>
       `,
     };
 
     const info = await transporter.sendMail(mailOptions);
-   
 
     return NextResponse.json(
       { message: 'Email sent successfully', id: info.messageId },
       { status: 200 }
     );
   } catch (error) {
-  
+    console.error('Error sending email:', error);
     if (error instanceof Error) {
       return NextResponse.json(
         { error: 'Failed to send email', details: error.message },
         { status: 500 }
       );
-    } else {
-      return NextResponse.json(
-        { error: 'Failed to send email', details: 'Unknown error' },
-        { status: 500 }
-      );
     }
+    return NextResponse.json(
+      { error: 'Failed to send email', details: 'Unknown error' },
+      { status: 500 }
+    );
   }
 } 
