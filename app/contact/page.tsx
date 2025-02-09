@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Send, Sparkles, Mail, User, FileText } from 'lucide-react';
+import { Send, Sparkles, Mail, FileText } from 'lucide-react';
 
 export default function Contact() {
   const [mode, setMode] = useState<'manual' | 'ai'>('ai');
