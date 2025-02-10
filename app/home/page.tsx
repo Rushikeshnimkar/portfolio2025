@@ -112,22 +112,51 @@ function HeroSection() {
         </div>
 
         {/* Text Content - Moved to bottom for mobile */}
-        <article className="flex-1 text-center md:text-left space-y-4 md:space-y-8 order-2 md:order-1">
-          <header>
-            <h1 className="text-2xl sm:text-4xl md:text-6xl lg:text-6xl font-bold">
-              Hi, I&apos;m <br className="hidden sm:block"/>
-              <span itemProp="name" className="text-blue-500 inline-block">
-                Rushikesh Nimkar
-              </span>
-            </h1>
-            <p itemProp="jobTitle" className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-400">
-              Full Stack Developer | Tech Enthusiast
-            </p>
-          </header>
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          className="flex-1 text-center md:text-left space-y-4 md:space-y-8 order-2 md:order-1"
+        >
+          <motion.h1 
+            className="text-2xl sm:text-4xl md:text-6xl lg:text-6xl font-bold"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            Hi, I&apos;m <br className="hidden sm:block"/>
+            <motion.span 
+              className="text-blue-500 inline-block"
+              animate={glitchAnimation}
+              transition={{
+                duration: 0.2,
+                repeat: Infinity,
+                repeatType: "reverse",
+                ease: "easeInOut",
+                repeatDelay: 5,
+              }}
+            >
+              Rushikesh Nimkar
+            </motion.span>
+          </motion.h1>
           
-          <section itemProp="description" className="text-sm sm:text-base md:text-lg text-gray-500 max-w-xl mx-auto md:mx-0">
-            I turn coffee into code and bugs into features. Full-stack developer who enjoys building digital puzzles and occasionally solving them. Currently exploring blockchain, because why not add more blocks to my stack?
-          </section>
+          <motion.p 
+            className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-400"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            Full Stack Developer | Tech Enthusiast
+          </motion.p>
+
+          <motion.p 
+            className="text-sm sm:text-base md:text-lg text-gray-500 max-w-xl mx-auto md:mx-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+          >
+           I turn coffee into code and bugs into features. Full-stack developer who enjoys building digital puzzles and occasionally solving them. Currently exploring blockchain, because why not add more blocks to my stack?
+          </motion.p>
 
           <motion.div
             className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mt-4 md:mt-0"
@@ -190,7 +219,7 @@ function HeroSection() {
               </a>
             </motion.div>
           </motion.div>
-        </article>
+        </motion.div>
       </div>
 
       {/* Floating Elements - Only show on larger screens */}
