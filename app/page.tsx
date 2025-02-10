@@ -49,16 +49,32 @@ export default function Home() {
       </section>
       <button
         onClick={() => setIsChatOpen(!isChatOpen)}
-        className={`fixed bottom-6 right-6 p-4 rounded-full shadow-xl transition-all duration-300 transform z-50 
+        className={`fixed bottom-6 right-6 p-4 rounded-xl shadow-xl transition-all duration-300 transform z-50 
           ${isChatOpen 
-            ? 'bg-neutral-900 border border-neutral-800 hover:bg-neutral-800' 
-            : 'bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:shadow-[0_0_15px_rgba(88,28,235,0.5)] hover:scale-110'
+            ? 'bg-neutral-900/80 backdrop-blur-sm border border-neutral-800 hover:bg-neutral-800/80' 
+            : 'bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:shadow-[0_0_20px_rgba(88,28,235,0.6)] hover:scale-105'
           }
           group flex items-center justify-center`}
       >
         <div className="relative">
-          <span className="text-xl animate-pulse">✨</span>
-          <div className="absolute -top-1 -right-1 w-2 h-2 bg-blue-500 rounded-full animate-ping" />
+          {isChatOpen ? (
+            <svg className="w-5 h-5 text-neutral-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          ) : (
+            <>
+              <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} 
+                  d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+              </svg>
+              <div className="absolute -top-1 -right-1">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                </span>
+              </div>
+            </>
+          )}
         </div>
       </button>
 
