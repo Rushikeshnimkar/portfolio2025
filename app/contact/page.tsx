@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Send, Sparkles, Mail, FileText } from 'lucide-react';
-import { verifyEmail } from '@/lib/verifyEmail';
+
 
 export default function Contact() {
   const [mode, setMode] = useState<'manual' | 'ai'>('ai');
@@ -13,12 +13,7 @@ export default function Contact() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  const [sentEmail, setSentEmail] = useState<null | {
-    from: string;
-    subject: string;
-    content: string;
-    timestamp: string;
-  }>(null);
+
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const emailTemplates = [
@@ -108,7 +103,6 @@ I've reviewed your portfolio projects (CryptoRage and GitSplit) and your experie
         throw new Error(data.error || 'Failed to send email');
       }
       
-      setSentEmail(data.details);
       setStatus('success');
       setPrompt("");
       setEmailContent("");
