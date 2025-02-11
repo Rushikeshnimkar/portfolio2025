@@ -30,7 +30,7 @@ export function TimelineDemo() {
       ),
     },
     {
-      title: "Feb 2024 - Dec 2024",
+      title: "Feb 2024 - Jan 2025",
       content: (
         <div className="space-y-4">
           <div className="flex items-center gap-2 text-white">
@@ -83,7 +83,7 @@ export function TimelineDemo() {
             <h3 className="text-lg font-semibold">Hackathon Achievements</h3>
           </div>
           
-          <div className="pl-7 space-y-6">
+          <div className="pl-7 space-y-6 ">
             {/* Solana Radar Hackathon */}
             <div className="space-y-2">
               <div className="flex items-center gap-3">
@@ -161,7 +161,7 @@ export function TimelineDemo() {
   ];
 
   return (
-    <div className="w-full">
+    <div className="w-full ">
       <Timeline data={data} />
     </div>
   );
