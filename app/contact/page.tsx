@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Send, Sparkles, Mail, FileText } from 'lucide-react';
+import { verifyEmail } from '@/lib/verifyEmail';
 
 export default function Contact() {
   const [mode, setMode] = useState<'manual' | 'ai'>('ai');
@@ -12,6 +13,13 @@ export default function Contact() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [sentEmail, setSentEmail] = useState<null | {
+    from: string;
+    subject: string;
+    content: string;
+    timestamp: string;
+  }>(null);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const emailTemplates = [
     {
@@ -78,6 +86,9 @@ I've reviewed your portfolio projects (CryptoRage and GitSplit) and your experie
     if ((!emailContent && mode === 'ai') || (!emailContent && !senderEmail && mode === 'manual') || isSending) return;
     
     setIsSending(true);
+    setStatus('idle');
+    setErrorMessage("");
+    
     try {
       const response = await fetch('/api/send-email', {
         method: 'POST',
@@ -92,8 +103,12 @@ I've reviewed your portfolio projects (CryptoRage and GitSplit) and your experie
         }),
       });
 
-      if (!response.ok) throw new Error('Failed to send email');
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send email');
+      }
       
+      setSentEmail(data.details);
       setStatus('success');
       setPrompt("");
       setEmailContent("");
@@ -102,6 +117,7 @@ I've reviewed your portfolio projects (CryptoRage and GitSplit) and your experie
     } catch (error) {
       console.error('Error sending email:', error);
       setStatus('error');
+      setErrorMessage(error instanceof Error ? error.message : "Failed to send email");
     } finally {
       setIsSending(false);
     }
@@ -343,8 +359,11 @@ I've reviewed your portfolio projects (CryptoRage and GitSplit) and your experie
                 )}
                 
                 {status === 'error' && (
-                  <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 text-red-400 text-center text-sm">
-                    ❌ Something went wrong. Please try again.
+                  <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 text-red-400">
+                    <div className="flex items-center gap-2">
+                      <span>❌</span>
+                      <span>{errorMessage}</span>
+                    </div>
                   </div>
                 )}
               </div>

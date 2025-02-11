@@ -1,3 +1,5 @@
+import { verifyEmail } from "../verifyEmail";
+
 type EmailData = {
   name: string;
   email: string;
@@ -7,6 +9,13 @@ type EmailData = {
 
 export async function sendEmail(data: EmailData) {
   try {
+    // First verify the email
+    const verificationResult = await verifyEmail(data.email);
+    
+    if (!verificationResult.isValid) {
+      throw new Error(verificationResult.error || 'Invalid email address');
+    }
+
     const response = await fetch('/api/send-email', {
       method: 'POST',
       headers: {

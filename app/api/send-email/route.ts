@@ -3,9 +3,42 @@ import nodemailer from 'nodemailer';
 
 export async function POST(req: Request) {
   try {
-    const { content, prompt } = await req.json();
+    const { content, prompt, senderEmail, subject } = await req.json();
 
-    // Create transporter
+    // Verify email if provided
+    if (senderEmail) {
+      // Basic format check
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(senderEmail)) {
+        return NextResponse.json(
+          { error: "Invalid email address" },
+          { status: 400 }
+        );
+      }
+
+      // Verify with Abstract API
+      const response = await fetch(
+        `https://emailvalidation.abstractapi.com/v1/?api_key=${process.env.ABSTRACT_API_KEY}&email=${senderEmail}`,
+        { cache: 'no-store' }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to verify email');
+      }
+
+      const data = await response.json();
+      const isValid = data.is_valid_format.value && 
+                     data.deliverability === "DELIVERABLE" && 
+                     !data.is_disposable_email.value;
+
+      if (!isValid) {
+        return NextResponse.json(
+          { error: "Invalid email address" },
+          { status: 400 }
+        );
+      }
+    }
+
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 465,
@@ -19,18 +52,24 @@ export async function POST(req: Request) {
       }
     });
 
-    // Verify transporter
     await transporter.verify();
 
+    const emailSubject = subject || `AI Generated Email: ${prompt.substring(0, 50)}...`;
+    const fromAddress = senderEmail 
+      ? `"${senderEmail}" <${process.env.EMAIL_USER}>`
+      : `"AI Email Generator" <${process.env.EMAIL_USER}>`;
+
     const mailOptions = {
-      from: `"AI Email Generator" <${process.env.EMAIL_USER}>`,
+      from: fromAddress,
       to: process.env.EMAIL_USER,
-      subject: `AI Generated Email: ${prompt.substring(0, 50)}...`,
+      subject: emailSubject,
       text: content,
       html: `
         <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px;">
-          <h2 style="color: #333;">AI Generated Email</h2>
-          <p><strong>Prompt:</strong> ${prompt}</p>
+          <h2 style="color: #333;">Email Received</h2>
+          ${senderEmail ? `<p><strong>From:</strong> ${senderEmail}</p>` : ''}
+          <p><strong>Subject:</strong> ${emailSubject}</p>
+          ${prompt ? `<p><strong>Prompt:</strong> ${prompt}</p>` : ''}
           <div style="margin-top: 20px; padding: 15px; background: #f5f5f5; border-radius: 5px;">
             ${content.replace(/\n/g, '<br>')}
           </div>
@@ -40,10 +79,18 @@ export async function POST(req: Request) {
 
     const info = await transporter.sendMail(mailOptions);
 
-    return NextResponse.json(
-      { message: 'Email sent successfully', id: info.messageId },
-      { status: 200 }
-    );
+    // Return more detailed information about the sent email
+    return NextResponse.json({
+      message: 'Email sent successfully',
+      id: info.messageId,
+      details: {
+        from: fromAddress,
+        subject: emailSubject,
+        content: content,
+        timestamp: new Date().toISOString()
+      }
+    }, { status: 200 });
+
   } catch (error) {
     console.error('Error sending email:', error);
     if (error instanceof Error) {
