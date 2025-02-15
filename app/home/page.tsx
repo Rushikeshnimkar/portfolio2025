@@ -166,7 +166,7 @@ function HeroSection() {
           >
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
               <a 
-                href="/Rushikesh_Nimkar.pdf" 
+                href="https://rxresu.me/rushikeshnimkar396/rushikeshnimkar" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="w-full sm:w-auto px-6 py-3 bg-blue-500 rounded-full hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 text-sm md:text-base"
