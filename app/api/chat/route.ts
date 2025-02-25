@@ -1,9 +1,11 @@
-import { ChatOpenAI } from "@langchain/openai";
+/* eslint-disable */
+import { ChatOpenAI, ChatOpenAICallOptions } from "@langchain/openai";
 import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
 import {
   HumanMessage,
   AIMessage,
   SystemMessage,
+  BaseMessage,
 } from "@langchain/core/messages";
 import { StateGraph, MessagesAnnotation } from "@langchain/langgraph";
 import { NextResponse } from "next/server";
@@ -60,25 +62,36 @@ function needsWebSearch(message: string): boolean {
   );
 }
 
+// Define types for OpenRouter API
+interface OpenRouterMessage {
+  role: "user" | "system" | "assistant";
+  content: string;
+}
+
+interface OpenRouterFields {
+  temperature?: number;
+  [key: string]: unknown;
+}
+
 // Create a custom OpenRouter-based model
 class OpenRouterChatModel extends ChatOpenAI {
   private isSearchQuery: boolean;
 
-  constructor(fields: any, isSearchQuery: boolean = false) {
+  constructor(fields: OpenRouterFields, isSearchQuery: boolean = false) {
     super(fields);
     this.isSearchQuery = isSearchQuery;
   }
 
-  async _generate(messages: any, options: any) {
+  async _generate(messages: BaseMessage[], _options: ChatOpenAICallOptions) {
     // Format messages for OpenRouter
-    const formattedMessages = messages.map((msg: any) => ({
+    const formattedMessages: OpenRouterMessage[] = messages.map((msg) => ({
       role:
         msg._getType() === "human"
           ? "user"
           : msg._getType() === "system"
           ? "system"
           : "assistant",
-      content: msg.content,
+      content: msg.content as string,
     }));
 
     // Check if the last message is from a human and might need search
@@ -116,7 +129,7 @@ class OpenRouterChatModel extends ChatOpenAI {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            model: "meta-llama/llama-3.3-70b-instruct:free", // Using Llama 3.1 70B
+            model: "meta-llama/llama-3.1-70b-instruct", // Using Llama 3.1 70B
             messages: formattedMessages,
           }),
         }
@@ -148,6 +161,12 @@ class OpenRouterChatModel extends ChatOpenAI {
   }
 }
 
+// Define the type for chat history messages
+interface ChatMessage {
+  type: "user" | "assistant";
+  content: string;
+}
+
 export async function POST(req: Request) {
   // Check origin
   const headersList = await headers();
@@ -164,7 +183,18 @@ export async function POST(req: Request) {
   }
 
   try {
-    const { prompt, websiteContent, messages: chatHistory } = await req.json();
+    const {
+      prompt,
+      websiteContent,
+      messages: chatHistory,
+      sessionId,
+    } = (await req.json()) as {
+      prompt: string;
+      websiteContent: string;
+      messages: ChatMessage[];
+      sessionId?: string;
+    };
+
     console.log("Received request with prompt:", prompt);
 
     // Check if the prompt likely needs web search
@@ -202,9 +232,7 @@ export async function POST(req: Request) {
         }
 
         console.log("Calling model with messages");
-        const response = await model._generate(state.messages, {
-          isSearchQuery,
-        });
+        const response = await model._generate(state.messages, {});
         console.log("Model response received");
 
         // We return a list, because this will get added to the existing list
@@ -222,18 +250,20 @@ export async function POST(req: Request) {
       }
     }
 
-    // Define a new graph - simplified since we're handling search in the model
+    // Define a new graph
     const workflow = new StateGraph(MessagesAnnotation)
       .addNode("agent", callModel)
       .addEdge("__start__", "agent")
       .addEdge("agent", "__end__");
 
-    // Compile it into a LangChain Runnable
-    const app = workflow.compile();
+    // Compile it into a LangChain Runnable with the checkpointer
+    const app = workflow.compile({
+      checkpointer: agentCheckpointer,
+    });
 
     // Convert chat history to the format expected by LangGraph
     const formattedMessages = chatHistory
-      ? chatHistory.map((msg: any) =>
+      ? chatHistory.map((msg: ChatMessage) =>
           msg.type === "user"
             ? new HumanMessage(msg.content)
             : new AIMessage(msg.content)
@@ -245,10 +275,11 @@ export async function POST(req: Request) {
     console.log("Formatted messages prepared");
 
     // Generate a thread ID for this conversation
-    const threadId = Date.now().toString();
+    // Use the provided sessionId or generate a new one
+    const threadId = sessionId || Date.now().toString();
 
     // Use the agent
-    console.log("Invoking agent workflow");
+    console.log("Invoking agent workflow with thread ID:", threadId);
     const finalState = await app.invoke(
       { messages: formattedMessages },
       { configurable: { thread_id: threadId } }
@@ -259,11 +290,12 @@ export async function POST(req: Request) {
     const response =
       finalState.messages[finalState.messages.length - 1].content;
 
-    // Return response with CORS headers and include isSearchPerformed flag
+    // Return response with CORS headers and include isSearchPerformed flag and threadId
     return new NextResponse(
       JSON.stringify({
         response,
-        isSearchPerformed: isSearchQuery, // Add this flag to the response
+        isSearchPerformed: isSearchQuery,
+        sessionId: threadId, // Return the thread ID to the client
       }),
       {
         headers: {
