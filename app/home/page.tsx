@@ -249,38 +249,7 @@ function HeroSection() {
         </motion.div>
       </div>
 
-      {/* Floating Elements - Only show on larger screens */}
-      <div className="hidden lg:block">
-        <motion.div
-          animate={{
-            y: [0, -20, 0],
-            rotate: [0, 5, 0],
-          }}
-          transition={{
-            duration: 5,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute top-40 right-20"
-        >
-          <div className="w-20 h-20 rounded-full bg-blue-500/20 blur-xl" />
-        </motion.div>
-
-        <motion.div
-          animate={{
-            y: [0, 20, 0],
-            rotate: [0, -5, 0],
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute bottom-40 left-20"
-        >
-          <div className="w-32 h-32 rounded-full bg-purple-500/20 blur-xl" />
-        </motion.div>
-      </div>
+    
     </main>
   );
 }

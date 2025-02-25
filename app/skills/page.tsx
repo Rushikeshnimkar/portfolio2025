@@ -12,7 +12,6 @@ const skills = {
     { name: "JavaScript", level: 90 },
   ],
   "Backend Development": [
-    
     { name: "Go", level: 80 },
     { name: "MySQL", level: 80 },
     { name: "PostgreSQL", level: 75 },
@@ -24,7 +23,15 @@ const skills = {
   ],
 };
 
-const SkillBar = ({ name, level, delay }: { name: string; level: number; delay: number }) => {
+const SkillBar = ({
+  name,
+  level,
+  delay,
+}: {
+  name: string;
+  level: number;
+  delay: number;
+}) => {
   const skillRef = useRef(null);
   const isInView = useInView(skillRef, { once: true });
 
@@ -57,9 +64,13 @@ const SkillBar = ({ name, level, delay }: { name: string; level: number; delay: 
       <div className="h-1.5 sm:h-2 bg-neutral-800 rounded-full overflow-hidden">
         <motion.div
           initial={{ width: 0, opacity: 0 }}
-          animate={isInView ? { width: `${level}%`, opacity: 1 } : { width: 0, opacity: 0 }}
-          transition={{ 
-            duration: 1.5, 
+          animate={
+            isInView
+              ? { width: `${level}%`, opacity: 1 }
+              : { width: 0, opacity: 0 }
+          }
+          transition={{
+            duration: 1.5,
             delay: delay + 0.2,
             ease: [0.34, 1.56, 0.64, 1], // Custom spring animation
           }}
@@ -89,13 +100,11 @@ const SkillBar = ({ name, level, delay }: { name: string; level: number; delay: 
 
 export default function Skills() {
   return (
-    <div className="min-h-screen w-full bg-black text-white overflow-hidden relative">
+    <div className="min-h-screen w-full  text-white overflow-hidden relative">
       {/* Background Effects */}
-      <div className="absolute inset-0 bg-black" />
-      <div className="absolute inset-0 w-full h-full">
-       
-      </div>
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/0" />
+      <div className="absolute inset-0 " />
+      <div className="absolute inset-0 w-full h-full"></div>
+      <div className="absolute inset-0 " />
 
       <div className="relative z-10 h-full overflow-y-auto">
         <main className="container mx-auto px-4 py-12 sm:py-20">
@@ -111,29 +120,31 @@ export default function Skills() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-            {Object.entries(skills).map(([category, skillList], categoryIndex) => (
-              <motion.div
-                key={category}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: categoryIndex * 0.1 }}
-                className="backdrop-blur-sm bg-neutral-900/20 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-neutral-800"
-              >
-                <h2 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">
-                  {category}
-                </h2>
-                <div className="space-y-3 sm:space-y-4">
-                  {skillList.map((skill, index) => (
-                    <SkillBar
-                      key={skill.name}
-                      name={skill.name}
-                      level={skill.level}
-                      delay={index * 0.2}
-                    />
-                  ))}
-                </div>
-              </motion.div>
-            ))}
+            {Object.entries(skills).map(
+              ([category, skillList], categoryIndex) => (
+                <motion.div
+                  key={category}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: categoryIndex * 0.1 }}
+                  className="backdrop-blur-sm bg-neutral-900/20 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-neutral-800"
+                >
+                  <h2 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">
+                    {category}
+                  </h2>
+                  <div className="space-y-3 sm:space-y-4">
+                    {skillList.map((skill, index) => (
+                      <SkillBar
+                        key={skill.name}
+                        name={skill.name}
+                        level={skill.level}
+                        delay={index * 0.2}
+                      />
+                    ))}
+                  </div>
+                </motion.div>
+              )
+            )}
           </div>
 
           <motion.div

@@ -1,14 +1,19 @@
 "use client";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { FiGithub, FiExternalLink } from 'react-icons/fi';
-import { useState } from 'react';
+import { FiGithub, FiExternalLink } from "react-icons/fi";
+import { useState } from "react";
+
+type MediaType = "image" | "youtube";
 
 type Project = {
   id: number;
   title: string;
   description: string;
-  image: string;
+  media: {
+    type: MediaType;
+    src: string; // image path or YouTube video ID
+  };
   tags: string[];
   link: string;
   github: string;
@@ -18,8 +23,12 @@ const projects: Project[] = [
   {
     id: 1,
     title: "CryptoRage",
-    description: "Cryptorage is a Chrome extension that integrates with Sui wallet to provide secure storage and sharing of screenshots within teams. It allows users to capture, store, and share screenshots with team members, all while leveraging blockchain technology for enhanced security and transparency.",
-    image: "/projects/cryptorage.png",
+    description:
+      "Cryptorage is a Chrome extension that integrates with Sui wallet to provide secure storage and sharing of screenshots within teams. It allows users to capture, store, and share screenshots with team members, all while leveraging blockchain technology for enhanced security and transparency.",
+    media: {
+      type: "image",
+      src: "/projects/cryptorage.png",
+    },
     tags: ["Next.js", "TypeScript", "Tailwind CSS"],
     link: "https://cryptorage-login.vercel.app/",
     github: "https://github.com/Rushikeshnimkar/CryptoRage",
@@ -27,28 +36,88 @@ const projects: Project[] = [
   {
     id: 2,
     title: "GitSplit",
-    description: "A Web App for Open-Source projects to raise funding and split among its contributors. Discover and Showcase your projects on this platform.",
-    image: "/projects/gitsplit.png",
-    tags: ["React", "Next.js","Tailwind", "SQL", "Golang"],
+    description:
+      "A Web App for Open-Source projects to raise funding and split among its contributors. Discover and Showcase your projects on this platform.",
+    media: {
+      type: "image",
+      src: "/projects/gitsplit.png",
+    },
+    tags: ["React", "Next.js", "Tailwind", "SQL", "Golang"],
     link: "",
     github: "https://github.com/GitSplit-org",
   },
   {
     id: 3,
     title: "Communepro",
-    description: "Communepro is a modern, customizable NPM package that provides a comment section component for React applications. It offers features like nested replies, real-time updates, dark mode support, and a responsive design, making it easy to enhance your app with an intuitive and engaging commenting experience.",
-    image: "/projects/communepro.png",
+    description:
+      "Communepro is a modern, customizable NPM package that provides a comment section component for React applications. It offers features like nested replies, real-time updates, dark mode support, and a responsive design, making it easy to enhance your app with an intuitive and engaging commenting experience.",
+    media: {
+      type: "image",
+      src: "/projects/communepro.png",
+    },
     tags: ["Next.js", "Framer Motion", "Tailwind CSS", "TypeScript"],
     link: "https://communepro.vercel.app/",
     github: "https://www.npmjs.com/package/addcomment",
   },
+  {
+    id: 4,
+    title: "Terminal AI Assistant",
+    description:
+      "A powerful CLI tool that helps users interact with the Windows command line using natural language. Built with Node.js and powered by Qwen: Qwen2.5 VL 72B Instruct AI.",
+    media: {
+      type: "youtube",
+      src: "https://youtu.be/TwaQDbr75z4",
+    },
+    tags: ["Node.js", "TypeScript", "Qwen AI", "Commander.js", "Chalk"],
+    link: "https://www.npmjs.com/package/terminal-ai-assistant",
+    github:
+      "https://github.com/Rushikeshnimkar/terminal-ai-assistant-windows.git",
+  },
 ];
+
+// Function to extract YouTube video ID from URL
+const extractYouTubeId = (url: string): string => {
+  // Handle youtu.be format
+  if (url.includes("youtu.be")) {
+    return url.split("/").pop() || "";
+  }
+
+  // Handle youtube.com format
+  const match = url.match(/[?&]v=([^&]+)/);
+  if (match) return match[1];
+
+  // Handle youtube.com/embed format
+  const embedMatch = url.match(/youtube\.com\/embed\/([^/?]+)/);
+  if (embedMatch) return embedMatch[1];
+
+  // If it's already just an ID or we can't parse it, return as is
+  return url;
+};
+
+// YouTube embed component with autoplay
+const YouTubeEmbed = ({ videoId }: { videoId: string }) => {
+  // Extract the video ID if a full URL was provided
+  const id = extractYouTubeId(videoId);
+
+  return (
+    <div className="relative w-full h-full">
+      <iframe
+        src={`https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}`}
+        className="absolute inset-0 w-full h-full rounded-xl"
+        title="YouTube video player"
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
+    </div>
+  );
+};
 
 export default function Projects() {
   const [activeProject, setActiveProject] = useState(0);
 
   return (
-    <div className="min-h-screen w-full bg-black text-white">
+    <div className="min-h-screen w-full  text-white relative">
       <div className="max-w-7xl mx-auto px-4 py-12 sm:py-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -74,11 +143,21 @@ export default function Projects() {
                 <button
                   onClick={() => setActiveProject(index)}
                   className={`w-full text-left p-4 sm:p-6 transition-all duration-300 rounded-xl lg:mb-4 relative overflow-hidden group
-                    ${activeProject === index ? 'bg-neutral-900' : 'hover:bg-neutral-900/50'}`}
+                    ${
+                      activeProject === index
+                        ? "bg-neutral-900"
+                        : "hover:bg-neutral-900/50"
+                    }`}
                 >
                   <div className="relative z-10">
-                    <h3 className={`text-lg sm:text-xl font-semibold mb-2 transition-colors
-                      ${activeProject === index ? 'text-blue-400' : 'text-neutral-400'}`}>
+                    <h3
+                      className={`text-lg sm:text-xl font-semibold mb-2 transition-colors
+                      ${
+                        activeProject === index
+                          ? "text-blue-400"
+                          : "text-neutral-400"
+                      }`}
+                    >
                       {project.title}
                     </h3>
                     <div className="flex flex-wrap gap-2">
@@ -114,36 +193,42 @@ export default function Projects() {
               className="space-y-4 sm:space-y-6"
             >
               <div className="relative aspect-[16/9] sm:aspect-[16/7] max-w-2xl mx-auto rounded-xl overflow-hidden group">
-                <Image
-                  src={projects[activeProject].image}
-                  alt={projects[activeProject].title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 flex flex-wrap gap-3 sm:gap-4">
-                    <a
-                      href={projects[activeProject].github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-white/90 hover:text-white bg-black/50 px-3 sm:px-4 py-2 rounded-full backdrop-blur-sm transition-colors text-sm sm:text-base"
-                    >
-                      <FiGithub className="w-4 h-4 sm:w-5 sm:h-5" />
-                      <span>View Code</span>
-                    </a>
-                    {projects[activeProject].link && (
-                      <a
-                        href={projects[activeProject].link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-white/90 hover:text-white bg-black/50 px-3 sm:px-4 py-2 rounded-full backdrop-blur-sm transition-colors text-sm sm:text-base"
-                      >
-                        <FiExternalLink className="w-4 h-4 sm:w-5 sm:h-5" />
-                        <span>Live Demo</span>
-                      </a>
-                    )}
-                  </div>
-                </div>
+                {projects[activeProject].media.type === "image" ? (
+                  <>
+                    <Image
+                      src={projects[activeProject].media.src}
+                      alt={projects[activeProject].title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 flex flex-wrap gap-3 sm:gap-4">
+                        <a
+                          href={projects[activeProject].github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 text-white/90 hover:text-white bg-black/50 px-3 sm:px-4 py-2 rounded-full backdrop-blur-sm transition-colors text-sm sm:text-base"
+                        >
+                          <FiGithub className="w-4 h-4 sm:w-5 sm:h-5" />
+                          <span>View Code</span>
+                        </a>
+                        {projects[activeProject].link && (
+                          <a
+                            href={projects[activeProject].link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 text-white/90 hover:text-white bg-black/50 px-3 sm:px-4 py-2 rounded-full backdrop-blur-sm transition-colors text-sm sm:text-base"
+                          >
+                            <FiExternalLink className="w-4 h-4 sm:w-5 sm:h-5" />
+                            <span>Live Demo</span>
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <YouTubeEmbed videoId={projects[activeProject].media.src} />
+                )}
               </div>
 
               <div className="space-y-3 sm:space-y-4">
@@ -162,6 +247,30 @@ export default function Projects() {
                       {tag}
                     </span>
                   ))}
+                </div>
+
+                {/* Project links for both image and video types */}
+                <div className="flex flex-wrap gap-3 pt-2">
+                  <a
+                    href={projects[activeProject].github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-white/90 hover:text-white bg-neutral-800 px-3 sm:px-4 py-2 rounded-lg transition-colors text-sm"
+                  >
+                    <FiGithub className="w-4 h-4" />
+                    <span>GitHub</span>
+                  </a>
+                  {projects[activeProject].link && (
+                    <a
+                      href={projects[activeProject].link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 text-white/90 hover:text-white bg-blue-600/80 hover:bg-blue-600 px-3 sm:px-4 py-2 rounded-lg transition-colors text-sm"
+                    >
+                      <FiExternalLink className="w-4 h-4" />
+                      <span>Live Demo</span>
+                    </a>
+                  )}
                 </div>
               </div>
             </motion.div>

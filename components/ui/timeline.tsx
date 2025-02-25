@@ -1,9 +1,5 @@
 "use client";
-import {
-  useScroll,
-  useTransform,
-  motion,
-} from "framer-motion";
+import { useScroll, useTransform, motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 
 interface TimelineEntry {
@@ -33,13 +29,13 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
 
   return (
     <div
-      className="w-full bg-black font-sans relative overflow-hidden"
+      className="w-full  font-sans relative overflow-hidden"
       ref={containerRef}
     >
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,rgba(0,0,0,0.8)_50%)] pointer-events-none" />
-      
+      <div className="absolute inset-0  pointer-events-none" />
+
       <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10 relative z-10">
-        <motion.h2 
+        <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -47,7 +43,7 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
         >
           Journey Through Time
         </motion.h2>
-        <motion.p 
+        <motion.p
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
@@ -87,7 +83,7 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
             </div>
           </motion.div>
         ))}
-        
+
         <div
           style={{
             height: height + "px",
