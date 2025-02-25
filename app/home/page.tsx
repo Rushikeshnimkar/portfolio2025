@@ -2,8 +2,8 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
-import { useState, useEffect } from 'react';
-import { FaGithub, FaLinkedin } from 'react-icons/fa';
+import { useState, useEffect } from "react";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
 const glitchAnimation = {
@@ -31,7 +31,10 @@ function HeroSection() {
   }, []);
 
   return (
-    <main id="home" className="container mx-auto px-4 min-h-screen flex items-center justify-center pt-16 md:pt-0">
+    <main
+      id="home"
+      className="container mx-auto px-4 min-h-screen flex items-center justify-center pt-16 md:pt-0"
+    >
       <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 max-w-7xl w-full py-8 md:py-0">
         {/* Profile Image Section - Moved to top for mobile */}
         <div className="flex-1 flex justify-center relative order-1 md:order-2">
@@ -44,17 +47,17 @@ function HeroSection() {
             <div className="relative w-40 h-40 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72">
               <div className="absolute inset-0 bg-blue-500/20 rounded-full filter blur-[40px]" />
               <motion.div
-                animate={{ 
+                animate={{
                   rotate: [0, 360],
                 }}
-                transition={{ 
+                transition={{
                   duration: 20,
                   repeat: Infinity,
-                  ease: "linear"
+                  ease: "linear",
                 }}
                 className="absolute inset-0 rounded-full border-2 border-blue-500/30 border-dashed"
               />
-              <motion.div 
+              <motion.div
                 className="absolute inset-4 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-full overflow-hidden border-2 border-blue-500/30"
                 animate={{
                   x: isGlitching ? [-2, 2, -2, 0] : 0,
@@ -67,20 +70,20 @@ function HeroSection() {
               >
                 <div className="relative w-full h-full">
                   <Image
-                    src="/profile.jpg"
+                    src="/rushikesh_nimkar.jpg"
                     alt="Profile"
                     fill
                     className={`object-cover rounded-full p-2 transition-opacity duration-100 ${
-                      isGlitching ? 'opacity-0' : 'opacity-100'
+                      isGlitching ? "opacity-0" : "opacity-100"
                     }`}
                     priority
                   />
                   <Image
-                    src="/profile2.jpg"
+                    src="/profile2.png"
                     alt="Profile Glitch"
                     fill
                     className={`object-cover rounded-full p-2 transition-opacity duration-100 ${
-                      isGlitching ? 'opacity-100' : 'opacity-0'
+                      isGlitching ? "opacity-100" : "opacity-0"
                     }`}
                     priority
                   />
@@ -99,9 +102,9 @@ function HeroSection() {
               </motion.div>
             </div>
           </motion.div>
-          
+
           {/* Bitcoin Symbol */}
-          <motion.div 
+          <motion.div
             className="absolute -bottom-6 right-0 sm:-bottom-10 md:-bottom-12 scale-50 sm:scale-90 md:scale-100"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -118,14 +121,14 @@ function HeroSection() {
           transition={{ duration: 0.8 }}
           className="flex-1 text-center md:text-left space-y-4 md:space-y-8 order-2 md:order-1"
         >
-          <motion.h1 
+          <motion.h1
             className="text-2xl sm:text-4xl md:text-6xl lg:text-6xl font-bold"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
           >
-            Hi, I&apos;m <br className="hidden sm:block"/>
-            <motion.span 
+            Hi, I&apos;m <br className="hidden sm:block" />
+            <motion.span
               className="text-blue-500 inline-block"
               animate={glitchAnimation}
               transition={{
@@ -139,8 +142,8 @@ function HeroSection() {
               Rushikesh Nimkar
             </motion.span>
           </motion.h1>
-          
-          <motion.p 
+
+          <motion.p
             className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-400"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -149,13 +152,16 @@ function HeroSection() {
             Full Stack Developer | Tech Enthusiast
           </motion.p>
 
-          <motion.p 
+          <motion.p
             className="text-sm sm:text-base md:text-lg text-gray-500 max-w-xl mx-auto md:mx-0"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
           >
-           I turn coffee into code and bugs into features. Full-stack developer who enjoys building digital puzzles and occasionally solving them. Currently exploring blockchain, because why not add more blocks to my stack?
+            I turn coffee into code and bugs into features. Full-stack developer
+            who enjoys building digital puzzles and occasionally solving them.
+            Currently exploring blockchain, because why not add more blocks to
+            my stack?
           </motion.p>
 
           <motion.div
@@ -165,21 +171,21 @@ function HeroSection() {
             transition={{ delay: 0.7 }}
           >
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-              <a 
-                href="https://rxresu.me/rushikeshnimkar396/rushikeshnimkar" 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              <a
+                href="https://rxresu.me/rushikeshnimkar396/rushikeshnimkar"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full sm:w-auto px-6 py-3 bg-blue-500 rounded-full hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 text-sm md:text-base"
               >
                 <span>View CV</span>
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="h-4 w-4 md:h-5 md:w-5" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="2" 
-                  strokeLinecap="round" 
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 md:h-5 md:w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
                   strokeLinejoin="round"
                 >
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -188,33 +194,54 @@ function HeroSection() {
                   <line x1="9" y1="15" x2="15" y2="15" />
                 </svg>
               </a>
-              <a 
-                href="#contact" 
+              <a
+                href="#contact"
                 className="w-full sm:w-auto px-6 py-3 border border-blue-500 rounded-full hover:bg-blue-500/10 transition-colors flex items-center justify-center gap-2 text-sm md:text-base"
               >
                 <span>Contact Me</span>
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 md:h-5 md:w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 md:h-5 md:w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                    clipRule="evenodd"
+                  />
                 </svg>
               </a>
             </div>
 
-            <motion.div 
+            <motion.div
               className="flex gap-4 items-center mt-4 sm:mt-0"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8 }}
             >
-              <a href="https://github.com/Rushikeshnimkar" target="_blank" rel="noopener noreferrer" 
-                className="text-gray-400 hover:text-blue-500 transition-colors">
+              <a
+                href="https://github.com/Rushikeshnimkar"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-blue-500 transition-colors"
+              >
                 <FaGithub size={20} />
               </a>
-              <a href="https://www.linkedin.com/in/rushikesh-nimkar-0961361ba/" target="_blank" rel="noopener noreferrer"
-                className="text-gray-400 hover:text-blue-500 transition-colors">
+              <a
+                href="https://www.linkedin.com/in/rushikesh-nimkar-0961361ba/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-blue-500 transition-colors"
+              >
                 <FaLinkedin size={20} />
               </a>
-              <a href="https://x.com/RushikeshN22296" target="_blank" rel="noopener noreferrer"
-                className="text-gray-400 hover:text-blue-500 transition-colors">
+              <a
+                href="https://x.com/RushikeshN22296"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-blue-500 transition-colors"
+              >
                 <FaXTwitter size={20} />
               </a>
             </motion.div>
@@ -225,14 +252,14 @@ function HeroSection() {
       {/* Floating Elements - Only show on larger screens */}
       <div className="hidden lg:block">
         <motion.div
-          animate={{ 
+          animate={{
             y: [0, -20, 0],
-            rotate: [0, 5, 0]
+            rotate: [0, 5, 0],
           }}
-          transition={{ 
+          transition={{
             duration: 5,
             repeat: Infinity,
-            ease: "easeInOut"
+            ease: "easeInOut",
           }}
           className="absolute top-40 right-20"
         >
@@ -240,14 +267,14 @@ function HeroSection() {
         </motion.div>
 
         <motion.div
-          animate={{ 
+          animate={{
             y: [0, 20, 0],
-            rotate: [0, -5, 0]
+            rotate: [0, -5, 0],
           }}
-          transition={{ 
+          transition={{
             duration: 4,
             repeat: Infinity,
-            ease: "easeInOut"
+            ease: "easeInOut",
           }}
           className="absolute bottom-40 left-20"
         >
