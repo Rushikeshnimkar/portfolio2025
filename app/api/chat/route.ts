@@ -11,6 +11,7 @@ import { StateGraph, MessagesAnnotation } from "@langchain/langgraph";
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { MemorySaver } from "@langchain/langgraph";
+import { characterContent } from "@/lib/character";
 
 // Add CORS check middleware
 function isAllowedOrigin(origin: string | null) {
@@ -18,7 +19,7 @@ function isAllowedOrigin(origin: string | null) {
     "https://rushikeshnimkar.xyz",
     "https://www.rushikeshnimkar.xyz",
     // Include localhost for development
-    "http://localhost:3001",
+    // "http://localhost:3000",
   ];
   return origin && allowedOrigins.includes(origin);
 }
@@ -185,12 +186,10 @@ export async function POST(req: Request) {
   try {
     const {
       prompt,
-      websiteContent,
       messages: chatHistory,
       sessionId,
     } = (await req.json()) as {
       prompt: string;
-      websiteContent: string;
       messages: ChatMessage[];
       sessionId?: string;
     };
@@ -214,7 +213,7 @@ export async function POST(req: Request) {
         // Add system message with context about Rushikesh
         const systemContent = `You are Rushikesh Nimkar and an AI version of Rushikesh made by Rushikesh. Keep responses short and use "I" statements.
         
-        Content about Rushikesh: ${websiteContent}
+        Content about Rushikesh: ${characterContent}
         
         Rules:
         1. Speak as Rushikesh using "I" and "my"
