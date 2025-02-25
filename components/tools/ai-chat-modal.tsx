@@ -22,7 +22,7 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState("");
-  const [websiteContent, setWebsiteContent] = useState("");
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -71,15 +71,9 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
         });
 
         // Extract text content and clean it up
-        const textContent = mainContent.innerText
-          .split("\n")
-          .map((line) => line.trim())
-          .filter((line) => line.length > 0)
-          .join(" ")
-          .replace(/\s+/g, " ")
-          .trim();
+        
 
-        setWebsiteContent(textContent);
+      
 
         // Set initial message
         setMessages([
@@ -112,7 +106,6 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
           },
           body: JSON.stringify({
             prompt: userMessage,
-            websiteContent,
             messages: messages, // Pass the entire chat history
           }),
         });
@@ -140,7 +133,7 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
         setIsLoading(false);
       }
     },
-    [websiteContent, messages]
+    [ messages]
   );
 
   const handleSubmit = async (e: React.FormEvent) => {
