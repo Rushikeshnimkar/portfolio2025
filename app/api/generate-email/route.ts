@@ -67,11 +67,11 @@ async function handler(req: NextRequest) {
     const generatedContent = data.choices[0].message.content;
 
     return NextResponse.json({ generatedContent });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error generating email:", error);
 
     // Check if it's an abort error (timeout)
-    if (error instanceof Error && (error as any).name === "AbortError") {
+    if (error instanceof Error && error.name === "AbortError") {
       return NextResponse.json(
         {
           error: "Request timed out. The email generation is taking too long.",
