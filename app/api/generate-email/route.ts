@@ -37,7 +37,7 @@ async function handler(req: NextRequest) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "google/gemini-2.0-pro-exp-02-05:free", // Using Gemini 2.0 Pro
+          model: "deepseek/deepseek-r1-distill-llama-70b:free", // Using Gemini 2.0 Pro
           messages: messages,
         }),
       }

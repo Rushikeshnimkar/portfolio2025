@@ -56,6 +56,8 @@ function needsWebSearch(message: string): boolean {
     "erebrus",
     "netsepio",
     "netsepio.com",
+    "search",
+    "deepseek",
   ];
 
   return searchIndicators.some((indicator) =>

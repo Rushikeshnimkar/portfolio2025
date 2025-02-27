@@ -4,6 +4,12 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
+import { RiRobot2Line } from "react-icons/ri";
+import { IoClose } from "react-icons/io5";
+import { FiSearch } from "react-icons/fi";
+import { IoSend } from "react-icons/io5";
+import { CgSpinner } from "react-icons/cg";
+import { FaUser } from "react-icons/fa";
 
 interface Message {
   type: "user" | "assistant";
@@ -71,9 +77,6 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
         });
 
         // Extract text content and clean it up
-        
-
-      
 
         // Set initial message
         setMessages([
@@ -133,7 +136,7 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
         setIsLoading(false);
       }
     },
-    [ messages]
+    [messages]
   );
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -202,47 +205,17 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
             >
               <div className="flex items-center space-x-3">
                 <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
-                  <svg
-                    className="w-5 h-5 text-white"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1-8.313-12.454z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M17.5 12a5.5 5.5 0 1 0-5.5 5.5"
-                    />
-                  </svg>
+                  <RiRobot2Line className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <h3 className="font-medium text-neutral-200">AI Assistant</h3>
                   <p className="text-sm text-neutral-400">
-                    Ask me anything about the portfolio
+                    Powered by Llama 3.3 & Web Search
                   </p>
                 </div>
               </div>
               <button className="p-2 hover:bg-neutral-800/50 rounded-xl transition-colors">
-                <svg
-                  className="w-5 h-5 text-neutral-400"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
+                <IoClose className="w-5 h-5 text-neutral-400" />
               </button>
             </div>
 
@@ -270,19 +243,7 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
                     >
                       {message.type === "assistant" && (
                         <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mr-2 shadow-lg">
-                          <svg
-                            className="w-4 h-4 text-white"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={1.5}
-                              d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1-8.313-12.454z"
-                            />
-                          </svg>
+                          <RiRobot2Line className="w-4 h-4 text-white" />
                         </div>
                       )}
                       <div
@@ -298,19 +259,7 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
                           isSearching ? (
                             <div className="flex flex-col items-center space-y-3">
                               <div className="flex items-center space-x-2">
-                                <svg
-                                  className="w-4 h-4 text-blue-400 animate-pulse"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                                  />
-                                </svg>
+                                <FiSearch className="w-4 h-4 text-blue-400 animate-pulse" />
                                 <div className="text-sm font-medium bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent animate-pulse">
                                   Searching the web...
                                 </div>
@@ -405,19 +354,7 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
                       </div>
                       {message.type === "user" && (
                         <div className="w-7 h-7 rounded-xl bg-neutral-800 flex items-center justify-center ml-2 shadow-lg">
-                          <svg
-                            className="w-4 h-4 text-neutral-300"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={1.5}
-                              d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-                            />
-                          </svg>
+                          <FaUser className="w-4 h-4 text-neutral-300" />
                         </div>
                       )}
                     </motion.div>
@@ -448,36 +385,9 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
                     }`}
                   >
                     {isLoading ? (
-                      <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                          fill="none"
-                        />
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        />
-                      </svg>
+                      <CgSpinner className="animate-spin h-5 w-5" />
                     ) : (
-                      <svg
-                        className="w-5 h-5"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1.5}
-                          d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
-                        />
-                      </svg>
+                      <IoSend className="w-5 h-5" />
                     )}
                   </button>
                 </form>

@@ -16,7 +16,7 @@ const glitchAnimation = {
   x: [0, -1, 1, 0],
 };
 
-function HeroSection() {
+export default function HomePage() {
   const [isGlitching, setIsGlitching] = useState(false);
 
   useEffect(() => {
@@ -248,16 +248,6 @@ function HeroSection() {
           </motion.div>
         </motion.div>
       </div>
-
-    
     </main>
-  );
-}
-
-export default function HomePage() {
-  return (
-    <div>
-      <HeroSection />
-    </div>
   );
 }

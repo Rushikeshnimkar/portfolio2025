@@ -116,8 +116,6 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen w-full  text-white relative">
-   
-
       {/* Hero Section */}
       <div className="relative overflow-hidden z-10">
         <motion.div
@@ -267,64 +265,58 @@ export default function Contact() {
                 <AnimatePresence>
                   {showTemplates && (
                     <motion.div
-                      initial={{ opacity: 0, y: -20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 300,
-                        damping: 30,
-                      }}
-                      className="absolute inset-0 z-10 bg-gray-900/95 backdrop-blur-sm rounded-2xl p-4 overflow-auto"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute inset-0 z-10 bg-neutral-950/95 backdrop-blur-sm rounded-2xl p-6 overflow-auto flex flex-col"
                     >
-                      <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-lg font-semibold text-gray-200 flex items-center gap-2">
-                          <span className="text-blue-400">📝</span> Email
-                          Templates
+                      <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-lg font-semibold text-white">
+                          Select a Template
                         </h2>
                         <button
                           onClick={() => setShowTemplates(false)}
-                          className="text-xs text-gray-400 hover:text-white px-2 py-1 rounded-lg hover:bg-white/5 transition-colors"
+                          className="text-gray-400 hover:text-white"
                         >
-                          Back to Prompt
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
                         </button>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 flex-1">
                         {emailTemplates.map((template, index) => (
                           <motion.button
                             key={index}
                             onClick={() => handleSelectTemplate(index)}
-                            whileHover={{ scale: 1.03, y: -5 }}
-                            whileTap={{ scale: 0.97 }}
-                            className={`group p-3 rounded-xl ${
+                            whileHover={{ y: -5 }}
+                            whileTap={{ scale: 0.98 }}
+                            className={`flex flex-col items-center justify-center p-6 rounded-xl text-center h-full ${
                               selectedTemplate === index
-                                ? "bg-blue-500/20 border border-blue-500/50"
-                                : "bg-gray-800/40 border border-gray-700/50 hover:border-blue-500/50"
-                            } transition-all duration-300 h-full`}
+                                ? "bg-blue-500/20 border-2 border-blue-500"
+                                : "bg-gray-800/60 border border-gray-700 hover:border-blue-400/50"
+                            } transition-all duration-200`}
                           >
-                            <div className="flex flex-col items-center text-center gap-2">
-                              <motion.span
-                                className="text-2xl"
-                                animate={{ scale: [1, 1.2, 1] }}
-                                transition={{
-                                  repeat: Infinity,
-                                  repeatType: "reverse",
-                                  duration: 2,
-                                  repeatDelay: 1,
-                                }}
-                              >
-                                {template.icon}
-                              </motion.span>
-                              <div>
-                                <h3 className="font-medium text-gray-200 group-hover:text-blue-400 transition-colors text-sm">
-                                  {template.title}
-                                </h3>
-                                <p className="text-xs text-gray-400 mt-1">
-                                  {template.description}
-                                </p>
-                              </div>
-                            </div>
+                            <div className="text-3xl mb-3">{template.icon}</div>
+                            <h3 className="font-medium text-white mb-2">
+                              {template.title}
+                            </h3>
+                            <p className="text-xs text-gray-400 mb-3">
+                              {template.description}
+                            </p>
+                            <span className="px-3 py-1 bg-gray-700/50 rounded-full text-xs text-gray-300 border border-gray-600/50">
+                              {template.tags[0]}
+                            </span>
                           </motion.button>
                         ))}
                       </div>
@@ -527,6 +519,16 @@ export default function Contact() {
                   />
                 )}
               </div>
+
+              {/* DeepSeek R1 Attribution */}
+              {mode === "ai" && (
+                <div className="mt-2 flex items-center justify-end">
+                  <div className="text-xs text-gray-500 flex items-center gap-1.5">
+                    <Sparkles className="w-3 h-3 text-blue-400" />
+                    <span>Powered by Deepseek-r1-distill-llama</span>
+                  </div>
+                </div>
+              )}
 
               {/* Status Messages */}
               {status === "success" && (
