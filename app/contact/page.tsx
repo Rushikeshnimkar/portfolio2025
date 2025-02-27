@@ -1,7 +1,7 @@
 /* eslint-disable */
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Send,
   Sparkles,
@@ -30,6 +30,22 @@ export default function Contact() {
   const [showTemplates, setShowTemplates] = useState(false);
   const [isTextAnimating, setIsTextAnimating] = useState(false);
 
+  // Add useEffect to clear error messages after 5 seconds
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    if (status === "error" || status === "success") {
+      timer = setTimeout(() => {
+        setStatus("idle");
+        setErrorMessage("");
+      }, 5000);
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [status]);
+
   const handleGenerateEmail = async () => {
     if (!prompt.trim() || isGenerating) return;
 
@@ -46,7 +62,14 @@ export default function Contact() {
         body: JSON.stringify({ prompt }),
       });
 
-      if (!response.ok) throw new Error("Failed to generate email");
+      if (!response.ok) {
+        if (response.status === 504) {
+          throw new Error(
+            "The request timed out. Please try again with a simpler prompt or try later."
+          );
+        }
+        throw new Error("Failed to generate email");
+      }
 
       const { generatedContent } = await response.json();
       setEmailContent(generatedContent);
@@ -54,6 +77,9 @@ export default function Contact() {
     } catch (error) {
       console.error("Error generating email:", error);
       setStatus("error");
+      setErrorMessage(
+        error instanceof Error ? error.message : "Failed to generate email"
+      );
     } finally {
       setIsGenerating(false);
     }
