@@ -1,6 +1,12 @@
 import { NextResponse, NextRequest } from "next/server";
 import { applyCors, corsMiddleware } from "@/lib/cors";
 
+// Set a longer timeout for the API route
+export const config = {
+  runtime: "edge",
+  maxDuration: 60, // Extend timeout to 60 seconds
+};
+
 async function handler(req: NextRequest) {
   try {
     const { prompt } = await req.json();
@@ -25,7 +31,10 @@ async function handler(req: NextRequest) {
       },
     ];
 
-    // Make direct API call to OpenRouter
+    // Make direct API call to OpenRouter with a timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 50000); // 50 second timeout
+
     const response = await fetch(
       "https://openrouter.ai/api/v1/chat/completions",
       {
@@ -37,11 +46,16 @@ async function handler(req: NextRequest) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "deepseek/deepseek-r1-distill-llama-70b:free", // Using Gemini 2.0 Pro
+          model: "deepseek/deepseek-r1-distill-llama-70b:free",
           messages: messages,
+          max_tokens: 1000, // Limit response size
+          temperature: 0.7, // Add temperature for more consistent responses
         }),
+        signal: controller.signal,
       }
     );
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -55,6 +69,17 @@ async function handler(req: NextRequest) {
     return NextResponse.json({ generatedContent });
   } catch (error) {
     console.error("Error generating email:", error);
+
+    // Check if it's an abort error (timeout)
+    if (error instanceof Error && (error as any).name === "AbortError") {
+      return NextResponse.json(
+        {
+          error: "Request timed out. The email generation is taking too long.",
+        },
+        { status: 504 }
+      );
+    }
+
     return NextResponse.json(
       { error: "Failed to generate email" },
       { status: 500 }
