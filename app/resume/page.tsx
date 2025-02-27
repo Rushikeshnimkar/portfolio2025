@@ -140,14 +140,14 @@ export default function ResumePage() {
                         </div>
                         <ul className="text-sm text-neutral-400 space-y-2 list-disc pl-5">
                           <li>
-                            Check the "Experience" section for my professional
+                            Check the &quot;Experience&quot; section for my professional
                             journey
                           </li>
                           <li>
-                            The "Skills" section outlines my technical
+                            The &quot;Skills&quot; section outlines my technical
                             capabilities
                           </li>
-                          <li>See "Education" for my academic background</li>
+                          <li>See &quot;Education&quot; for my academic background</li>
                         </ul>
                       </div>
 
