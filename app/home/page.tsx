@@ -41,7 +41,7 @@ export default function HomePage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.3 }}
             className="relative"
           >
             <div className="relative w-40 h-40 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72">
@@ -108,7 +108,7 @@ export default function HomePage() {
             className="absolute -bottom-6 right-0 sm:-bottom-10 md:-bottom-12 scale-50 sm:scale-90 md:scale-100"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1, duration: 0.5 }}
+            transition={{ delay: 1, duration: 0.3 }}
           >
             <TextHoverEffect text="₿" />
           </motion.div>
@@ -118,7 +118,7 @@ export default function HomePage() {
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.3 }}
           className="flex-1 text-center md:text-left space-y-4 md:space-y-8 order-2 md:order-1"
         >
           <motion.h1
@@ -156,7 +156,7 @@ export default function HomePage() {
             className="text-sm sm:text-base md:text-lg text-gray-500 max-w-xl mx-auto md:mx-0"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
+            transition={{ delay: 0.1 }}
           >
             I turn coffee into code and bugs into features. Full-stack developer
             who enjoys building digital puzzles and occasionally solving them.
@@ -172,9 +172,7 @@ export default function HomePage() {
           >
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
               <a
-                href="https://rxresu.me/rushikeshnimkar396/rushikeshnimkar"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/resume"
                 className="w-full sm:w-auto px-6 py-3 bg-blue-500 rounded-full hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 text-sm md:text-base"
               >
                 <span>View CV</span>

@@ -42,15 +42,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* Common Background for all pages */}
-        <div className="fixed inset-0 z-0">
-            <div className="absolute inset-0 bg-black" />
-        </div>
+        
 
         <ConsoleMessage />
         <Navbar />
-        <div className="relative z-10">{children}</div>
+        <div className="relative z-10 bg-black">{children}</div>
         <Analytics />
+
         <Footer />
       </body>
     </html>

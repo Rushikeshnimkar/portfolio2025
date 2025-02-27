@@ -8,6 +8,8 @@ Email: rushikeshnimkar396@gmail.com
 Portfolio: https://rushikeshnimkar.xyz/
 GitHub: https://github.com/Rushikeshnimkar
 LinkedIn: https://www.linkedin.com/in/rushikesh-nimkar-0961361ba/
+resume: https://rushikeshnimkar.xyz/resume
+
 
 Summary:
 I am a full-stack developer with expertise in Java, React.js, Next.js, and MySQL. Passionate about building scalable web applications with clean, maintainable code. Strong foundation in front-end development, creating responsive user interfaces, back-end integration, developing robust APIs, and database optimization for high-performance applications. Focused on delivering high-quality solutions while following best practices in software development and deployment.
@@ -79,6 +81,12 @@ Awarded the Community Favorite Award for Mystic Tarot, an innovative Web3 tarot 
 
 Languages:
 English, Marathi, Hindi
+
+hobbies:
+- photography
+- travelling
+- listening to music
+- coding
 
 
 `;
