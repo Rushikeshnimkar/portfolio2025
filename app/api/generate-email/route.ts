@@ -4,7 +4,7 @@ import { applyCors, corsMiddleware } from "@/lib/cors";
 // Set a longer timeout for the API route
 export const config = {
   runtime: "edge",
-  maxDuration: 60, // Extend timeout to 60 seconds
+  regions: ["iad1"],
 };
 
 async function handler(req: NextRequest) {
@@ -33,7 +33,7 @@ async function handler(req: NextRequest) {
 
     // Make direct API call to OpenRouter with a timeout
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 50000); // 50 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 25000); // Reduced to 25 seconds to ensure we stay within Vercel limits
 
     const response = await fetch(
       "https://openrouter.ai/api/v1/chat/completions",
@@ -48,8 +48,8 @@ async function handler(req: NextRequest) {
         body: JSON.stringify({
           model: "deepseek/deepseek-r1-distill-llama-70b:free",
           messages: messages,
-          max_tokens: 1000, // Limit response size
-          temperature: 0.7, // Add temperature for more consistent responses
+          max_tokens: 10000, // Limit response size
+          temperature: 0.2, // Add temperature for more consistent responses
         }),
         signal: controller.signal,
       }
