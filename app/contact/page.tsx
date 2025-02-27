@@ -546,12 +546,12 @@ export default function Contact() {
                 )}
               </div>
 
-              {/* DeepSeek R1 Attribution */}
+              {/* Llama-3.3 Attribution */}
               {mode === "ai" && (
                 <div className="mt-2 flex items-center justify-end">
                   <div className="text-xs text-gray-500 flex items-center gap-1.5">
                     <Sparkles className="w-3 h-3 text-blue-400" />
-                    <span>Powered by Deepseek-r1-distill-llama</span>
+                    <span>Powered by Llama-3.3</span>
                   </div>
                 </div>
               )}
