@@ -30,8 +30,8 @@ export default function ResumePage() {
 
       {/* Loading state */}
       {!mounted ? (
-        <div className="relative z-10 flex items-center justify-center min-h-screen">
-          <div className="mt-8 text-center">
+        <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
+          <div className="mt-8 text-center w-full max-w-sm">
             <div className="flex justify-center space-x-1 overflow-hidden h-8">
               {nameLetters.map((letter, index) => (
                 <motion.span
@@ -78,15 +78,15 @@ export default function ResumePage() {
           </header>
 
           {/* Main content */}
-          <div className="relative z-10 container mx-auto px-4 py-8">
+          <div className="relative z-10 container mx-auto px-4 sm:px-6 py-4 sm:py-8">
             <div className="max-w-7xl mx-auto">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                className="mb-8"
+                className="mb-4 sm:mb-8"
               >
-                <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent inline-block">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent inline-block">
                   Resume
                 </h1>
                 <p className="text-neutral-400 mt-2 max-w-2xl">
@@ -101,17 +101,17 @@ export default function ResumePage() {
                 transition={{ duration: 0.7, delay: 0.2 }}
                 className="bg-neutral-900/40 backdrop-blur-md border border-neutral-800/50 rounded-xl overflow-hidden shadow-2xl"
               >
-                <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[calc(100vh-220px)]">
+                <div className="flex flex-col lg:grid lg:grid-cols-12">
                   {/* Sidebar */}
-                  <div className="lg:col-span-3 bg-neutral-900/80 p-6 border-r border-neutral-800/50 flex flex-col">
-                    <div className="mb-6">
-                      <h2 className="text-xl font-semibold text-white">
+                  <div className="lg:col-span-3 bg-neutral-900/80 p-4 sm:p-6 border-b lg:border-b-0 lg:border-r border-neutral-800/50">
+                    <div className="mb-4 sm:mb-6">
+                      <h2 className="text-lg sm:text-xl font-semibold text-white">
                         About This Resume
                       </h2>
                       <p className="text-blue-400 text-sm">Interactive guide</p>
                     </div>
 
-                    <div className="space-y-6 flex-1">
+                    <div className="space-y-4 sm:space-y-6 flex-1">
                       <div>
                         <div className="flex items-center gap-2 mb-3">
                           <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
@@ -140,14 +140,16 @@ export default function ResumePage() {
                         </div>
                         <ul className="text-sm text-neutral-400 space-y-2 list-disc pl-5">
                           <li>
-                            Check the &quot;Experience&quot; section for my professional
-                            journey
+                            Check the &quot;Experience&quot; section for my
+                            professional journey
                           </li>
                           <li>
                             The &quot;Skills&quot; section outlines my technical
                             capabilities
                           </li>
-                          <li>See &quot;Education&quot; for my academic background</li>
+                          <li>
+                            See &quot;Education&quot; for my academic background
+                          </li>
                         </ul>
                       </div>
 
@@ -170,7 +172,7 @@ export default function ResumePage() {
                       </div>
                     </div>
 
-                    <div className="mt-auto pt-6 border-t border-neutral-800/50">
+                    <div className="mt-auto pt-4 sm:pt-6 border-t border-neutral-800/50">
                       <div className="flex items-center gap-2 mb-3">
                         <div className="w-8 h-8 rounded-lg bg-orange-500/20 flex items-center justify-center">
                           <FiGlobe className="text-orange-400" />
@@ -179,7 +181,7 @@ export default function ResumePage() {
                           Connect
                         </h3>
                       </div>
-                      <div className="flex gap-3">
+                      <div className="flex gap-3 flex-wrap">
                         <a
                           href="https://github.com/Rushikeshnimkar"
                           target="_blank"
@@ -234,7 +236,7 @@ export default function ResumePage() {
                   </div>
 
                   {/* Main PDF viewer */}
-                  <div className="lg:col-span-9 h-[70vh] lg:h-auto">
+                  <div className="lg:col-span-9 flex-1 h-auto lg:min-h-[calc(100vh-220px)]">
                     <PDFViewer />
                   </div>
                 </div>
