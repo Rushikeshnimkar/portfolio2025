@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { FiGithub, FiExternalLink } from "react-icons/fi";
 import { useState } from "react";
+import { GitHubContributions } from "@/components/tools/githubcontribution";
 
 type MediaType = "image" | "youtube";
 
@@ -115,19 +116,163 @@ const YouTubeEmbed = ({ videoId }: { videoId: string }) => {
 
 export default function Projects() {
   const [activeProject, setActiveProject] = useState(0);
+  const [isContributionVisible, setIsContributionVisible] = useState(false);
+
+  // Animation variants for the contribution section
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.3,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 100 },
+    },
+  };
 
   return (
-    <div className="min-h-screen w-full  text-white relative">
-      <div className="max-w-7xl mx-auto px-4 py-12 sm:py-20">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12 sm:mb-20"
+    <div className="min-h-screen w-full text-white mt-10 ">
+      <div className="max-w-7xl mx-auto px-4 py-8  ">
+        <h1 className="text-4xl mb-10 text-center sm:text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-neutral-200 to-neutral-500">
+          Projects
+        </h1>
+
+        {/* GitHub contributions section with block-by-block reveal animation */}
+        <motion.section
+          className="mb-12"
+          initial="hidden"
+          animate="visible"
+          variants={containerVariants}
+          onViewportEnter={() => setIsContributionVisible(true)}
+          viewport={{ once: true, amount: 0.2 }}
         >
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-neutral-200 to-neutral-500">
-            Projects
-          </h1>
-        </motion.div>
+          <motion.div
+            variants={itemVariants}
+            className="p-6 rounded-2xl shadow-xl overflow-hidden relative"
+          >
+            {/* Background pattern */}
+            <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+
+            {/* Header */}
+            <motion.div
+              variants={itemVariants}
+              className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4"
+            >
+              <div>
+                <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+                  GitHub Contributions
+                </h2>
+              </div>
+
+              <motion.a
+                href="https://github.com/Rushikeshnimkar"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg z-10 bg-neutral-800/80 hover:bg-neutral-700/80 transition-all duration-300 text-sm border border-neutral-700/50 hover:border-blue-500/30 group"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <FiGithub className="w-4 h-4 group-hover:text-blue-400 transition-colors" />
+                <span>View GitHub Profile</span>
+              </motion.a>
+            </motion.div>
+
+            {/* Contribution graph with block-by-block reveal animation */}
+            <div className="relative rounded-sm overflow-x-auto">
+              {isContributionVisible && (
+                <div className="relative">
+                  {/* Hidden actual graph that will be revealed */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 5 }} // Show the real graph after 5 seconds
+                    className="w-full"
+                  >
+                    <GitHubContributions username="Rushikeshnimkar" />
+                  </motion.div>
+
+                  {/* Loading animation overlay that matches GitHub's appearance */}
+                  <motion.div
+                    className="absolute top-0 left-0 right-0 bottom-0 z-20 overflow-x-auto pointer-events-none"
+                    initial={{ opacity: 1 }}
+                    animate={{ opacity: 0 }}
+                    transition={{ duration: 0.4, delay: 4 }} // Fade out after 5 seconds
+                  >
+                    {/* Grid of blocks that will be revealed one by one with GitHub colors */}
+                    <div style={{ minWidth: "750px", padding: "16px" }}>
+                      <div className="grid grid-cols-[repeat(53,1fr)] grid-rows-7 gap-[4px]">
+                        {Array.from({ length: 371 }).map((_, index) => {
+                          // Use GitHub's actual color palette
+                          const colors = [
+                            "rgba(22, 27, 34, 0.5)", // level0 - No contributions
+                            "rgba(14, 68, 41, 0.8)", // level1 - Light contributions
+                            "rgba(0, 109, 50, 0.8)", // level2 - Medium contributions
+                            "rgba(38, 166, 65, 0.8)", // level3 - Heavy contributions
+                            "rgba(57, 211, 83, 0.8)", // level4 - Very heavy contributions
+                          ];
+
+                          // Randomly select a color, with higher probability for level0 (empty cells)
+                          const random = Math.random();
+                          let colorIndex;
+                          if (random < 0.6)
+                            colorIndex = 0; // 60% chance of no contributions
+                          else if (random < 0.8)
+                            colorIndex = 1; // 20% chance of light contributions
+                          else if (random < 0.9)
+                            colorIndex = 2; // 10% chance of medium contributions
+                          else if (random < 0.97)
+                            colorIndex = 3; // 7% chance of heavy contributions
+                          else colorIndex = 4; // 3% chance of very heavy contributions
+
+                          return (
+                            <motion.div
+                              key={`block-${index}`}
+                              className="w-full h-full rounded-sm"
+                              style={{
+                                backgroundColor: colors[colorIndex],
+                                height: "14px",
+                                minHeight: "8px",
+                              }}
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              transition={{
+                                duration: 0.2,
+                                delay: Math.random() * 4.5, // Random reveal within 4.5 seconds
+                              }}
+                            />
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Loading indicator */}
+                    <div className="absolute bottom-4 left-0 right-0 flex justify-center">
+                      <div className="px-4 py-2 bg-neutral-800/80 rounded-full flex items-center gap-2">
+                        <motion.div
+                          className="w-2 h-2 bg-[rgba(38,166,65,0.8)] rounded-full"
+                          animate={{ scale: [1, 1.5, 1] }}
+                          transition={{ duration: 1, repeat: Infinity }}
+                        />
+                        <span className="text-xs text-neutral-300">
+                          Loading contribution data...
+                        </span>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        </motion.section>
 
         <div className="relative min-h-[600px] flex flex-col lg:flex-row gap-6 lg:gap-10">
           {/* Project Navigation */}
@@ -192,7 +337,7 @@ export default function Projects() {
               transition={{ duration: 0.3 }}
               className="space-y-4 sm:space-y-6"
             >
-              <div className="relative aspect-[16/9] sm:aspect-[16/7] max-w-2xl mx-auto rounded-xl overflow-hidden group">
+              <div className="relative aspect-[16/9] sm:aspect-[16/7] max-w-2xl mx-auto rounded-md overflow-hidden group">
                 {projects[activeProject].media.type === "image" ? (
                   <>
                     <Image
