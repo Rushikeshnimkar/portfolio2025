@@ -35,6 +35,7 @@ const ConsoleMessage = () => {
     console.log('%c⚡ Built with Next.js, TypeScript, and Tailwind CSS', styles.message);
     console.log('%c🔥 Want to collaborate? Contact me!', styles.message);
     console.log('%c⚠️ This is a protected website. Please respect the code.', styles.warning);
+    console.log('%c🔒 Automated clicks are not allowed.', styles.warning);
   }, []);
 
   return null;

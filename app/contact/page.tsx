@@ -29,6 +29,7 @@ export default function Contact() {
   const [selectedTemplate, setSelectedTemplate] = useState<number | null>(null);
   const [showTemplates, setShowTemplates] = useState(false);
   const [isTextAnimating, setIsTextAnimating] = useState(false);
+  const [isTrustedClick, setIsTrustedClick] = useState(true);
 
   // Add useEffect to clear error messages after 5 seconds
   useEffect(() => {
@@ -45,6 +46,18 @@ export default function Contact() {
       if (timer) clearTimeout(timer);
     };
   }, [status]);
+
+  // Function to check if a click event is trusted
+  const handleButtonClick = (e: React.MouseEvent, callback: () => void) => {
+    // isTrusted is true for real user interactions, false for programmatic clicks
+    if (e.isTrusted) {
+      callback();
+    } else {
+      setStatus("error");
+      setErrorMessage("Automated clicks are not allowed(Nice try kiddo)");
+      console.warn("Detected programmatic click attempt");
+    }
+  };
 
   const handleGenerateEmail = async () => {
     if (!prompt.trim() || isGenerating) return;
@@ -188,7 +201,7 @@ export default function Contact() {
                 key={m}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => {
+                onClick={(e) => {
                   setMode(m as "ai" | "manual");
                   setShowTemplates(false);
                 }}
@@ -237,7 +250,7 @@ export default function Contact() {
                       Templates
                     </button>
                     <button
-                      onClick={handleGenerateEmail}
+                      onClick={(e) => handleButtonClick(e, handleGenerateEmail)}
                       disabled={isGenerating || !prompt.trim()}
                       className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${
                         isGenerating || !prompt.trim()
@@ -428,7 +441,7 @@ export default function Contact() {
                 </h2>
                 {(emailContent || (mode === "manual" && senderEmail)) && (
                   <button
-                    onClick={handleSendEmail}
+                    onClick={(e) => handleButtonClick(e, handleSendEmail)}
                     disabled={isSending}
                     className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${
                       isSending

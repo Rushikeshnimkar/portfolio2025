@@ -139,6 +139,17 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
     [messages]
   );
 
+  // Function to check if a click event is trusted
+  const handleButtonClick = (e: React.MouseEvent, callback: () => void) => {
+    // isTrusted is true for real user interactions, false for programmatic clicks
+    if (e.isTrusted) {
+      callback();
+    } else {
+      setError("Automated clicks are not allowed(Nice try kiddo)");
+      console.warn("Detected programmatic click attempt");
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
@@ -364,7 +375,14 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
               </div>
 
               <div className="border-t border-neutral-800/50 p-4 bg-black/30 backdrop-blur-sm">
-                <form onSubmit={handleSubmit} className="flex gap-3">
+                <form
+                  onSubmit={(e) =>
+                    handleButtonClick(e as unknown as React.MouseEvent, () =>
+                      handleSubmit(e)
+                    )
+                  }
+                  className="flex gap-3"
+                >
                   <textarea
                     ref={inputRef}
                     rows={1}
@@ -376,7 +394,12 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
                     disabled={isLoading}
                   />
                   <button
-                    type="submit"
+                    type="button"
+                    onClick={(e) =>
+                      handleButtonClick(e, () =>
+                        handleSubmit(e as unknown as React.FormEvent)
+                      )
+                    }
                     disabled={isLoading || !input.trim()}
                     className={`px-4 py-2 rounded-xl transition-all duration-200 flex items-center justify-center ${
                       isLoading || !input.trim()
@@ -391,6 +414,16 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
                     )}
                   </button>
                 </form>
+
+                {/* Add error message display */}
+                {error && (
+                  <div className="mt-3 bg-red-500/10 border border-red-500/20 rounded-lg p-2 text-red-400 text-xs">
+                    <div className="flex items-center gap-2">
+                      <span>❌</span>
+                      <span>{error}</span>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
