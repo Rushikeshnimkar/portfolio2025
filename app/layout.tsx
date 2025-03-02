@@ -5,6 +5,7 @@ import { Footer } from "../components/common/footer";
 import { Navbar } from "../components/common/navbar";
 import { Analytics } from "@vercel/analytics/react";
 import ConsoleMessage from "@/components/console-message";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import "./globals.css";
 
@@ -42,11 +43,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        
-
         <ConsoleMessage />
         <Navbar />
-        <div className="relative z-10 bg-black">{children}</div>
+        <div className="relative z-10 bg-black">
+          {children}
+          <SpeedInsights />
+        </div>
         <Analytics />
 
         <Footer />
