@@ -18,7 +18,9 @@ function isAllowedOrigin(origin: string | null) {
   const allowedOrigins = [
     "https://rushikeshnimkar.xyz",
     "https://www.rushikeshnimkar.xyz",
-    // Include localhost for development
+
+
+    // Include localhost for development(uncomment for development)
     // "http://localhost:3000",
   ];
   return origin && allowedOrigins.includes(origin);

@@ -77,9 +77,21 @@ const config = {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-5px)" },
         },
+        "gradient-xy": {
+          "0%, 100%": {
+            "background-size": "400% 400%",
+            "background-position": "left center",
+          },
+          "50%": {
+            "background-size": "200% 200%",
+            "background-position": "right center",
+          },
+        },
       },
       animation: {
         bounce: "bounce 0.6s infinite",
+        "spin-slow": "spin 4s linear infinite",
+        "gradient-xy": "gradient-xy 3s ease infinite",
       },
     },
   },

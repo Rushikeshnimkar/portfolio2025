@@ -25,7 +25,7 @@ export default function HomePage() {
       setTimeout(() => {
         setIsGlitching(false);
       }, 100);
-    }, 15000);
+    }, 15000); // Changed the interval to 1000ms
 
     return () => clearInterval(glitchInterval);
   }, []);
@@ -170,50 +170,62 @@ export default function HomePage() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7 }}
           >
-            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-              <a
-                href="/resume"
-                className="w-full sm:w-auto px-6 py-3 bg-blue-500 rounded-full hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 text-sm md:text-base"
-              >
-                <span>View CV</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 md:h-5 md:w-5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+            <div className="flex flex-row gap-4 items-center">
+              <div className="relative w-[140px] overflow-hidden rounded-md">
+                <div className="absolute inset-0">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 animate-gradient-xy" />
+                </div>
+                <div className="absolute inset-[2px] bg-[#2a2a2a] rounded-[4px]" />
+                <a
+                  href="/resume"
+                  className="relative z-10 w-full px-6 py-[6px] flex items-center justify-center gap-2 text-sm md:text-base"
                 >
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                  <polyline points="14 2 14 8 20 8" />
-                  <line x1="12" y1="18" x2="12" y2="12" />
-                  <line x1="9" y1="15" x2="15" y2="15" />
-                </svg>
-              </a>
+                  <span className="text-white">View CV</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 text-white"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="12" y1="18" x2="12" y2="12" />
+                    <line x1="9" y1="15" x2="15" y2="15" />
+                  </svg>
+                </a>
+              </div>
+
               <a
-                href="#contact"
-                className="w-full sm:w-auto px-6 py-3 border border-blue-500 rounded-full hover:bg-blue-500/10 transition-colors flex items-center justify-center gap-2 text-sm md:text-base"
+                href="https://github.com/sponsors/Rushikeshnimkar"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative w-[140px] overflow-hidden rounded-md"
               >
-                <span>Contact Me</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 md:h-5 md:w-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+                <div className="absolute inset-0">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 animate-gradient-xy" />
+                </div>
+                <div className="absolute inset-[2px] bg-[#2a2a2a] rounded-[4px]" />
+                <div className="relative z-10 w-full px-6 py-[6px] flex items-center justify-center gap-2 text-sm md:text-base">
+                  <span className="text-white">Sponsor</span>
+                  <svg
+                    height="16"
+                    viewBox="0 0 16 16"
+                    width="16"
+                    className="text-red-500"
+                    fill="currentColor"
+                  >
+                    <path d="M4.25 2.5c-1.336 0-2.75 1.164-2.75 3 0 2.15 1.58 4.144 3.365 5.682A20.565 20.565 0 008 13.393a20.561 20.561 0 003.135-2.211C12.92 9.644 14.5 7.65 14.5 5.5c0-1.836-1.414-3-2.75-3-1.373 0-2.609.986-3.029 2.456a.75.75 0 01-1.442 0C6.859 3.486 5.623 2.5 4.25 2.5z" />
+                  </svg>
+                </div>
               </a>
             </div>
 
             <motion.div
-              className="flex gap-4 items-center mt-4 sm:mt-0"
+              className="flex gap-6 items-center mt-4 sm:mt-0"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8 }}
@@ -222,25 +234,25 @@ export default function HomePage() {
                 href="https://github.com/Rushikeshnimkar"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-blue-500 transition-colors"
+                className="text-gray-400 hover:text-blue-500 transition-all duration-300 hover:scale-125 hover:rotate-12"
               >
-                <FaGithub size={20} />
+                <FaGithub size={24} />
               </a>
               <a
                 href="https://www.linkedin.com/in/rushikesh-nimkar-0961361ba/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-blue-500 transition-colors"
+                className="text-gray-400 hover:text-blue-500 transition-all duration-300 hover:scale-125 hover:-rotate-12"
               >
-                <FaLinkedin size={20} />
+                <FaLinkedin size={24} />
               </a>
               <a
                 href="https://x.com/RushikeshN22296"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-blue-500 transition-colors"
+                className="text-gray-400 hover:text-blue-500 transition-all duration-300 hover:scale-125 hover:rotate-12"
               >
-                <FaXTwitter size={20} />
+                <FaXTwitter size={24} />
               </a>
             </motion.div>
           </motion.div>
