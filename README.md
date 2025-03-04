@@ -37,6 +37,12 @@ npm run dev
 ```
 3. Open [http://localhost:3000](http://localhost:3000)
 
+> **⚠️ IMPORTANT NOTE:** Make sure to uncomment the following line in `api/chat/route.ts` when working in development:
+> ```javascript
+> // "http://localhost:3000",
+> ```
+
+---
 ## 📧 Email Generation Feature
 
 The portfolio includes an AI-powered email generation system that:
