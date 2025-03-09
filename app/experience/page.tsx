@@ -1,8 +1,8 @@
 import React from "react";
 import { Timeline } from "@/components/ui/timeline";
-import { FiMapPin, FiAward, FiBriefcase, FiBook } from 'react-icons/fi';
+import { FiMapPin, FiAward, FiBriefcase, FiBook } from "react-icons/fi";
 
-export function TimelineDemo() {
+export function ExperiencePage() {
   const data = [
     {
       title: "2020-2024",
@@ -18,19 +18,20 @@ export function TimelineDemo() {
               </div>
             </div>
           </div>
-          
+
           <div className="pl-7">
             <p className="text-neutral-300 text-sm leading-relaxed">
-              Graduated with BE in Computer Engineering, focusing on software development
-              and computer science fundamentals. Developed strong problem-solving skills
-              and technical expertise through comprehensive coursework and practical projects.
+              Graduated with BE in Computer Engineering, focusing on software
+              development and computer science fundamentals. Developed strong
+              problem-solving skills and technical expertise through
+              comprehensive coursework and practical projects.
             </p>
           </div>
         </div>
       ),
     },
     {
-      title: "Feb 2024 - Jan 2025",
+      title: "Feb 2024 - Feb 2025",
       content: (
         <div className="space-y-4">
           <div className="flex items-center gap-2 text-white">
@@ -44,17 +45,19 @@ export function TimelineDemo() {
               </div>
             </div>
           </div>
-          
+
           <div className="pl-7">
             <div className="space-y-3 text-sm text-neutral-300">
               <p className="leading-relaxed">
-                Full-stack development role focusing on building scalable web applications
-                and maintaining cloud infrastructure.
+                Full-stack development role focusing on building scalable web
+                applications and maintaining cloud infrastructure.
               </p>
               <ul className="space-y-2">
                 <li className="flex items-start gap-2">
                   <span className="text-blue-400 mt-1">▹</span>
-                  <span>Developed backend services using Golang and Node.js</span>
+                  <span>
+                    Developed backend services using Golang and Node.js
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-blue-400 mt-1">▹</span>
@@ -82,13 +85,13 @@ export function TimelineDemo() {
             <FiAward className="w-5 h-5 text-blue-400" />
             <h3 className="text-lg font-semibold">Hackathon Achievements</h3>
           </div>
-          
+
           <div className="pl-7 space-y-6 ">
             {/* Solana Radar Hackathon */}
             <div className="space-y-2">
               <div className="flex items-center gap-3">
                 <span className="flex-shrink-0 w-2 h-2 rounded-full bg-blue-400" />
-                <a 
+                <a
                   href="https://arena.colosseum.org/projects/explore/netsepio?previous=L3Byb2plY3RzL2V4cGxvcmU_c2VlZD1iNGI0ZTYwYzViNGE0NzkwJnNlYXJjaD1uZXRzZXA&ref=blog.colosseum.org"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -96,16 +99,16 @@ export function TimelineDemo() {
                 >
                   <h4 className="text-white font-medium hover:text-blue-400 transition-colors duration-200 inline-flex items-center gap-1">
                     Solana Radar Hackathon 2024
-                    <svg 
-                      className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" 
-                      fill="none" 
-                      stroke="currentColor" 
+                    <svg
+                      className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"
+                      fill="none"
+                      stroke="currentColor"
                       viewBox="0 0 24 24"
                     >
-                      <path 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        strokeWidth={2} 
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
                         d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
                       />
                     </svg>
@@ -114,9 +117,10 @@ export function TimelineDemo() {
               </div>
               <div className="pl-5">
                 <p className="text-neutral-300 text-sm leading-relaxed">
-                  Achieved <span className="text-blue-400 font-medium">4th place</span> out 
-                  of 200+ global teams, demonstrating expertise in blockchain technology 
-                  and innovative problem-solving.
+                  Achieved{" "}
+                  <span className="text-blue-400 font-medium">4th place</span>{" "}
+                  out of 200+ global teams, demonstrating expertise in
+                  blockchain technology and innovative problem-solving.
                 </p>
                 <div className="flex gap-2 mt-2">
                   <span className="px-2 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full">
@@ -137,9 +141,13 @@ export function TimelineDemo() {
               </div>
               <div className="pl-5">
                 <p className="text-neutral-300 text-sm leading-relaxed">
-                  Awarded the <span className="text-blue-400 font-medium">Community Favorite Award</span> for 
-                  Mystic Tarot - an innovative Web3 tarot reading platform on the Sui Network, 
-                  showcasing expertise in blockchain and user-centric design.
+                  Awarded the{" "}
+                  <span className="text-blue-400 font-medium">
+                    Community Favorite Award
+                  </span>{" "}
+                  for Mystic Tarot - an innovative Web3 tarot reading platform
+                  on the Sui Network, showcasing expertise in blockchain and
+                  user-centric design.
                 </p>
                 <div className="flex gap-2 mt-2">
                   <span className="px-2 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full">

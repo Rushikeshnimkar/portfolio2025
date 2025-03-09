@@ -1,6 +1,6 @@
 "use client";
 
-import { TimelineDemo } from "@/components/common/timelinedemo";
+import { ExperiencePage } from "@/app/experience/page";
 import HeroPage from "./home/page";
 import About from "./about/page";
 import Skills from "./skills/page";
@@ -31,7 +31,7 @@ export default function Home() {
       </section>
 
       <section id="experience" className="scroll-mt-20">
-        <TimelineDemo />
+        <ExperiencePage />
       </section>
 
       <section id="skills" className="scroll-mt-20">
