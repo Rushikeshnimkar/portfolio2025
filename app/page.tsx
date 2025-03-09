@@ -1,6 +1,6 @@
 "use client";
 
-import { ExperiencePage } from "@/app/experience/page";
+import ExperiencePage from "./experience/page";
 import HeroPage from "./home/page";
 import About from "./about/page";
 import Skills from "./skills/page";

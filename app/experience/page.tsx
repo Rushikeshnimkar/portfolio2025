@@ -2,7 +2,7 @@ import React from "react";
 import { Timeline } from "@/components/ui/timeline";
 import { FiMapPin, FiAward, FiBriefcase, FiBook } from "react-icons/fi";
 
-export function ExperiencePage() {
+export default function ExperiencePage() {
   const data = [
     {
       title: "2020-2024",
