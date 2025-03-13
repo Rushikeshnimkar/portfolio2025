@@ -34,18 +34,26 @@ cd portfolio
 npm install
 ```
 
-2. Run development server:
+2. Update your personal information:
+```bash
+# Edit the components/character.ts file with your own details
+# This is crucial for the AI to represent you correctly
+```
+
+3. Run development server:
 ```bash
 npm run dev
 ```
-3. Open [http://localhost:3000](http://localhost:3000)
+   > **Note:** The first run will take longer than usual as the system creates and saves your embeddings to the vector database. Take this time to relax and enjoy a coffee! ☕
+
+4. Open [http://localhost:3000](http://localhost:3000)
 
 > **⚠️ IMPORTANT NOTE:** Make sure to uncomment the following line in `api/chat/route.ts` when working in development:
 > ```javascript
 > // "http://localhost:3000",
 > ```
 
----
+
 ## 📧 Email Generation Feature
 
 The portfolio includes an AI-powered email generation system that:
@@ -71,27 +79,6 @@ The portfolio uses Pinecone vector database to store and retrieve embeddings:
 - Efficient retrieval of relevant information based on user queries
 - One-time initialization with profile data for persistent storage
 
-### Vector Store Scripts
-
-The project includes scripts for managing the vector database:
-
-1. **Initialize Vector Store**:
-   ```bash
-   npx ts-node scripts/init-vector-store.ts
-   ```
-   This script processes the content in `lib/character.ts` and creates vector embeddings in Pinecone.
-
-2. **Update Vector Store** (when you update your profile information):
-   ```bash
-   npx ts-node scripts/init-vector-store.ts --force
-   ```
-   Use the `--force` flag to recreate the index even if it already exists.
-   
-> **⚠️ IMPORTANT:** Before using the vector store scripts, make sure to:
-> 1. Update `lib/character.ts` with your personal information (skills, experience, projects, etc.)
-> 2. Review `scripts/init-vector-store.ts` to ensure it's configured correctly for your needs
-> 3. Set all required environment variables for Pinecone and Google Gemini
-
 
 ## 🔒 Security Features
 
@@ -115,7 +102,6 @@ TAVILY_API_KEY="your Tavily api key" # https://tavily.com/
 
 # Vector Database (Pinecone)
 PINECONE_API_KEY="your Pinecone API key" # https://app.pinecone.io/
-PINECONE_ENVIRONMENT="your Pinecone environment" # e.g., gcp-starter
 PINECONE_INDEX_NAME="your index name" # e.g., portfolio-embeddings
 
 # Google Gemini (for embeddings)
