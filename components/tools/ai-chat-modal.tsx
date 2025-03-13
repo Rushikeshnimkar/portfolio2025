@@ -37,12 +37,31 @@ interface AIChatModalProps {
   onClose: () => void;
 }
 
+// Array of clickbait prompts to randomly select from
+const clickbaitPrompts = [
+  "It's not 2025 if you don't interact with the AI!",
+  "Discover my portfolio secrets with AI assistance!",
+  "Ask my AI anything about my work - it knows more than I do!",
+  "This AI can tell you things about me I forgot to mention...",
+  "Feeling curious? My AI assistant is waiting to chat!",
+  "Don't scroll past without saying hi to my AI!",
+  "The future is here - talk to my portfolio AI!",
+  "Psst... My AI assistant knows all my coding secrets!",
+  "Click me! I'm an AI that can tell you about Rushikesh's skills!",
+  "Want to know more? I'm the AI that knows it all!",
+];
+
 export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState("");
+
+  // State for the clickbait prompt
+  const [showClickbait, setShowClickbait] = useState(true);
+  const [clickbaitText, setClickbaitText] = useState("");
+  const [hasInteracted, setHasInteracted] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -54,6 +73,19 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
     y: number;
   } | null>(null);
   const chatButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Select a random clickbait prompt on initial load
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * clickbaitPrompts.length);
+    setClickbaitText(clickbaitPrompts[randomIndex]);
+
+    // Check if user has interacted before
+    const hasInteractedBefore = localStorage.getItem("hasInteractedWithAI");
+    if (hasInteractedBefore === "true") {
+      setShowClickbait(false);
+      setHasInteracted(true);
+    }
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -78,6 +110,13 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
       setTimeout(() => {
         inputRef.current?.focus();
       }, 100);
+
+      // Hide clickbait when chat is opened
+      setShowClickbait(false);
+
+      // Mark that user has interacted
+      setHasInteracted(true);
+      localStorage.setItem("hasInteractedWithAI", "true");
     }
   }, [isOpen]);
 
@@ -320,6 +359,30 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
     }, 500);
   };
 
+  // Function to handle clickbait click
+  const handleClickbaitClick = () => {
+    captureButtonPosition();
+    setShowClickbait(false);
+    setHasInteracted(true);
+    localStorage.setItem("hasInteractedWithAI", "true");
+    // Your existing open chat logic
+    if (!isOpen) {
+      // Call your open function here
+    }
+  };
+
+  // Add a new useEffect for auto-dismissal
+  useEffect(() => {
+    // Auto-dismiss clickbait after 8 seconds
+    if (showClickbait && !hasInteracted) {
+      const timer = setTimeout(() => {
+        setShowClickbait(false);
+      }, 8000); // 8 seconds
+
+      return () => clearTimeout(timer);
+    }
+  }, [showClickbait, hasInteracted]);
+
   return (
     <>
       {/* Chat button with ref to capture position */}
@@ -328,11 +391,69 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
         onClick={() => {
           captureButtonPosition();
           // Your existing open chat logic
+          setShowClickbait(false);
+          setHasInteracted(true);
+          localStorage.setItem("hasInteractedWithAI", "true");
         }}
         className="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-40"
       >
         <RiRobot2Line className="w-6 h-6 text-white" />
       </button>
+
+      {/* Clickbait prompt */}
+      <AnimatePresence>
+        {showClickbait && !isOpen && !hasInteracted && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.9 }}
+            transition={{
+              type: "spring",
+              damping: 20,
+              stiffness: 300,
+              delay: 1, // Delay appearance to not overwhelm user on initial load
+            }}
+            className="fixed bottom-20 right-6 max-w-xs p-4 rounded-2xl z-40"
+            onClick={handleClickbaitClick}
+          >
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center animate-pulse">
+                <RiRobot2Line className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <motion.p
+                  className="text-white text-sm font-medium mb-2"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.2 }}
+                >
+                  {clickbaitText}
+                </motion.p>
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: "100%" }}
+                  transition={{
+                    duration: 8, // Match the 8 second timeout
+                    ease: "linear",
+                    repeat: 0,
+                  }}
+                  className="h-1 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full"
+                />
+              </div>
+            </div>
+            <motion.div
+              className="absolute -top-2 -right-2 w-6 h-6 bg-neutral-900 rounded-full flex items-center justify-center border border-neutral-700 cursor-pointer"
+              whileHover={{ scale: 1.2 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowClickbait(false);
+              }}
+            >
+              <IoClose className="w-4 h-4 text-neutral-400" />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {/* Show animation when opening */}

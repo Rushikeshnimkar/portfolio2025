@@ -20,7 +20,9 @@ export async function initializeVectorStore() {
     });
 
     // Import character content
-    const { characterContent } = await import("./character");
+    const { characterContent } = await import(
+      "../components/character/character"
+    );
 
     // Split the character content into chunks
     const chunks = splitTextIntoChunks(characterContent, 500);
@@ -36,7 +38,9 @@ export async function initializeVectorStore() {
     );
 
     // Get or create the index
-    const indexName = "rushikesh-portfolio";
+    // Use environment variable for index name with fallback
+    const indexName = process.env.PINECONE_INDEX_NAME || "rushikesh-portfolio";
+    console.log(`Using index name: ${indexName}`);
 
     // List existing indexes
     const indexes = await pinecone.listIndexes();
@@ -98,7 +102,9 @@ export async function queryVectorStore(query: string, k: number = 5) {
       apiKey: process.env.PINECONE_API_KEY!,
     });
 
-    const index = pinecone.Index("rushikesh-portfolio");
+    // Use environment variable for index name with fallback
+    const indexName = process.env.PINECONE_INDEX_NAME || "rushikesh-portfolio";
+    const index = pinecone.Index(indexName);
     const embeddings = getEmbeddings();
 
     // Create vector store from existing index
@@ -157,11 +163,11 @@ export async function vectorStoreExists(): Promise<boolean> {
       apiKey: process.env.PINECONE_API_KEY!,
     });
 
+    // Use environment variable for index name with fallback
+    const indexName = process.env.PINECONE_INDEX_NAME || "rushikesh-portfolio";
+
     const indexes = await pinecone.listIndexes();
-    return (
-      indexes.indexes?.some((index) => index.name === "rushikesh-portfolio") ||
-      false
-    );
+    return indexes.indexes?.some((index) => index.name === indexName) || false;
   } catch (error) {
     console.error("Error checking if vector store exists:", error);
     return false;

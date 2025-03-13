@@ -10,6 +10,8 @@ import {
   LayoutTemplate,
   User,
   MessageSquare,
+  CheckCircle,
+  XCircle,
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { emailTemplates } from "@/components/tools/emailTemplates";
@@ -30,16 +32,25 @@ export default function Contact() {
   const [showTemplates, setShowTemplates] = useState(false);
   const [isTextAnimating, setIsTextAnimating] = useState(false);
   const [isTrustedClick, setIsTrustedClick] = useState(true);
+  const [islandExpanded, setIslandExpanded] = useState(false);
+  const [shouldHideNavbar, setShouldHideNavbar] = useState(false);
 
-  // Add useEffect to clear error messages after 5 seconds
   useEffect(() => {
     let timer: NodeJS.Timeout;
 
     if (status === "error" || status === "success") {
+      setShouldHideNavbar(true);
+      setIslandExpanded(true);
+
       timer = setTimeout(() => {
-        setStatus("idle");
-        setErrorMessage("");
-      }, 5000);
+        setIslandExpanded(false);
+
+        setTimeout(() => {
+          setStatus("idle");
+          setErrorMessage("");
+          setShouldHideNavbar(false);
+        }, 500);
+      }, 3000);
     }
 
     return () => {
@@ -47,9 +58,14 @@ export default function Contact() {
     };
   }, [status]);
 
-  // Function to check if a click event is trusted
+  useEffect(() => {
+    const event = new CustomEvent("toggleNavbar", {
+      detail: { visible: !shouldHideNavbar },
+    });
+    window.dispatchEvent(event);
+  }, [shouldHideNavbar]);
+
   const handleButtonClick = (e: React.MouseEvent, callback: () => void) => {
-    // isTrusted is true for real user interactions, false for programmatic clicks
     if (e.isTrusted) {
       callback();
     } else {
@@ -154,7 +170,109 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen w-full  text-white relative">
+    <div className="min-h-screen w-full text-white relative">
+      <AnimatePresence>
+        {(status === "success" || status === "error") && (
+          <motion.div
+            initial={{
+              width: "120px",
+              height: "40px",
+              y: -100,
+              x: "-50%",
+              borderRadius: "20px",
+              opacity: 0,
+            }}
+            animate={{
+              width: islandExpanded ? "300px" : "120px",
+              height: islandExpanded ? "60px" : "40px",
+              y: islandExpanded ? 30 : 20,
+              x: "-50%",
+              borderRadius: islandExpanded ? "16px" : "20px",
+              opacity: 1,
+            }}
+            exit={{
+              width: "120px",
+              height: "40px",
+              y: -100,
+              opacity: 0,
+            }}
+            transition={{
+              type: "spring",
+              damping: 20,
+              stiffness: 300,
+            }}
+            className={`fixed top-0 left-1/2 z-[60] flex items-center justify-center shadow-xl backdrop-blur-lg ${
+              status === "success"
+                ? "bg-green-950/80 border border-green-500/30"
+                : "bg-red-950/80 border border-red-500/30"
+            }`}
+          >
+            <AnimatePresence>
+              {islandExpanded && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="flex items-center gap-3 px-4"
+                >
+                  {status === "success" ? (
+                    <>
+                      <motion.div
+                        initial={{ scale: 0.8 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.1 }}
+                      >
+                        <CheckCircle className="w-6 h-6 text-green-400" />
+                      </motion.div>
+                      <motion.p
+                        initial={{ opacity: 0, x: 10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="text-sm font-medium text-green-300"
+                      >
+                        Email sent successfully!
+                      </motion.p>
+                    </>
+                  ) : (
+                    <>
+                      <motion.div
+                        initial={{ scale: 0.8 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.1 }}
+                      >
+                        <XCircle className="w-6 h-6 text-red-400" />
+                      </motion.div>
+                      <motion.p
+                        initial={{ opacity: 0, x: 10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="text-sm font-medium text-red-300"
+                      >
+                        {errorMessage}
+                      </motion.p>
+                    </>
+                  )}
+                </motion.div>
+              )}
+              {!islandExpanded && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="flex items-center justify-center"
+                >
+                  {status === "success" ? (
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                  ) : (
+                    <XCircle className="w-5 h-5 text-red-400" />
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Hero Section */}
       <div className="relative overflow-hidden z-10">
         <motion.div
@@ -565,22 +683,6 @@ export default function Contact() {
                   <div className="text-xs text-gray-500 flex items-center gap-1.5">
                     <Sparkles className="w-3 h-3 text-blue-400" />
                     <span>Powered by Llama-3.3</span>
-                  </div>
-                </div>
-              )}
-
-              {/* Status Messages */}
-              {status === "success" && (
-                <div className="mt-3 bg-green-500/10 border border-green-500/20 rounded-lg p-2 text-green-400 text-center text-xs">
-                  ✅ Email sent successfully!
-                </div>
-              )}
-
-              {status === "error" && (
-                <div className="mt-3 bg-red-500/10 border border-red-500/20 rounded-lg p-2 text-red-400 text-xs">
-                  <div className="flex items-center gap-2">
-                    <span>❌</span>
-                    <span>{errorMessage}</span>
                   </div>
                 </div>
               )}
