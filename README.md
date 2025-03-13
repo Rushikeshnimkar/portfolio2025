@@ -39,7 +39,7 @@ npm install
 
 2. Update your personal information:
 ```bash
-# Edit the components/character.ts file with your own details
+# Edit the components/character/character.ts file with your own details
 # This is crucial for the AI to represent you correctly
 ```
 
