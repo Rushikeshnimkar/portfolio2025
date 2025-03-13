@@ -27,6 +27,9 @@ A modern portfolio website built with Next.js 15, featuring AI chat integration 
 
 ## 🚀 Getting Started
 
+> **⚠️ IMPORTANT:** Before starting, make sure to set up all required environment variables in a `.env` file as described in the Environment Variables section below. The application will not work properly without these configurations.
+
+
 1. Clone and install:
 ```bash
 git clone https://github.com/Rushikeshnimkar/portfolio2025.git
