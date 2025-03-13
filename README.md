@@ -86,6 +86,11 @@ The project includes scripts for managing the vector database:
    npx ts-node scripts/init-vector-store.ts --force
    ```
    Use the `--force` flag to recreate the index even if it already exists.
+   
+> **⚠️ IMPORTANT:** Before using the vector store scripts, make sure to:
+> 1. Update `lib/character.ts` with your personal information (skills, experience, projects, etc.)
+> 2. Review `scripts/init-vector-store.ts` to ensure it's configured correctly for your needs
+> 3. Set all required environment variables for Pinecone and Google Gemini
 
 
 ## 🔒 Security Features
