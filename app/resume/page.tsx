@@ -11,7 +11,7 @@ export default function ResumePage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setMounted(true);
-    }, 2000); // Give the animation time to complete
+    }, 800); 
 
     return () => clearTimeout(timer);
   }, []);
@@ -39,8 +39,8 @@ export default function ResumePage() {
                   initial={{ y: 40, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{
-                    delay: index * 0.05,
-                    duration: 0.5,
+                    delay: index * 0.02,
+                    duration: 0.3,
                     ease: "easeOut",
                   }}
                   className={letter === " " ? "w-2" : "text-lg font-medium"}
