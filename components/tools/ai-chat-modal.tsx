@@ -47,7 +47,6 @@ const clickbaitPrompts = [
   "Don't scroll past without saying hi to my AI!",
   "The future is here - talk to my portfolio AI!",
   "Psst... My AI assistant knows all my coding secrets!",
-  "Click me! I'm an AI that can tell you about Rushikesh's skills!",
   "Want to know more? I'm the AI that knows it all!",
 ];
 
