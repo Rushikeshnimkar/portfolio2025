@@ -595,83 +595,29 @@ export default function Contact() {
                           onComplete={() => setIsTextAnimating(false)}
                         />
                       ) : (
-                        <div className="text-sm">
-                          <ReactMarkdown
-                            components={{
-                              h1: ({ node, ...props }) => (
-                                <h1
-                                  className="text-base font-bold text-blue-400 mt-3 mb-2"
-                                  {...props}
-                                />
-                              ),
-                              h2: ({ node, ...props }) => (
-                                <h2
-                                  className="text-base font-bold text-blue-400 mt-3 mb-2"
-                                  {...props}
-                                />
-                              ),
-                              h3: ({ node, ...props }) => (
-                                <h3
-                                  className="text-sm font-bold text-blue-400 mt-2 mb-1"
-                                  {...props}
-                                />
-                              ),
-                              h4: ({ node, ...props }) => (
-                                <h4
-                                  className="text-sm font-bold text-blue-400 mt-2 mb-1"
-                                  {...props}
-                                />
-                              ),
-                              p: ({ node, ...props }) => (
-                                <p className="text-sm mb-2" {...props} />
-                              ),
-                              strong: ({ node, ...props }) => (
-                                <strong
-                                  className="font-bold text-white"
-                                  {...props}
-                                />
-                              ),
-                              a: ({ node, ...props }) => (
-                                <a
-                                  className="text-blue-400 hover:underline"
-                                  {...props}
-                                />
-                              ),
-                              ul: ({ node, ...props }) => (
-                                <ul
-                                  className="list-disc pl-5 mb-2 text-sm"
-                                  {...props}
-                                />
-                              ),
-                              ol: ({ node, ...props }) => (
-                                <ol
-                                  className="list-decimal pl-5 mb-2 text-sm"
-                                  {...props}
-                                />
-                              ),
-                              li: ({ node, ...props }) => (
-                                <li className="mb-1" {...props} />
-                              ),
-                            }}
-                          >
-                            {emailContent}
-                          </ReactMarkdown>
-                        </div>
+                        <textarea
+                          value={emailContent}
+                          onChange={(e) => setEmailContent(e.target.value)}
+                          className="absolute inset-0 w-full h-full bg-transparent px-0 py-0 text-sm text-white border-none focus:ring-0 resize-none"
+                        />
                       )
                     ) : (
-                      <textarea
-                        value={emailContent}
-                        onChange={(e) => setEmailContent(e.target.value)}
-                        className="absolute inset-0 w-full h-full bg-gray-800/10 px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all resize-none"
-                        placeholder="Write your message..."
-                      />
+                      <div className="flex items-center justify-center h-full text-gray-500 text-sm italic">
+                        <div className="text-center">
+                          <Sparkles className="w-5 h-5 mx-auto mb-2 text-blue-400/50" />
+                          <p>
+                            Enter a prompt and click "Generate" to create an
+                            email
+                          </p>
+                        </div>
+                      </div>
                     )}
                   </div>
                 ) : (
                   <textarea
                     value={emailContent}
                     onChange={(e) => setEmailContent(e.target.value)}
-                    className="absolute inset-0 w-full h-full bg-gray-800/10 px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all resize-none"
+                    className="absolute inset-0 w-full h-full bg-transparent px-0 py-0 text-sm text-white border-none focus:ring-0 resize-none"
                     placeholder="Write your message..."
                   />
                 )}
