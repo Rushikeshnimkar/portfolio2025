@@ -2,7 +2,6 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
-import { useState, useEffect } from "react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
@@ -17,18 +16,7 @@ const glitchAnimation = {
 };
 
 export default function HomePage() {
-  const [isGlitching, setIsGlitching] = useState(false);
-
-  useEffect(() => {
-    const glitchInterval = setInterval(() => {
-      setIsGlitching(true);
-      setTimeout(() => {
-        setIsGlitching(false);
-      }, 100);
-    }, 15000); // Changed the interval to 1000ms
-
-    return () => clearInterval(glitchInterval);
-  }, []);
+  // Changed the interval to 1000ms
 
   return (
     <main
