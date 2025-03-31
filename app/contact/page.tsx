@@ -137,6 +137,16 @@ export default function Contact() {
     )
       return;
 
+    // Add email validation for AI mode
+    if (mode === "ai") {
+      const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+      if (!emailRegex.test(emailContent)) {
+        setStatus("error");
+        setErrorMessage("Generated email must include a valid email address");
+        return;
+      }
+    }
+
     setIsSending(true);
     setStatus("idle");
     setErrorMessage("");
@@ -669,7 +679,7 @@ export default function Contact() {
                           <textarea
                             value={emailContent}
                             onChange={(e) => setEmailContent(e.target.value)}
-                            className="absolute inset-0 w-full h-full bg-transparent px-0 py-0 text-sm text-white border-none focus:ring-0 resize-none"
+                            className="absolute inset-0 w-full h-full bg-transparent px-1 py-1 text-sm text-white border-none focus:ring-0 resize-none"
                           />
                         )
                       ) : (
@@ -688,7 +698,7 @@ export default function Contact() {
                     <textarea
                       value={emailContent}
                       onChange={(e) => setEmailContent(e.target.value)}
-                      className="absolute inset-0 w-full h-full bg-transparent px-0 py-0 text-sm text-white border-none focus:ring-0 resize-none"
+                      className="absolute inset-0 w-full h-full bg-transparent px-1 py-1 text-sm text-white border-none focus:ring-0 resize-none "
                       placeholder="Write your message..."
                     />
                   )}

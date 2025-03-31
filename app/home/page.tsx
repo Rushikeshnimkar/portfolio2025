@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
+import { useState, useEffect } from "react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
@@ -16,7 +17,18 @@ const glitchAnimation = {
 };
 
 export default function HomePage() {
-  // Changed the interval to 1000ms
+  const [isGlitching, setIsGlitching] = useState(false);
+
+  useEffect(() => {
+    const glitchInterval = setInterval(() => {
+      setIsGlitching(true);
+      setTimeout(() => {
+        setIsGlitching(false);
+      }, 100);
+    }, 15000); // Changed the interval to 1000ms
+
+    return () => clearInterval(glitchInterval);
+  }, []);
 
   return (
     <main
@@ -32,15 +44,62 @@ export default function HomePage() {
             transition={{ duration: 0.3 }}
             className="relative"
           >
-            <div className="relative w-40 sm:w-56 md:w-64 lg:w-72">
-              <Image
-                src="/rushikesh.png"
-                alt="Profile"
-                width={400}
-                height={400}
-                className="w-full h-auto rounded-lg shadow-xl"
-                priority
+            <div className="relative w-40 h-40 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72">
+              <div className="absolute inset-0 bg-blue-500/20 rounded-full filter blur-[40px]" />
+              <motion.div
+                animate={{
+                  rotate: [0, 360],
+                }}
+                transition={{
+                  duration: 20,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
+                className="absolute inset-0 rounded-full border-2 border-blue-500/30 border-dashed"
               />
+              <motion.div
+                className="absolute inset-4 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-full overflow-hidden border-2 border-blue-500/30"
+                animate={{
+                  x: isGlitching ? [-2, 2, -2, 0] : 0,
+                  y: isGlitching ? [1, -1, 1, 0] : 0,
+                }}
+                transition={{
+                  duration: 0.2,
+                  ease: "easeInOut",
+                }}
+              >
+                <div className="relative w-full h-full">
+                  <Image
+                    src="/rushikesh_nimkar.jpg"
+                    alt="Profile"
+                    fill
+                    className={`object-cover rounded-full p-2 transition-opacity duration-100 ${
+                      isGlitching ? "opacity-0" : "opacity-100"
+                    }`}
+                    priority
+                  />
+                  <Image
+                    src="/profile2.png"
+                    alt="Profile Glitch"
+                    fill
+                    className={`object-cover rounded-full p-2 transition-opacity duration-100 ${
+                      isGlitching ? "opacity-100" : "opacity-0"
+                    }`}
+                    priority
+                  />
+                </div>
+                {isGlitching && (
+                  <motion.div
+                    className="absolute inset-0 bg-blue-500/30"
+                    animate={{
+                      opacity: [0, 0.5, 0],
+                    }}
+                    transition={{
+                      duration: 0.1,
+                    }}
+                  />
+                )}
+              </motion.div>
             </div>
           </motion.div>
 

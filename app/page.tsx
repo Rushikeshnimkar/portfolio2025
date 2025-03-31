@@ -8,16 +8,16 @@ import Contact from "./contact/page";
 import Projects from "./projects/page";
 import { AIChatModal } from "../components/tools/ai-chat-modal";
 import { useState } from "react";
-
+import GitHub from "./github/page";
 export default function Home() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   return (
     <main>
       <div className="min-h-screen w-full    text-white overflow-x-hidden relative">
-        <div className="fixed inset-0 z-0 ">
-          <div className="absolute top-20 left-20 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob" />
-          <div className="absolute top-40 right-20 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000" />
-          <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000" />
+        <div className="fixed inset-0 z-0 overflow-hidden">
+          <div className="absolute top-10 left-10 w-80 h-80 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob" />
+          <div className="absolute top-40 right-10 w-80 h-80 bg-gradient-to-bl from-purple-500 to-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000" />
+          <div className="absolute bottom-10 left-1/3 w-80 h-80 bg-gradient-to-tl from-pink-500 to-red-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000" />
         </div>
 
         <section id="home" className="relative z-10 b">
@@ -42,6 +42,9 @@ export default function Home() {
         <Projects />
       </section>
 
+      <section id="github" className="scroll-mt-20">
+        <GitHub />
+      </section>
       <section id="contact" className="scroll-mt-20">
         <Contact />
       </section>
