@@ -244,29 +244,25 @@ export default function Projects() {
 
                   {/* Project Links */}
                   <div className="flex flex-wrap gap-3 mt-auto">
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      onClick={() => window.open(project.github, "_blank")}
                       className="flex items-center gap-2 text-white/80 hover:text-white bg-neutral-800 hover:bg-neutral-700 px-3 py-1.5 rounded-lg transition-colors text-xs sm:text-sm"
                       aria-label={`View source code for ${project.title} on GitHub`}
                       title="View on GitHub"
                     >
                       <FiGithub className="w-4 h-4" />
                       <span>GitHub</span>
-                    </a>
+                    </button>
                     {project.link && (
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <button
+                        onClick={() => window.open(project.link, "_blank")}
                         className="flex items-center gap-2 text-white/90 hover:text-white bg-blue-600/80 hover:bg-blue-600 px-3 py-1.5 rounded-lg transition-colors text-xs sm:text-sm"
                         aria-label={`View live demo of ${project.title}`}
                         title="View Live Demo"
                       >
                         <FiExternalLink className="w-4 h-4" />
                         <span>Live Demo</span>
-                      </a>
+                      </button>
                     )}
                   </div>
                 </div>
@@ -345,25 +341,25 @@ export default function Projects() {
                   </div>
 
                   <div className="flex flex-wrap gap-4">
-                    <a
-                      href={selectedProject.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      onClick={() =>
+                        window.open(selectedProject.github, "_blank")
+                      }
                       className="flex items-center gap-2 text-white/90 hover:text-white bg-neutral-800 hover:bg-neutral-700 px-5 py-2.5 rounded-lg transition-colors text-sm font-medium"
                     >
                       <FiGithub className="w-5 h-5" />
                       <span>GitHub</span>
-                    </a>
+                    </button>
                     {selectedProject.link && (
-                      <a
-                        href={selectedProject.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <button
+                        onClick={() =>
+                          window.open(selectedProject.link, "_blank")
+                        }
                         className="flex items-center gap-2 text-white hover:text-white bg-blue-600 hover:bg-blue-500 px-5 py-2.5 rounded-lg transition-colors text-sm font-medium"
                       >
                         <FiExternalLink className="w-5 h-5" />
                         <span>Live Demo</span>
-                      </a>
+                      </button>
                     )}
                   </div>
                 </div>

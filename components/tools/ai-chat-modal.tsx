@@ -73,6 +73,10 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
   } | null>(null);
   const chatButtonRef = useRef<HTMLButtonElement>(null);
 
+  // Add new state for theme mode
+  const [isThemeMode, setIsThemeMode] = useState(false);
+  const [themeChangeHistory, setThemeChangeHistory] = useState<string[]>([]);
+
   // Select a random clickbait prompt on initial load
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * clickbaitPrompts.length);
@@ -165,6 +169,141 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
     });
   }, [isOpen]);
 
+  // Function to load saved theme changes
+  useEffect(() => {
+    // Load any saved theme changes from localStorage
+    const savedThemeChanges = localStorage.getItem("websiteThemeChanges");
+    if (savedThemeChanges) {
+      try {
+        const changes = JSON.parse(savedThemeChanges);
+        setThemeChangeHistory(changes);
+        // Apply the saved changes
+        setTimeout(() => {
+          applyThemeChanges(changes);
+        }, 500); // Small delay to ensure DOM is fully loaded
+      } catch (error) {
+        console.error("Error loading saved theme:", error);
+      }
+    }
+  }, []);
+
+  // Enhanced function to apply theme changes to DOM
+  const applyThemeChanges = useCallback((changes: any[]) => {
+    if (!changes || !Array.isArray(changes)) return;
+
+    changes.forEach((change) => {
+      try {
+        switch (change.type) {
+          case "style":
+            // Apply CSS style changes
+            document.querySelectorAll(change.selector).forEach((el) => {
+              (el as HTMLElement).style.setProperty(
+                change.property,
+                change.value
+              );
+            });
+            break;
+
+          case "visibility":
+            // Show/hide elements
+            document.querySelectorAll(change.selector).forEach((el) => {
+              if (change.action === "hide") {
+                (el as HTMLElement).style.setProperty("display", "none");
+              } else if (change.action === "show") {
+                (el as HTMLElement).style.removeProperty("display");
+              }
+            });
+            break;
+
+          case "attribute":
+            // Set element attributes
+            document.querySelectorAll(change.selector).forEach((el) => {
+              el.setAttribute(change.attribute, change.value);
+            });
+            break;
+
+          case "class":
+            // Add or remove classes
+            document.querySelectorAll(change.selector).forEach((el) => {
+              if (change.action === "add") {
+                el.classList.add(change.class);
+              } else if (change.action === "remove") {
+                el.classList.remove(change.class);
+              }
+            });
+            break;
+
+          case "move":
+            // Move elements to new locations in the DOM
+            const elToMove = document.querySelector(change.selector);
+            const destination = document.querySelector(change.destination);
+            if (elToMove && destination) {
+              destination.insertAdjacentElement(
+                change.position as InsertPosition,
+                elToMove
+              );
+            }
+            break;
+
+          case "reorder":
+            // Reorder children within a parent
+            const parent = document.querySelector(change.parent);
+            if (parent && Array.isArray(change.order)) {
+              const orderedElements: Element[] = [];
+              change.order.forEach((selector: any) => {
+                const child = parent.querySelector(selector);
+                if (child) {
+                  orderedElements.push(child);
+                  parent.removeChild(child);
+                }
+              });
+              orderedElements.forEach((el) => {
+                parent.appendChild(el);
+              });
+            }
+            break;
+
+          default:
+            // For backward compatibility, assume style change if no type specified
+            if (change.selector && change.property && change.value) {
+              document.querySelectorAll(change.selector).forEach((el) => {
+                (el as HTMLElement).style.setProperty(
+                  change.property,
+                  change.value
+                );
+              });
+            }
+        }
+      } catch (error) {
+        console.error(`Error applying change:`, change, error);
+      }
+    });
+  }, []);
+
+  // Helper function to format changes for display
+  const formatChangeForDisplay = (change: any) => {
+    switch (change.type) {
+      case "style":
+        return `Changed \`${change.property}\` to \`${change.value}\` for \`${change.selector}\``;
+      case "visibility":
+        return `${change.action === "hide" ? "Hidden" : "Showed"} \`${
+          change.selector
+        }\``;
+      case "attribute":
+        return `Set attribute \`${change.attribute}=${change.value}\` on \`${change.selector}\``;
+      case "class":
+        return `${change.action === "add" ? "Added" : "Removed"} class \`${
+          change.class
+        }\` ${change.action === "add" ? "to" : "from"} \`${change.selector}\``;
+      case "move":
+        return `Moved \`${change.selector}\` to ${change.position} of \`${change.destination}\``;
+      case "reorder":
+        return `Reordered children within \`${change.parent}\``;
+      default:
+        return `Applied change to \`${change.selector}\``;
+    }
+  };
+
   const parseStructuredContent = (
     content: string
   ): StructuredContent | null => {
@@ -184,56 +323,266 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
     }
   };
 
+  // Function to determine if a message is a theme request
+  const isThemeRequest = (message: string) => {
+    return message.toLowerCase().trim().startsWith("theme:");
+  };
+
+  // Process theme request
+  const processThemeRequest = async (userMessage: string) => {
+    setIsLoading(true);
+    setIsThemeMode(true);
+
+    try {
+      // Call the theme API
+      const response = await fetch("/api/theme", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: userMessage,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to get theme response");
+      }
+
+      const data = await response.json();
+
+      // Extract JavaScript code from the response
+      const jsCode = extractCodeFromMarkdown(data.response);
+
+      if (!jsCode) {
+        throw new Error("No valid JavaScript code found in the response");
+      }
+
+      // Execute the code and get the changes
+      const changes = await executeThemeCode(jsCode);
+
+      // Save changes to history
+      if (changes && changes.length > 0) {
+        setThemeChangeHistory((prev) => [...prev, ...changes]);
+
+        // Save to localStorage that theme changes have been applied
+        localStorage.setItem("hasThemeChanges", "true");
+
+        return {
+          content: `**Theme Applied Successfully!**\n\nChanges made:\n${changes
+            .map((c: any) => `- ${c}`)
+            .join("\n")}`,
+          structuredContent: null,
+        };
+      } else {
+        return {
+          content:
+            "The theme was processed, but no changes were reported. The changes might still have been applied.",
+          structuredContent: null,
+        };
+      }
+    } catch (error) {
+      console.error("Theme processing error:", error);
+      return {
+        content: `**Error applying theme**: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`,
+        structuredContent: null,
+      };
+    } finally {
+      setIsLoading(false);
+      setIsThemeMode(false);
+    }
+  };
+
+  // Extract code from markdown
+  const extractCodeFromMarkdown = (markdown: string) => {
+    const codeRegex = /```(?:js|javascript)([\s\S]*?)```/;
+    const match = markdown.match(codeRegex);
+    return match ? match[1].trim() : null;
+  };
+
+  // Safely execute the theme code
+  const executeThemeCode = async (code: string) => {
+    // Create a safe function to execute the code
+    try {
+      // Create a new function from the code
+      const AsyncFunction = Object.getPrototypeOf(
+        async function () {}
+      ).constructor;
+
+      // Wrap the code in an async function that returns the result
+      const wrappedCode = `
+        ${code}
+        return await applyThemeChanges();
+      `;
+
+      // Create and execute the function
+      const executor = new AsyncFunction(wrappedCode);
+      return await executor();
+    } catch (error) {
+      console.error("Error executing theme code:", error);
+      throw new Error("Failed to execute theme changes");
+    }
+  };
+
+  // Reset all theme changes by reloading the page
+  const resetThemeChanges = () => {
+    // Clear the localStorage flag
+    localStorage.removeItem("hasThemeChanges");
+
+    // Add message about theme reset
+    setMessages((prev) => [
+      ...prev,
+      {
+        type: "assistant",
+        content:
+          "Resetting all theme changes. The page will reload momentarily...",
+        timestamp: new Date(),
+      },
+    ]);
+
+    // Reload the page after a short delay
+    setTimeout(() => {
+      window.location.reload();
+    }, 1500);
+  };
+
+  // Check on mount if we have theme changes
+  useEffect(() => {
+    const hasChanges = localStorage.getItem("hasThemeChanges") === "true";
+    if (hasChanges) {
+      setThemeChangeHistory(["Previously applied theme changes are active"]);
+    }
+  }, []);
+
+  // Modified processMessage to handle theme commands
   const processMessage = useCallback(
     async (userMessage: string) => {
       setIsLoading(true);
 
       try {
-        // Pass the entire message history to maintain context
-        const response = await fetch("/api/chat", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            prompt: userMessage,
-            messages: messages, // Pass the entire chat history
-            structuredResponse: true, // Request structured response when appropriate
-          }),
-        });
+        // Check if this is a theme command
+        const isThemeCommand = userMessage.toLowerCase().includes("theme:");
 
-        if (!response.ok) {
-          throw new Error("Failed to get response");
+        if (isThemeCommand) {
+          setIsThemeMode(true);
+
+          // Call the theme API
+          const response = await fetch("/api/theme", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              prompt: userMessage,
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to get theme response");
+          }
+
+          const data = await response.json();
+
+          // Parse the AI response as JSON
+          let themeData;
+          try {
+            themeData = JSON.parse(data.response);
+          } catch (error) {
+            console.error("Failed to parse theme data:", error);
+            return {
+              content:
+                "I couldn't generate valid theme changes. Please try a different theme request.",
+              structuredContent: null,
+            };
+          }
+
+          // Apply the theme changes
+          if (
+            themeData &&
+            themeData.changes &&
+            Array.isArray(themeData.changes)
+          ) {
+            applyThemeChanges(themeData.changes);
+
+            // Save the changes to localStorage
+            const currentChanges = [
+              ...themeChangeHistory,
+              ...themeData.changes,
+            ];
+            setThemeChangeHistory(currentChanges);
+            localStorage.setItem(
+              "websiteThemeChanges",
+              JSON.stringify(currentChanges)
+            );
+
+            return {
+              content:
+                `**Theme Applied**: ${
+                  themeData.explanation || "Theme changes applied successfully!"
+                }\n\n` +
+                "Changes made:\n" +
+                themeData.changes
+                  .map((c: any) => `- ${formatChangeForDisplay(c)}`)
+                  .join("\n"),
+              structuredContent: null,
+            };
+          }
+
+          return {
+            content:
+              "I couldn't generate valid theme changes. Please try a different theme request.",
+            structuredContent: null,
+          };
+        } else {
+          // Regular chat processing (your existing code)
+          const response = await fetch("/api/chat", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              prompt: userMessage,
+              messages: messages,
+              structuredResponse: true,
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to get response");
+          }
+
+          const data = await response.json();
+
+          // If search was performed, show search animation for a moment
+          if (data.isSearchPerformed) {
+            setIsSearching(true);
+            // Keep search animation visible for at least 1.5 seconds
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+            setIsSearching(false);
+          }
+
+          // Parse structured content if available
+          const structuredContent = parseStructuredContent(data.response);
+
+          return {
+            content: data.response,
+            structuredContent,
+            hasStructuredData: data.hasStructuredData,
+            structuredDataType: data.structuredDataType,
+          };
         }
-
-        const data = await response.json();
-
-        // If search was performed, show search animation for a moment
-        if (data.isSearchPerformed) {
-          setIsSearching(true);
-          // Keep search animation visible for at least 1.5 seconds
-          await new Promise((resolve) => setTimeout(resolve, 1500));
-          setIsSearching(false);
-        }
-
-        // Parse structured content if available
-        const structuredContent = parseStructuredContent(data.response);
-
-        return {
-          content: data.response,
-          structuredContent,
-          hasStructuredData: data.hasStructuredData,
-          structuredDataType: data.structuredDataType,
-        };
       } catch (error) {
         const errorMessage =
           error instanceof Error ? error.message : "An error occurred";
         throw new Error(errorMessage);
       } finally {
         setIsLoading(false);
+        setIsThemeMode(false);
       }
     },
-    [messages]
+    [messages, themeChangeHistory, applyThemeChanges]
   );
 
   // Function to check if a click event is trusted
@@ -247,6 +596,7 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
     }
   };
 
+  // Modified handleSubmit to handle theme requests
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
@@ -267,31 +617,21 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
     setInput("");
 
     try {
-      const response = await processMessage(userMessage.content);
+      // Check if this is a theme request
+      const isTheme = isThemeRequest(userMessage.content);
 
-      // Extract the structured content if available
-      const structuredContent = parseStructuredContent(response.content);
-
-      // If the response has structured data, we can make the text response more concise
-      // by removing any duplicated information
-      let displayContent = response.content;
-
-      // Remove the JSON block from the displayed content
-      if (structuredContent) {
-        displayContent = displayContent
-          .replace(/```json[\s\S]*?```/g, "")
-          .trim();
-      }
+      // Process accordingly
+      const response = isTheme
+        ? await processThemeRequest(userMessage.content)
+        : await processMessage(userMessage.content);
 
       setMessages((prev) =>
         prev.map((msg, idx) =>
           idx === prev.length - 1
             ? {
                 ...msg,
-                content: displayContent,
-                structuredContent: structuredContent,
-                hasStructuredData: response.hasStructuredData,
-                structuredDataType: response.structuredDataType,
+                content: response.content,
+                structuredContent: response.structuredContent,
               }
             : msg
         )
@@ -667,54 +1007,119 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
                   </div>
 
                   <div className="border-t border-neutral-800/50 p-4 bg-black/30 backdrop-blur-sm">
-                    <form
-                      onSubmit={(e) =>
-                        handleButtonClick(
-                          e as unknown as React.MouseEvent,
-                          () => handleSubmit(e)
-                        )
-                      }
-                      className="flex gap-3"
-                    >
-                      <textarea
-                        ref={inputRef}
-                        rows={1}
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                        placeholder="Type your message..."
-                        className="flex-1 bg-neutral-800/50 text-sm text-white placeholder-neutral-400 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none backdrop-blur-sm"
-                        disabled={isLoading}
-                      />
+                    {themeChangeHistory.length > 0 && (
+                      <div className="mb-3 px-3 py-2 rounded-lg bg-gradient-to-r from-blue-900/20 to-purple-900/20 border border-purple-900/30">
+                        <div className="flex items-center justify-between">
+                          <div className="text-xs text-purple-400 font-medium flex items-center">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-3.5 w-3.5 mr-1"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
+                              />
+                            </svg>
+                            Custom Theme Active
+                          </div>
+                          <button
+                            onClick={resetThemeChanges}
+                            className="text-xs px-2 py-0.5 rounded bg-red-900/20 text-red-400 hover:bg-red-900/40 hover:text-red-300 transition-colors"
+                          >
+                            Reset UI
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    <form onSubmit={handleSubmit} className="flex gap-3">
+                      <div className="relative w-full">
+                        <textarea
+                          ref={inputRef}
+                          rows={1}
+                          value={input}
+                          onChange={(e) => setInput(e.target.value)}
+                          onKeyDown={handleKeyDown}
+                          placeholder={
+                            isThemeRequest(input)
+                              ? "Describe your UI changes..."
+                              : "Type your message or 'Theme: ' to customize UI..."
+                          }
+                          className="flex-1 w-full bg-neutral-800/50 text-sm text-white placeholder-neutral-400 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none backdrop-blur-sm"
+                          disabled={isLoading}
+                        />
+
+                        {/* Subtle hint */}
+                        {!isThemeRequest(input) && !isLoading && (
+                          <div className="absolute -top-5 right-2 text-[10px] text-neutral-500">
+                            Try "Theme: dark mode" or "Theme: hide navbar"
+                          </div>
+                        )}
+                      </div>
+
                       <button
-                        type="button"
-                        onClick={(e) =>
-                          handleButtonClick(e, () =>
-                            handleSubmit(e as unknown as React.FormEvent)
-                          )
-                        }
+                        type="submit"
                         disabled={isLoading || !input.trim()}
                         className={`px-4 py-2 rounded-xl transition-all duration-200 flex items-center justify-center ${
                           isLoading || !input.trim()
                             ? "bg-neutral-800/50 text-neutral-400 cursor-not-allowed"
+                            : isThemeRequest(input)
+                            ? "bg-gradient-to-r from-purple-500 to-pink-600 text-white hover:shadow-lg hover:scale-105"
                             : "bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:shadow-lg hover:scale-105"
                         }`}
                       >
                         {isLoading ? (
                           <CgSpinner className="animate-spin h-5 w-5" />
+                        ) : isThemeRequest(input) ? (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
+                            />
+                          </svg>
                         ) : (
-                          <IoSend className="w-5 h-5" />
+                          <IoSend className="w-5 w-5" />
                         )}
                       </button>
                     </form>
 
-                    {/* Add error message display */}
-                    {error && (
-                      <div className="mt-3 bg-red-500/10 border border-red-500/20 rounded-lg p-2 text-red-400 text-xs">
-                        <div className="flex items-center gap-2">
-                          <span>❌</span>
-                          <span>{error}</span>
-                        </div>
+                    {/* Processing indicator */}
+                    {isThemeMode && isLoading && (
+                      <div className="absolute bottom-28 left-1/2 transform -translate-x-1/2 bg-purple-600/80 text-white px-4 py-1.5 rounded-full text-xs font-medium flex items-center shadow-lg">
+                        <svg
+                          className="animate-spin -ml-1 mr-2 h-3 w-3 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                        Applying UI changes...
                       </div>
                     )}
                   </div>

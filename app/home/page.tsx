@@ -176,8 +176,8 @@ export default function HomePage() {
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 animate-gradient-xy" />
                 </div>
                 <div className="absolute inset-[2px] bg-[#2a2a2a] rounded-[4px]" />
-                <a
-                  href="/resume"
+                <button
+                  onClick={() => (window.location.href = "/resume")}
                   className="relative z-10 w-full px-6 py-[6px] flex items-center justify-center gap-2 text-sm md:text-base"
                 >
                   <span className="text-white">View CV</span>
@@ -196,20 +196,23 @@ export default function HomePage() {
                     <line x1="12" y1="18" x2="12" y2="12" />
                     <line x1="9" y1="15" x2="15" y2="15" />
                   </svg>
-                </a>
+                </button>
               </div>
 
-              <a
-                href="https://github.com/sponsors/Rushikeshnimkar"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative w-[140px] overflow-hidden rounded-md"
-              >
+              <div className="relative w-[140px] overflow-hidden rounded-md">
                 <div className="absolute inset-0">
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 animate-gradient-xy" />
                 </div>
                 <div className="absolute inset-[2px] bg-[#2a2a2a] rounded-[4px]" />
-                <div className="relative z-10 w-full px-6 py-[6px] flex items-center justify-center gap-2 text-sm md:text-base">
+                <button
+                  onClick={() =>
+                    window.open(
+                      "https://github.com/sponsors/Rushikeshnimkar",
+                      "_blank"
+                    )
+                  }
+                  className="relative z-10 w-full px-6 py-[6px] flex items-center justify-center gap-2 text-sm md:text-base"
+                >
                   <span className="text-white">Sponsor</span>
                   <svg
                     height="16"
@@ -220,8 +223,8 @@ export default function HomePage() {
                   >
                     <path d="M4.25 2.5c-1.336 0-2.75 1.164-2.75 3 0 2.15 1.58 4.144 3.365 5.682A20.565 20.565 0 008 13.393a20.561 20.561 0 003.135-2.211C12.92 9.644 14.5 7.65 14.5 5.5c0-1.836-1.414-3-2.75-3-1.373 0-2.609.986-3.029 2.456a.75.75 0 01-1.442 0C6.859 3.486 5.623 2.5 4.25 2.5z" />
                   </svg>
-                </div>
-              </a>
+                </button>
+              </div>
             </div>
 
             <motion.div
