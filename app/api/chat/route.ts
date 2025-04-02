@@ -20,7 +20,7 @@ function isAllowedOrigin(origin: string | null) {
     "https://www.rushikeshnimkar.xyz",
 
     // Include localhost for development(uncomment for development)
-    // "http://localhost:3000",
+    "http://localhost:3000",
   ];
   return origin && allowedOrigins.includes(origin);
 }

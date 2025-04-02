@@ -9,45 +9,105 @@ import Projects from "./projects/page";
 import { AIChatModal } from "../components/tools/ai-chat-modal";
 import { useState } from "react";
 import GitHub from "./github/page";
+
 export default function Home() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   return (
-    <main>
-      <div className="min-h-screen w-full    text-white overflow-x-hidden relative">
-        <div className="fixed inset-0 z-0 overflow-hidden">
-          <div className="absolute top-10 left-10 w-80 h-80 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob" />
-          <div className="absolute top-40 right-10 w-80 h-80 bg-gradient-to-bl from-purple-500 to-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000" />
-          <div className="absolute bottom-10 left-1/3 w-80 h-80 bg-gradient-to-tl from-pink-500 to-red-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000" />
+    <main
+      className="main-content"
+      id="main-content"
+      data-theme-target="main-content"
+    >
+      {/* Add a specific background element that can be easily targeted */}
+      <div
+        className="fixed inset-0 bg-black z-[-2]"
+        id="page-background-base"
+        data-theme-target="page-background-base"
+      ></div>
+
+      <div className="min-h-screen w-full text-white overflow-x-hidden relative">
+        {/* Gradient blobs container */}
+        <div
+          className="fixed inset-0 z-[-1] overflow-hidden"
+          data-theme-target="gradient-background"
+          id="gradient-background"
+        >
+          {/* Gradient blobs with data attributes for individual targeting */}
+          <div
+            className="absolute top-10 left-10 w-80 h-80 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"
+            data-theme-target="gradient-blob-1"
+            id="gradient-blob-1"
+          />
+          <div
+            className="absolute top-40 right-10 w-80 h-80 bg-gradient-to-bl from-purple-500 to-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"
+            data-theme-target="gradient-blob-2"
+            id="gradient-blob-2"
+          />
+          <div
+            className="absolute bottom-10 left-1/3 w-80 h-80 bg-gradient-to-tl from-pink-500 to-red-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"
+            data-theme-target="gradient-blob-3"
+            id="gradient-blob-3"
+          />
         </div>
 
-        <section id="home" className="relative z-10 b">
+        <section
+          id="home"
+          className="relative z-10"
+          data-theme-target="home-section"
+        >
           <HeroPage />
         </section>
       </div>
 
-      {/* Main Sections */}
-      <section id="about" className="scroll-mt-20">
+      {/* Main Sections with clear data attributes */}
+      <section
+        id="about"
+        className="scroll-mt-20"
+        data-theme-target="about-section"
+      >
         <About />
       </section>
 
-      <section id="experience" className="scroll-mt-20">
+      <section
+        id="experience"
+        className="scroll-mt-20"
+        data-theme-target="experience-section"
+      >
         <ExperiencePage />
       </section>
 
-      <section id="skills" className="scroll-mt-20">
+      <section
+        id="skills"
+        className="scroll-mt-20"
+        data-theme-target="skills-section"
+      >
         <Skills />
       </section>
 
-      <section id="projects" className="scroll-mt-20">
+      <section
+        id="projects"
+        className="scroll-mt-20"
+        data-theme-target="projects-section"
+      >
         <Projects />
       </section>
 
-      <section id="github" className="scroll-mt-20">
+      <section
+        id="github"
+        className="scroll-mt-20"
+        data-theme-target="github-section"
+      >
         <GitHub />
       </section>
-      <section id="contact" className="scroll-mt-20">
+
+      <section
+        id="contact"
+        className="scroll-mt-20"
+        data-theme-target="contact-section"
+      >
         <Contact />
       </section>
+
       <button
         onClick={() => setIsChatOpen(!isChatOpen)}
         className={`fixed bottom-6 right-6 p-4 rounded-xl shadow-xl transition-all duration-300 transform z-50 
@@ -57,6 +117,7 @@ export default function Home() {
               : "bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:shadow-[0_0_20px_rgba(88,28,235,0.6)] hover:scale-105"
           }
           group flex items-center justify-center`}
+        data-theme-target="chat-button"
       >
         <div className="relative">
           {isChatOpen ? (

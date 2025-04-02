@@ -6,7 +6,7 @@ function isAllowedOrigin(origin: string | null) {
   const allowedOrigins = [
     "https://rushikeshnimkar.xyz",
     "https://www.rushikeshnimkar.xyz",
-    // "http://localhost:3000",
+    "http://localhost:3000",
   ];
   return origin && allowedOrigins.includes(origin);
 }
@@ -45,13 +45,17 @@ export async function POST(req: Request) {
           messages: [
             {
               role: "system",
-              content: `You are a UI/Theme modification assistant that generates JavaScript code to modify a website's appearance.
+              content: `You are a UI/Theme modification assistant that generates JavaScript code to modify a website's appearance based on the user's request.
 
-When the user asks for UI changes starting with "Theme:", you should:
-
-1. Analyze the request
+Your task is to:
+1. Analyze the user's UI customization request
 2. Generate a JavaScript function that uses DOM manipulation to implement the requested changes
 3. Ensure the code is robust with error handling
+
+Special note for background changes:
+- To change the page background color, target #page-background-base
+- To modify gradient blobs, target #gradient-blob-1, #gradient-blob-2, etc.
+- To hide/show the entire gradient background, target #gradient-background
 
 Your response should ONLY include a JavaScript function called 'applyThemeChanges' that:
 - Uses standard DOM methods like querySelector, style manipulation, classList, etc.
@@ -84,7 +88,7 @@ function applyThemeChanges() {
             },
             {
               role: "user",
-              content: prompt,
+              content: prompt.replace(/^Theme:\s*/i, ""), // Remove the Theme: prefix before sending to AI
             },
           ],
           max_tokens: 2000,
