@@ -61,48 +61,83 @@ export default function Skills() {
   if (!mounted) return null;
 
   return (
-    <div className="min-h-screen w-full    text-white">
-      <div className="container mx-auto px-4 py-16">
+    <div id="skills-page" className="min-h-screen w-full text-white">
+      <div id="skills-container" className="container mx-auto px-4 py-16">
         <motion.div
+          id="skills-header"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+          <h1 id="skills-title" className="text-4xl md:text-5xl font-bold mb-4">
             <span className="text-4xl sm:text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-neutral-200 to-neutral-500">
               Skills & Technologies
             </span>
           </h1>
-          <p className="text-neutral-400 text-base max-w-2xl mx-auto">
+          <p
+            id="skills-subtitle"
+            className="text-neutral-400 text-base max-w-2xl mx-auto"
+          >
             My technical toolkit for building modern applications
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div
+          id="skills-grid"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+        >
           {Object.keys(skills).map((category, index) => (
             <motion.div
               key={category}
+              id={`skill-category-${category
+                .toLowerCase()
+                .replace(/\s+/g, "-")}`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="bg-neutral-900/60 backdrop-blur-sm rounded-2xl border border-neutral-800 overflow-hidden"
             >
-              <div className="bg-gradient-to-r from-cyan-500/10 to-purple-600/10 p-6 border-b border-neutral-800">
+              <div
+                id={`category-header-${category
+                  .toLowerCase()
+                  .replace(/\s+/g, "-")}`}
+                className="bg-gradient-to-r from-cyan-500/10 to-purple-600/10 p-6 border-b border-neutral-800"
+              >
                 <div className="flex items-center gap-3">
-                  <div className="p-3 rounded-lg bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30">
+                  <div
+                    id={`category-icon-${category
+                      .toLowerCase()
+                      .replace(/\s+/g, "-")}`}
+                    className="p-3 rounded-lg bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
+                  >
                     {categoryIcons[category as keyof typeof categoryIcons]}
                   </div>
-                  <h2 className="text-2xl font-bold text-white">{category}</h2>
+                  <h2
+                    id={`category-title-${category
+                      .toLowerCase()
+                      .replace(/\s+/g, "-")}`}
+                    className="text-2xl font-bold text-white"
+                  >
+                    {category}
+                  </h2>
                 </div>
               </div>
 
-              <div className="p-6">
+              <div
+                id={`skills-list-${category
+                  .toLowerCase()
+                  .replace(/\s+/g, "-")}`}
+                className="p-6"
+              >
                 <div className="flex flex-wrap gap-3">
                   {skills[category as keyof typeof skills].map(
                     (skill, skillIndex) => (
                       <motion.div
                         key={skill.name}
+                        id={`skill-item-${skill.name
+                          .toLowerCase()
+                          .replace(/\s+/g, "-")}`}
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{
@@ -112,8 +147,20 @@ export default function Skills() {
                         whileHover={{ y: -5 }}
                         className="flex items-center gap-2 px-4 py-3 bg-neutral-800/50 rounded-lg border border-neutral-700/50"
                       >
-                        <div className="text-xl">{skill.icon}</div>
-                        <span className="text-sm font-medium">
+                        <div
+                          id={`skill-icon-${skill.name
+                            .toLowerCase()
+                            .replace(/\s+/g, "-")}`}
+                          className="text-xl"
+                        >
+                          {skill.icon}
+                        </div>
+                        <span
+                          id={`skill-name-${skill.name
+                            .toLowerCase()
+                            .replace(/\s+/g, "-")}`}
+                          className="text-sm font-medium"
+                        >
                           {skill.name}
                         </span>
                       </motion.div>
@@ -126,14 +173,24 @@ export default function Skills() {
         </div>
 
         <motion.div
+          id="skills-footer"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.5 }}
           className="mt-16 text-center"
         >
-          <div className="inline-block relative max-w-2xl">
-            <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl opacity-20 blur-sm" />
-            <div className="relative px-6 py-4 bg-neutral-900/80 backdrop-blur-sm rounded-xl border border-neutral-700/50">
+          <div
+            id="skills-footer-container"
+            className="inline-block relative max-w-2xl"
+          >
+            <div
+              id="skills-footer-glow"
+              className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl opacity-20 blur-sm"
+            />
+            <div
+              id="skills-footer-content"
+              className="relative px-6 py-4 bg-neutral-900/80 backdrop-blur-sm rounded-xl border border-neutral-700/50"
+            >
               <p className="text-sm md:text-base text-neutral-300 font-light">
                 Always exploring new technologies to expand my toolkit and solve
                 complex problems more effectively.

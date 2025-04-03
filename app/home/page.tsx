@@ -32,19 +32,29 @@ export default function HomePage() {
 
   return (
     <main
-      id="home"
+      id="home-page"
       className="container mx-auto px-4 min-h-screen flex items-center justify-center pt-16 md:pt-0"
     >
-      <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 max-w-7xl w-full py-8 md:py-0">
-        {/* Profile Image Section - Moved to top for mobile */}
-        <div className="flex-1 flex justify-center relative order-1 md:order-2">
+      <div
+        id="home-content-wrapper"
+        className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 max-w-7xl w-full py-8 md:py-0"
+      >
+        {/* Profile Image Section */}
+        <div
+          id="home-profile-section"
+          className="flex-1 flex justify-center relative order-1 md:order-2"
+        >
           <motion.div
+            id="home-profile-image-container"
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3 }}
             className="relative"
           >
-            <div className="relative w-40 h-40 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72">
+            <div
+              id="home-profile-image-wrapper"
+              className="relative w-40 h-40 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72"
+            >
               <div className="absolute inset-0 bg-blue-500/20 rounded-full filter blur-[40px]" />
               <motion.div
                 animate={{
@@ -105,6 +115,7 @@ export default function HomePage() {
 
           {/* Bitcoin Symbol */}
           <motion.div
+            id="home-bitcoin-symbol"
             className="absolute -bottom-6 right-0 sm:-bottom-10 md:-bottom-12 scale-50 sm:scale-90 md:scale-100"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -114,14 +125,16 @@ export default function HomePage() {
           </motion.div>
         </div>
 
-        {/* Text Content - Moved to bottom for mobile */}
+        {/* Text Content Section */}
         <motion.div
+          id="home-text-content"
+          className="flex-1 text-center md:text-left space-y-4 md:space-y-8 order-2 md:order-1"
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.3 }}
-          className="flex-1 text-center md:text-left space-y-4 md:space-y-8 order-2 md:order-1"
         >
           <motion.h1
+            id="home-title"
             className="text-2xl sm:text-4xl md:text-6xl lg:text-6xl font-bold"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -144,6 +157,7 @@ export default function HomePage() {
           </motion.h1>
 
           <motion.p
+            id="home-subtitle"
             className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-400"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -153,6 +167,7 @@ export default function HomePage() {
           </motion.p>
 
           <motion.p
+            id="home-description"
             className="text-sm sm:text-base md:text-lg text-gray-500 max-w-xl mx-auto md:mx-0"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -165,13 +180,21 @@ export default function HomePage() {
           </motion.p>
 
           <motion.div
+            id="home-action-buttons"
             className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mt-4 md:mt-0"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7 }}
           >
-            <div className="flex flex-row gap-4 items-center">
-              <div className="relative w-[140px] overflow-hidden rounded-md">
+            <div
+              id="home-main-buttons"
+              className="flex flex-row gap-4 items-center"
+            >
+              {/* CV Button */}
+              <div
+                id="home-cv-button-wrapper"
+                className="relative w-[140px] overflow-hidden rounded-md"
+              >
                 <div className="absolute inset-0">
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 animate-gradient-xy" />
                 </div>
@@ -199,7 +222,11 @@ export default function HomePage() {
                 </button>
               </div>
 
-              <div className="relative w-[140px] overflow-hidden rounded-md">
+              {/* Sponsor Button */}
+              <div
+                id="home-sponsor-button-wrapper"
+                className="relative w-[140px] overflow-hidden rounded-md"
+              >
                 <div className="absolute inset-0">
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 animate-gradient-xy" />
                 </div>
@@ -227,7 +254,9 @@ export default function HomePage() {
               </div>
             </div>
 
+            {/* Social Links */}
             <motion.div
+              id="home-social-links"
               className="flex gap-6 items-center mt-4 sm:mt-0"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

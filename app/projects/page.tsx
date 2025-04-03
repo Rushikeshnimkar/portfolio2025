@@ -189,17 +189,27 @@ export default function Projects() {
         <meta name="twitter:description" content={SEO.description} />
       </Head>
 
-      <div className="min-h-screen w-full text-white mt-10 relative z-10">
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <h1 className="text-4xl mb-10 text-center sm:text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-neutral-200 to-neutral-500">
+      <div
+        id="projects-page"
+        className="min-h-screen w-full text-white mt-10 relative z-10"
+      >
+        <div id="projects-container" className="max-w-7xl mx-auto px-4 py-8">
+          <h1
+            id="projects-title"
+            className="text-4xl mb-10 text-center sm:text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-neutral-200 to-neutral-500"
+          >
             Projects
           </h1>
 
           {/* Project Grid Layout */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          <div
+            id="projects-grid"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+          >
             {projects.map((project, index) => (
               <motion.div
                 key={project.id}
+                id={`project-card-${project.id}`}
                 layoutId={`project-${project.id}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -208,7 +218,10 @@ export default function Projects() {
                 onClick={() => setSelectedProject(project)}
               >
                 {/* Project Media */}
-                <div className="relative w-full aspect-video overflow-hidden bg-neutral-950">
+                <div
+                  id={`project-media-${project.id}`}
+                  className="relative w-full aspect-video overflow-hidden bg-neutral-950"
+                >
                   {project.media.type === "image" ? (
                     <Image
                       src={project.media.src}
@@ -223,15 +236,27 @@ export default function Projects() {
                   )}
                 </div>
 
-                {/* Project Details - Simplified structure */}
-                <div className="p-4 sm:p-6 flex flex-col flex-grow">
-                  <h2 className="text-lg sm:text-xl font-bold text-neutral-200 mb-2">
+                {/* Project Details */}
+                <div
+                  id={`project-details-${project.id}`}
+                  className="p-4 sm:p-6 flex flex-col flex-grow"
+                >
+                  <h2
+                    id={`project-title-${project.id}`}
+                    className="text-lg sm:text-xl font-bold text-neutral-200 mb-2"
+                  >
                     {project.title}
                   </h2>
-                  <p className="text-sm text-neutral-400 leading-relaxed mb-3 flex-grow line-clamp-3">
+                  <p
+                    id={`project-description-${project.id}`}
+                    className="text-sm text-neutral-400 leading-relaxed mb-3 flex-grow line-clamp-3"
+                  >
                     {project.description}
                   </p>
-                  <div className="flex flex-wrap gap-2 mb-4">
+                  <div
+                    id={`project-tags-${project.id}`}
+                    className="flex flex-wrap gap-2 mb-4"
+                  >
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
@@ -243,7 +268,10 @@ export default function Projects() {
                   </div>
 
                   {/* Project Links */}
-                  <div className="flex flex-wrap gap-3 mt-auto">
+                  <div
+                    id={`project-links-${project.id}`}
+                    className="flex flex-wrap gap-3 mt-auto"
+                  >
                     <button
                       onClick={() => window.open(project.github, "_blank")}
                       className="flex items-center gap-2 text-white/80 hover:text-white bg-neutral-800 hover:bg-neutral-700 px-3 py-1.5 rounded-lg transition-colors text-xs sm:text-sm"
@@ -281,10 +309,11 @@ export default function Projects() {
         </div>
       </div>
 
-      {/* Optimized Modal */}
+      {/* Modal */}
       <AnimatePresence mode="wait">
         {selectedProject && (
           <motion.div
+            id="project-modal-backdrop"
             key="modal-backdrop"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -294,13 +323,14 @@ export default function Projects() {
             onClick={() => setSelectedProject(null)}
           >
             <motion.div
+              id={`project-modal-${selectedProject.id}`}
               layoutId={`project-${selectedProject.id}`}
               transition={transitionConfig}
               className="bg-neutral-900 rounded-xl overflow-hidden shadow-2xl w-full max-h-[85vh] max-w-5xl flex flex-col md:flex-row will-change-transform"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Modal Media Section - Simplified */}
-              <div className="relative w-full md:w-[65%] bg-neutral-950 flex items-center justify-center p-4 md:p-8">
+              <div className="relative w-full md:w-[65%] bg-neutral-950 flex items-center justify-center p-4 ">
                 {selectedProject.media.type === "image" ? (
                   <Image
                     src={selectedProject.media.src}
