@@ -28,8 +28,6 @@ import {
 } from "./ai-chat/chat-utils";
 import { AIChatModalProps } from "./ai-chat/types";
 
-
-
 interface StructuredContent {
   type: "skills" | "projects" | "experience" | "contact" | "links" | "general";
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -70,7 +68,6 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
   // Refs
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const chatButtonRef = useRef<HTMLButtonElement>(null);
-
 
   // Select a random clickbait prompt on initial load
   useEffect(() => {
@@ -254,12 +251,6 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
         return null;
     }
   };
-
- 
-
-
-
-
 
   return (
     <>
