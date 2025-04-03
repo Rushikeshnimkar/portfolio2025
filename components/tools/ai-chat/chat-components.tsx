@@ -40,7 +40,7 @@ export const ChatHeader: React.FC<HeaderProps> = ({ onClose }) => {
         <div>
           <h3 className="font-medium text-neutral-200">AI Assistant</h3>
           <p className="text-sm text-neutral-400">
-            Powered by Llama 3.3 & Web Search
+            Powered by Llama 3.3 & DeepSeek V3 & Web Search
           </p>
         </div>
       </div>
@@ -308,8 +308,6 @@ export const InputArea: React.FC<InputAreaProps> = ({
       : predefinedPrompts.filter(
           (prompt) => prompt.category === activePromptCategory
         );
-
-
 
   return (
     <div className="border-t border-neutral-800/50 p-4 bg-black/30 backdrop-blur-sm">

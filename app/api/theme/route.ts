@@ -41,7 +41,7 @@ export async function POST(req: Request) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "qwen/qwen-2.5-coder-32b-instruct:free",
+          model: "deepseek/deepseek-chat-v3-0324:free",
           messages: [
             {
               role: "system",
@@ -51,6 +51,7 @@ Your task is to:
 1. Analyze the user's UI customization request
 2. Generate a JavaScript function that uses DOM manipulation to implement the requested changes
 3. Ensure the code is robust with error handling
+4. try to make many changes to the website
 
 Special note for background changes:
 - To change the page background color, target #page-background-base
