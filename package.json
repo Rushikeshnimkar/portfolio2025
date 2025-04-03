@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "init-vector-store": "tsx scripts/init-vector-store.ts",
-    "dev": "npm run init-vector-store && next dev",
-    "build": "next build",
+    "embed-theme": "tsx scripts/embed-theme-structure.ts",
+    "dev": "npm run init-vector-store && npm run embed-theme && next dev",
+    "build": "npm run init-vector-store && npm run embed-theme && next build",
     "start": "next start",
     "lint": "next lint"
   },
