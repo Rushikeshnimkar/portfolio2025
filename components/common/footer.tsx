@@ -1,15 +1,14 @@
 "use client";
-import { FaGithub, FaLinkedin } from 'react-icons/fa';
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="w-full border-t border-neutral-800 z-10">
+    <footer className="w-full border-t border-neutral-800 relative z-10 mt-auto">
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="flex flex-col items-center space-y-4">
+        <div className="flex flex-col items-center space-y-4 ">
           {/* Social Links */}
           <div className="flex space-x-6">
             <a

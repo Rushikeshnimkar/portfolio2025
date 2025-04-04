@@ -45,13 +45,12 @@ export default function RootLayout({
       >
         <ConsoleMessage />
         <Navbar />
-        <div className="relative z-10 bg-black">
+        <div className="relative z-10 bg-black flex-grow flex flex-col">
           {children}
           <SpeedInsights />
+          <Footer />
         </div>
         <Analytics />
-
-        <Footer />
       </body>
     </html>
   );

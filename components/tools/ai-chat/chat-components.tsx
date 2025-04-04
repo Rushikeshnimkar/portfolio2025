@@ -40,7 +40,7 @@ export const ChatHeader: React.FC<HeaderProps> = ({ onClose }) => {
         <div>
           <h3 className="font-medium text-neutral-200">AI Assistant</h3>
           <p className="text-sm text-neutral-400">
-            Powered by Llama 3.3 & DeepSeek V3 & Web Search
+            Powered by Llama 3.3, Quasar Alpha & Web Search
           </p>
         </div>
       </div>
@@ -270,6 +270,28 @@ export const InputArea: React.FC<InputAreaProps> = ({
 
   // Add state to track if prompt panel is expanded
   const [isPromptPanelExpanded, setIsPromptPanelExpanded] = useState(false);
+
+  // Add state to track loading message timing
+  const [showSecondaryLoadingMessage, setShowSecondaryLoadingMessage] =
+    useState(false);
+
+  // Effect to handle the loading message change timer
+  React.useEffect(() => {
+    let timerId: NodeJS.Timeout;
+
+    if (isThemeMode && isLoading) {
+      setShowSecondaryLoadingMessage(false);
+      timerId = setTimeout(() => {
+        setShowSecondaryLoadingMessage(true);
+      }, 10000);
+    } else {
+      setShowSecondaryLoadingMessage(false);
+    }
+
+    return () => {
+      if (timerId) clearTimeout(timerId);
+    };
+  }, [isThemeMode, isLoading]);
 
   // Function to toggle prompt panel
   const togglePromptPanel = () => {
@@ -657,7 +679,17 @@ export const InputArea: React.FC<InputAreaProps> = ({
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
             ></path>
           </svg>
-          Applying UI changes...
+          <motion.span
+            key={showSecondaryLoadingMessage ? "secondary" : "primary"}
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -5 }}
+            transition={{ duration: 0.3 }}
+          >
+            {showSecondaryLoadingMessage
+              ? "It may take some time..."
+              : "Applying UI changes..."}
+          </motion.span>
         </div>
       )}
     </div>
