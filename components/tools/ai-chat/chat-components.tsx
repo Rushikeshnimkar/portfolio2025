@@ -269,7 +269,7 @@ export const InputArea: React.FC<InputAreaProps> = ({
   >("all");
 
   // Add state to track if prompt panel is expanded
-  const [isPromptPanelExpanded, setIsPromptPanelExpanded] = useState(false);
+  const [isPromptPanelExpanded, setIsPromptPanelExpanded] = useState(true);
 
   // Add state to track loading message timing
   const [showSecondaryLoadingMessage, setShowSecondaryLoadingMessage] =
