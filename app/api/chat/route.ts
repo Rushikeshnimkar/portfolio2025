@@ -231,7 +231,7 @@ class OpenRouterChatModel extends ChatOpenAI {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            model: "meta-llama/llama-3.1-70b-instruct", // Using Llama 3.1 70B
+            model: "meta-llama/llama-4-maverick:free", // Using Llama 4 Maverick
             messages: formattedMessages,
           }),
         }
