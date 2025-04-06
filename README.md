@@ -13,16 +13,23 @@ A modern portfolio website built with Next.js 15, featuring AI chat integration 
 - **Project Showcase**: Interactive displays of my work and contributions
 - **AI-Powered Dynamic Theming**: Transform the entire interface with natural language requests, allowing real-time visual customization
 
-## 🛠️ Tech Stack
+---
 
-- **Frontend**: Next.js 15, TypeScript, Tailwind CSS, Framer Motion
-- **AI Integration**: OpenRouter API (Llama 3.3)
-- **Backend**: Next.js API Routes, Node.js
-- **Vector Database**: Pinecone for semantic search and embeddings
-- **Embeddings**: Google Gemini for generating vector embeddings
-- **Search Capability**: Tavily API for real-time information
-- **Email Services**: Nodemailer, Abstract API for email validation
-- **Deployment**: Vercel with Edge Functions
+## 🛠 Tech Stack
+
+| Layer       | Technologies |
+|------------|--------------|
+| **Frontend** | Next.js 15, TypeScript, Tailwind CSS, Framer Motion |
+| **Backend**  | Node.js, Next.js API Routes |
+| **AI Integration** | OpenRouter API (Llama 3.3) |
+| **Embeddings** | Google Gemini |
+| **Vector Database** | Pinecone |
+| **Search** | Tavily API |
+| **Email** | Nodemailer, Abstract API |
+| **Deployment** | Vercel + Edge Functions |
+
+
+---
 
 ## 🚀 Getting Started
 
@@ -53,7 +60,7 @@ npm run dev
 
 4. Open [http://localhost:3000](http://localhost:3000)
 
-> **⚠️ IMPORTANT NOTE:** Make sure to uncomment the following line in `api/chat/route.ts` when working in development:
+> **⚠️ IMPORTANT NOTE:** Make sure to uncomment the following line in `api/chat/route.ts` & `api/theme/route.ts` when working in development:
 >
 > ```javascript
 > // "http://localhost:3000",
@@ -78,6 +85,17 @@ Chat with an AI version of me that:
 - Provides accurate information about my background and expertise
 - Uses vector embeddings for more accurate and relevant responses
 
+## 🎨 AI Theme Customization
+
+The portfolio includes an AI-powered theme customization system that:
+
+- Transforms the UI with natural language commands
+- Understands specific page elements through vector embeddings
+- Applies changes in real-time with visual feedback
+- Generates custom JavaScript on-the-fly for unique visual effects
+- Maintains responsive design across all device sizes
+- Supports both page-specific and site-wide modifications
+
 ## 🔍 Vector Database Integration
 
 The portfolio uses Pinecone vector database to store and retrieve embeddings:
@@ -92,7 +110,7 @@ The portfolio uses Pinecone vector database to store and retrieve embeddings:
 - CORS protection for API routes
 - Email validation to prevent spam
 - Rate limiting on sensitive endpoints
-- Environment variable protection
+
 
 ## Environment Variables
 
@@ -123,3 +141,32 @@ The vector store is configured in `lib/embeddings.ts` with the following setting
 - Pod type: Starter (free tier)
 
 You can modify these settings in the `initializeVectorStore` function if needed.
+
+
+## 📸 Preview
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/3fd52f61-e898-4d80-8df0-2730691c1926" alt="Preview 1" width="45%" />
+  &nbsp;
+  <img src="https://github.com/user-attachments/assets/2dadd649-c3d2-4e54-b554-7c2d2049c9d8" alt="Preview 2" width="45%" />
+</p>
+
+
+
+---
+
+## 📄 License
+
+This project is open source under the [MIT License](https://opensource.org/licenses/MIT).
+
+---
+
+## 🙋‍♂️ Author
+
+**Rushikesh Nimkar**  
+🔗 [rushikeshnimkar.xyz](https://rushikeshnimkar.xyz)  
+📧 rushikeshnimkar396@gmail.com
+
+
+
+
