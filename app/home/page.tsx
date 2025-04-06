@@ -32,7 +32,7 @@ export default function HomePage() {
 
   return (
     <main
-      id="home-page"
+      id="home"
       className="container mx-auto px-4 min-h-screen flex items-center justify-center pt-16 md:pt-0"
     >
       <div

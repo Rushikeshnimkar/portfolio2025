@@ -13,11 +13,16 @@ export default function About() {
     <div
       id="about-page"
       className="h-screen w-full text-white overflow-hidden relative"
+      data-theme-target="about-page"
     >
-      {/* Background Elements */}
-      <div id="about-background" className="absolute inset-0" />
+      {/* Pure Black Background */}
+      <div
+        id="about-background"
+        className="absolute inset-0"
+        data-theme-target="about-background"
+      />
 
-      {/* Sparkles Container */}
+      {/* Animated Sparkles */}
       <div
         id="about-sparkles-container"
         className="absolute inset-0 w-full h-full"
@@ -30,17 +35,23 @@ export default function About() {
           particleDensity={100}
           className="w-full h-full"
           particleColor="#FFFFFF"
+          data-theme-target="about-sparkles"
         />
       </div>
 
-      <div id="about-gradient-overlay" className="absolute inset-0" />
+      {/* Gradient Overlay */}
+      <div
+        id="about-overlay"
+        className="absolute inset-0"
+        data-theme-target="about-overlay"
+      />
 
-      <div id="about-content-wrapper" className="relative z-10 h-full">
+      <div className="relative z-10 h-full">
         <main
-          id="about-main"
+          id="about-content"
           className="container mx-auto px-4 h-full flex items-center justify-center"
         >
-          <div id="about-content-container" className="max-w-4xl">
+          <div id="about-container" className="max-w-4xl">
             <motion.div
               id="about-title-container"
               initial={{ opacity: 0, y: 20 }}
@@ -51,17 +62,19 @@ export default function About() {
               <h1
                 id="about-title"
                 className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-neutral-200 to-neutral-500"
+                data-theme-target="about-title"
               >
                 About Me
               </h1>
             </motion.div>
 
             <motion.div
-              id="about-text-content"
+              id="about-card"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
               className="space-y-8 text-center md:text-left backdrop-blur-sm bg-neutral-900/20 p-8 rounded-2xl border border-neutral-800"
+              data-theme-target="about-card"
             >
               <p
                 id="about-intro"
@@ -90,14 +103,11 @@ export default function About() {
               </p>
 
               <div
-                id="about-interests"
+                id="about-hobbies"
                 className="text-lg md:text-xl text-neutral-300 leading-relaxed"
               >
                 When i&apos;m not coding, i usually
-                <FlipWords
-                  words={words}
-                  className="text-white"
-                />
+                <FlipWords words={words} className="text-white" />
               </div>
 
               <motion.div
@@ -106,7 +116,7 @@ export default function About() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
                 className="pt-6"
-              />
+              ></motion.div>
             </motion.div>
           </div>
         </main>

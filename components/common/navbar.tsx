@@ -68,9 +68,22 @@ export function Navbar() {
   // Determine if a main menu item is active
   const isActive = (href: string) => {
     const sectionId = href.replace("#", "");
+
     if (sectionId === "about") {
       return isAboutActive();
     }
+
+    // Special handling for home section
+    if (sectionId === "home") {
+      return (
+        currentSection === "home" ||
+        currentSection === "main-content" ||
+        currentSection === "" ||
+        !currentSection ||
+        currentSection === "about-content"
+      );
+    }
+
     return currentSection === sectionId;
   };
 
@@ -201,9 +214,36 @@ export function Navbar() {
                 {isMobileMenuOpen ? <X size={20} /> : <MenuIcon size={20} />}
               </motion.button>
               <div className="text-sm font-medium bg-neutral-900/90 backdrop-blur-sm text-blue-500 py-2 px-4 rounded-xl border border-neutral-800">
-                {currentSection &&
-                  currentSection.charAt(0).toUpperCase() +
-                    currentSection.slice(1)}
+                {(() => {
+                  // If no current section is detected or it's the main-content, show Home
+                  if (
+                    !currentSection ||
+                    currentSection === "main-content" ||
+                    currentSection === "about-content"
+                  ) {
+                    return "Home";
+                  }
+
+                  // Special handling for home section
+                  if (currentSection === "home") {
+                    return "Home";
+                  }
+
+                  // For sections with ID containing a dash, extract the first part
+                  if (currentSection.includes("-")) {
+                    const mainSection = currentSection.split("-")[0];
+                    // Capitalize the first letter
+                    return (
+                      mainSection.charAt(0).toUpperCase() + mainSection.slice(1)
+                    );
+                  }
+
+                  // Default case: just capitalize the section name
+                  return (
+                    currentSection.charAt(0).toUpperCase() +
+                    currentSection.slice(1)
+                  );
+                })()}
               </div>
             </div>
 
