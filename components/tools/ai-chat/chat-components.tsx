@@ -129,9 +129,17 @@ const MessageContent: React.FC<{
   message: Message;
   renderStructuredContent: (content: StructuredContent) => React.ReactNode;
 }> = ({ message, renderStructuredContent }) => {
+  // Don't show structured content for simple questions like "who made you"
+  const isBasicQuestion =
+    message.type === "assistant" &&
+    message.content.toLowerCase().includes("rushikesh") &&
+    (message.content.toLowerCase().includes("created") ||
+      message.content.toLowerCase().includes("made") ||
+      message.content.toLowerCase().includes("developer"));
+
   return (
     <>
-      {/* Only show the text response if it's not empty after removing JSON */}
+      {/* Always show the text response */}
       {message.content.trim() && (
         <div
           className="prose prose-invert prose-xs max-w-none text-sm"
@@ -144,12 +152,15 @@ const MessageContent: React.FC<{
       )}
 
       {/* Add a small divider if we have both text and structured content */}
-      {message.content.trim() && message.structuredContent && (
-        <div className="my-2 border-t border-neutral-700/30"></div>
-      )}
+      {message.content.trim() &&
+        message.structuredContent &&
+        !isBasicQuestion && (
+          <div className="my-2 border-t border-neutral-700/30"></div>
+        )}
 
-      {/* Render structured content if available */}
+      {/* Only render structured content if it's not a basic question about the creator */}
       {message.structuredContent &&
+        !isBasicQuestion &&
         renderStructuredContent(message.structuredContent)}
     </>
   );

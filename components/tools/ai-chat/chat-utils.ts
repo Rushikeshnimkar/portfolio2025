@@ -453,12 +453,12 @@ export const initializeChat = async (
       elements.forEach((element) => element.remove());
     });
 
-    // Set initial message
+    // Set initial message with clear creator identification
     setMessages([
       {
         type: "assistant",
         content:
-          "👋 Hey! I'm Rushikesh. What would you like to know about my work?",
+          "👋 Hey! I'm your AI assistant for this portfolio. I was created by Rushikesh to help you learn about his work and experience. What would you like to know?",
         timestamp: new Date(),
       },
     ]);
