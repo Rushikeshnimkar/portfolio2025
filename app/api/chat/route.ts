@@ -231,7 +231,7 @@ class OpenRouterChatModel extends ChatOpenAI {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            model: "meta-llama/llama-4-maverick:free", // Using Llama 4 Maverick
+            model: "openrouter/quasar-alpha", // Using Llama 4 Maverick
             messages: formattedMessages,
           }),
         }
