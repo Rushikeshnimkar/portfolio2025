@@ -343,7 +343,7 @@ IMPORTANT: Respond ONLY with the JavaScript function 'applyThemeChanges' wrapped
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "openrouter/quasar-alpha", // Use a consistent model with your existing setup
+          model: "meta-llama/llama-4-maverick:free", // Use a consistent model with your existing setup
           messages: [
             {
               role: "system",
