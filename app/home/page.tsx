@@ -1,12 +1,11 @@
 "use client";
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { useState, useEffect } from "react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import Head from "next/head";
-import { Metadata } from "next";
 
 const glitchAnimation = {
   textShadow: [
@@ -37,12 +36,6 @@ const imageMetadata = {
 export default function HomePage() {
   const [activeImage, setActiveImage] = useState(1); // 1 or 2
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const perspective = useMotionValue(1000);
-  const rotate3d = useMotionValue(0);
-
-  // For dynamic shadow effect
-  const shadowOpacity = useTransform(rotate3d, [0, 30], [0.2, 0.5]);
-  const shadowBlur = useTransform(rotate3d, [0, 30], [5, 15]);
 
   useEffect(() => {
     // Image transition every 5 seconds
