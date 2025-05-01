@@ -21,7 +21,7 @@ A modern portfolio website built with Next.js 15, featuring AI chat integration 
 |------------|--------------|
 | **Frontend** | Next.js 15, TypeScript, Tailwind CSS, Framer Motion |
 | **Backend**  | Node.js, Next.js API Routes |
-| **AI Integration** | OpenRouter API (Llama 3.3) |
+| **AI Integration** | OpenRouter API (Deepseek) |
 | **Embeddings** | Google Gemini |
 | **Vector Database** | Pinecone |
 | **Search** | Tavily API |

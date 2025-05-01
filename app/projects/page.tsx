@@ -104,6 +104,12 @@ const extractYouTubeId = (url: string): string => {
   return url;
 };
 
+// Helper to get YouTube thumbnail from video URL or ID
+const getYouTubeThumbnail = (url: string): string => {
+  const id = extractYouTubeId(url);
+  return `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+};
+
 // YouTube embed component with autoplay
 const YouTubeEmbed = ({ videoId }: { videoId: string }) => {
   // Extract the video ID if a full URL was provided
@@ -232,7 +238,34 @@ export default function Projects() {
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                   ) : (
-                    <YouTubeEmbed videoId={project.media.src} />
+                    // Show YouTube thumbnail with play overlay in grid
+                    <div className="relative w-full h-full cursor-pointer">
+                      <Image
+                        src={getYouTubeThumbnail(project.media.src)}
+                        alt={project.title + " video thumbnail"}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                      {/* Play button overlay */}
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <svg
+                          width="64"
+                          height="64"
+                          viewBox="0 0 64 64"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle
+                            cx="32"
+                            cy="32"
+                            r="32"
+                            fill="rgba(0,0,0,0.5)"
+                          />
+                          <polygon points="26,20 48,32 26,44" fill="#fff" />
+                        </svg>
+                      </div>
+                    </div>
                   )}
                 </div>
 

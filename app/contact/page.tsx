@@ -29,6 +29,17 @@ interface EmailMessage {
   mode: "manual" | "ai";
 }
 
+// Glitch animation similar to home page
+const glitchAnimation = {
+  textShadow: [
+    "0 0 0 #00ffff",
+    "2px 2px 0 #ff00ff, -2px -2px 0 #00ffff, 2px 2px 0 #ff00ff",
+    "0 0 0 #00ffff",
+  ],
+  opacity: [1, 0.8, 1],
+  x: [0, -1, 1, 0],
+};
+
 export default function Contact() {
   const [mode, setMode] = useState<"manual" | "ai">("ai");
   const [prompt, setPrompt] = useState("");
@@ -213,6 +224,9 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen w-full text-white relative">
+      {/* Background subtle glow similar to home page */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/5 to-cyan-500/5 filter blur-[80px] -z-10" />
+
       <AnimatePresence>
         {(status === "success" || status === "error") && (
           <motion.div
@@ -243,10 +257,10 @@ export default function Contact() {
               damping: 20,
               stiffness: 300,
             }}
-            className={`fixed top-0 left-1/2 z-[60] flex items-center justify-center shadow-xl backdrop-blur-lg ${
+            className={`fixed top-0 left-1/2 z-[60] flex items-center justify-center shadow-xl backdrop-blur-lg border ${
               status === "success"
-                ? "bg-green-950/80 border border-green-500/30"
-                : "bg-red-950/80 border border-red-500/30"
+                ? "bg-green-950/80 border-green-500/30"
+                : "bg-red-950/80 border-red-500/30"
             }`}
           >
             <AnimatePresence>
@@ -320,7 +334,7 @@ export default function Contact() {
           isChatOpen ? "md:mr-[400px]" : ""
         }`}
       >
-        {/* Hero Section */}
+        {/* Hero Section - Updated with cyberpunk styles */}
         <div className="relative overflow-hidden z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -332,12 +346,22 @@ export default function Contact() {
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.5, type: "spring" }}
-              className="text-4xl md:text-6xl font-bold text-center"
+              className="text-4xl md:text-6xl font-bold text-center relative"
             >
               Let&apos;s{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-gradient">
+              <motion.span
+                className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-indigo-500"
+                animate={glitchAnimation}
+                transition={{
+                  duration: 0.2,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                  ease: "easeInOut",
+                  repeatDelay: 5,
+                }}
+              >
                 Connect
-              </span>
+              </motion.span>
             </motion.h1>
             <div className="flex items-center justify-center gap-4 mt-6">
               <motion.p
@@ -350,19 +374,40 @@ export default function Contact() {
                 manually
               </motion.p>
             </div>
+
+            {/* Decorative element similar to home page */}
+            <motion.div
+              className="absolute -bottom-2 -right-2 opacity-70 hidden md:block"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.7 }}
+              transition={{ delay: 0.7 }}
+            >
+              <motion.div
+                className="h-4 w-[200px] bg-gradient-to-r from-transparent via-indigo-500/40 to-cyan-500/40"
+                animate={{
+                  x: [0, 10, 0],
+                  opacity: [0.4, 0.7, 0.4],
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                }}
+              />
+            </motion.div>
           </motion.div>
         </div>
 
         {/* Main Content */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 pb-16">
-          {/* Mode Selector */}
+          {/* Mode Selector - Updated for cyberpunk theme */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
             className="flex justify-center mb-8 items-center gap-4"
           >
-            <div className="inline-flex p-1 space-x-1 bg-white/5 backdrop-blur-lg rounded-xl border border-white/10">
+            <div className="inline-flex p-1 space-x-1 bg-neutral-900/50 backdrop-blur-lg rounded-xl border border-indigo-500/20">
               {["ai", "manual"].map((m) => (
                 <motion.button
                   key={m}
@@ -374,7 +419,7 @@ export default function Contact() {
                   }}
                   className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
                     mode === m
-                      ? "bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/25"
+                      ? "bg-gradient-to-r from-blue-500 via-indigo-600 to-cyan-500 text-white shadow-lg shadow-indigo-500/25"
                       : "text-gray-400 hover:text-white hover:bg-white/5"
                   }`}
                 >
@@ -403,15 +448,15 @@ export default function Contact() {
               className="space-y-4"
             >
               {mode === "ai" ? (
-                <div className="p-4 rounded-2xl bg-white/5 backdrop-blur-lg border border-white/10 relative">
+                <div className="p-4 rounded-2xl bg-neutral-900/50 backdrop-blur-lg border border-indigo-500/20 relative">
                   <div className="flex justify-between items-center mb-3">
                     <h2 className="text-lg font-semibold text-gray-200 flex items-center gap-2">
-                      <span className="text-blue-400">💭</span> Customize Prompt
+                      <span className="text-cyan-400">💭</span> Customize Prompt
                     </h2>
                     <div className="flex gap-2">
                       <button
                         onClick={() => setShowTemplates(!showTemplates)}
-                        className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white"
+                        className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 bg-neutral-800/70 text-gray-300 border border-indigo-500/20 hover:border-indigo-500/40 hover:text-white"
                       >
                         <LayoutTemplate className="w-3.5 h-3.5" />
                         Templates
@@ -421,24 +466,33 @@ export default function Contact() {
                           handleButtonClick(e, handleGenerateEmail)
                         }
                         disabled={isGenerating || !prompt.trim()}
-                        className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${
+                        className={`relative px-4 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 overflow-hidden ${
                           isGenerating || !prompt.trim()
                             ? "bg-gray-700/50 text-gray-400 cursor-not-allowed"
-                            : "bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white hover:shadow-lg hover:shadow-purple-500/25 hover:scale-[1.02] active:scale-[0.98]"
+                            : "bg-[#2a2a2a] text-white border border-indigo-500/30 hover:border-indigo-500/60 hover:shadow-lg hover:shadow-indigo-500/20 hover:scale-[1.02] active:scale-[0.98]"
                         }`}
                       >
-                        {isGenerating ? (
-                          <div className="flex items-center gap-1">
-                            <div className="w-1 h-1 rounded-full bg-white/80 animate-bounce [animation-delay:-0.3s]" />
-                            <div className="w-1 h-1 rounded-full bg-white/80 animate-bounce [animation-delay:-0.15s]" />
-                            <div className="w-1 h-1 rounded-full bg-white/80 animate-bounce" />
+                        {/* Background gradient for active button similar to home page */}
+                        {!(isGenerating || !prompt.trim()) && (
+                          <div className="absolute inset-0">
+                            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-500 opacity-20" />
                           </div>
-                        ) : (
-                          <>
-                            <Sparkles className="w-3.5 h-3.5" />
-                            Generate
-                          </>
                         )}
+
+                        <div className="relative z-10 flex items-center gap-1.5">
+                          {isGenerating ? (
+                            <div className="flex items-center gap-1">
+                              <div className="w-1 h-1 rounded-full bg-white/80 animate-bounce [animation-delay:-0.3s]" />
+                              <div className="w-1 h-1 rounded-full bg-white/80 animate-bounce [animation-delay:-0.15s]" />
+                              <div className="w-1 h-1 rounded-full bg-white/80 animate-bounce" />
+                            </div>
+                          ) : (
+                            <>
+                              <Sparkles className="w-3.5 h-3.5" />
+                              Generate
+                            </>
+                          )}
+                        </div>
                       </button>
                     </div>
                   </div>
@@ -447,7 +501,7 @@ export default function Contact() {
                     <textarea
                       value={prompt}
                       onChange={(e) => setPrompt(e.target.value)}
-                      className="w-full h-[350px] bg-gray-800/40 border border-gray-700/50 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all resize-none"
+                      className="w-full h-[350px] bg-neutral-800/40 border border-indigo-500/20 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20 transition-all resize-none"
                       placeholder="Customize your email prompt..."
                     />
 
@@ -477,7 +531,7 @@ export default function Contact() {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute inset-0 z-10 bg-neutral-950/95 backdrop-blur-sm rounded-2xl p-6 overflow-auto flex flex-col"
+                        className="absolute inset-0 z-10 bg-neutral-950/95 backdrop-blur-sm rounded-2xl p-6 overflow-auto flex flex-col border border-indigo-500/20"
                       >
                         <div className="flex justify-between items-center mb-6">
                           <h2 className="text-lg font-semibold text-white">
@@ -511,8 +565,8 @@ export default function Contact() {
                               whileTap={{ scale: 0.98 }}
                               className={`flex flex-col items-center justify-center p-6 rounded-xl text-center h-full ${
                                 selectedTemplate === index
-                                  ? "bg-blue-500/20 border-2 border-blue-500"
-                                  : "bg-gray-800/60 border border-gray-700 hover:border-blue-400/50"
+                                  ? "bg-indigo-500/20 border-2 border-indigo-500"
+                                  : "bg-neutral-800/60 border border-indigo-500/20 hover:border-indigo-500/40"
                               } transition-all duration-200`}
                             >
                               <div className="text-3xl mb-3">
@@ -524,7 +578,7 @@ export default function Contact() {
                               <p className="text-xs text-gray-400 mb-3">
                                 {template.description}
                               </p>
-                              <span className="px-3 py-1 bg-gray-700/50 rounded-full text-xs text-gray-300 border border-gray-600/50">
+                              <span className="px-3 py-1 bg-neutral-700/50 rounded-full text-xs text-cyan-300 border border-indigo-500/20">
                                 {template.tags[0]}
                               </span>
                             </motion.button>
@@ -535,9 +589,9 @@ export default function Contact() {
                   </AnimatePresence>
                 </div>
               ) : (
-                <div className="p-4 rounded-2xl bg-white/5 backdrop-blur-lg border border-white/10">
+                <div className="p-4 rounded-2xl bg-neutral-900/50 backdrop-blur-lg border border-indigo-500/20">
                   <h2 className="text-lg font-semibold text-gray-200 flex items-center gap-2 mb-3">
-                    <User className="w-5 h-5 text-blue-400" />
+                    <User className="w-5 h-5 text-cyan-400" />
                     Your Details
                   </h2>
                   <div className="space-y-3">
@@ -554,14 +608,14 @@ export default function Contact() {
                         id="name"
                         value={senderName}
                         onChange={(e) => setSenderName(e.target.value)}
-                        className="w-full bg-gray-800/40 border border-gray-700/50 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all"
+                        className="w-full bg-neutral-800/40 border border-indigo-500/20 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20 transition-all"
                         placeholder="Rushikesh Nimkar"
                       />
                     </div>
                     <div>
                       <label
                         htmlFor="email"
-                        className=" text-sm font-medium text-gray-300 mb-1 flex items-center gap-1.5"
+                        className="text-sm font-medium text-gray-300 mb-1 flex items-center gap-1.5"
                       >
                         <Mail className="w-3.5 h-3.5 text-gray-400" />
                         Your Email
@@ -571,7 +625,7 @@ export default function Contact() {
                         id="email"
                         value={senderEmail}
                         onChange={(e) => setSenderEmail(e.target.value)}
-                        className="w-full bg-gray-800/40 border border-gray-700/50 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all"
+                        className="w-full bg-neutral-800/40 border border-indigo-500/20 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20 transition-all"
                         placeholder="your@email.com"
                       />
                     </div>
@@ -588,7 +642,7 @@ export default function Contact() {
                         id="subject"
                         value={subject}
                         onChange={(e) => setSubject(e.target.value)}
-                        className="w-full bg-gray-800/40 border border-gray-700/50 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all"
+                        className="w-full bg-neutral-800/40 border border-indigo-500/20 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20 transition-all"
                         placeholder="Email Subject"
                       />
                     </div>
@@ -604,10 +658,10 @@ export default function Contact() {
               transition={{ delay: 0.5 }}
               className="space-y-4"
             >
-              <div className="p-4 rounded-2xl bg-white/5 backdrop-blur-lg border border-white/10">
+              <div className="p-4 rounded-2xl bg-neutral-900/50 backdrop-blur-lg border border-indigo-500/20">
                 <div className="flex justify-between items-center mb-3">
                   <h2 className="text-lg font-semibold text-gray-200 flex items-center gap-2">
-                    <span className="text-blue-400">📧</span>
+                    <span className="text-cyan-400">📧</span>
                     {mode === "ai" ? "Generated Email" : "Your Message"}
                   </h2>
                   <div className="flex items-center gap-3">
@@ -622,13 +676,13 @@ export default function Contact() {
                           className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-2
                             ${
                               isChatOpen
-                                ? "bg-neutral-800 text-white border border-neutral-700"
-                                : "bg-white/5 backdrop-blur-lg border border-white/10 hover:bg-white/10"
+                                ? "bg-neutral-800 text-white border border-indigo-500/40"
+                                : "bg-neutral-800/50 border border-indigo-500/20 hover:border-indigo-500/40"
                             }`}
                         >
                           <div className="relative">
                             <MessageSquare className="w-3.5 h-3.5 text-gray-400" />
-                            <div className="absolute -top-1.5 -right-1.5 bg-blue-500 rounded-full w-3.5 h-3.5 flex items-center justify-center text-[10px] font-medium">
+                            <div className="absolute -top-1.5 -right-1.5 bg-indigo-500 rounded-full w-3.5 h-3.5 flex items-center justify-center text-[10px] font-medium">
                               {messageCount}
                             </div>
                           </div>
@@ -641,32 +695,41 @@ export default function Contact() {
                       <button
                         onClick={(e) => handleButtonClick(e, handleSendEmail)}
                         disabled={isSending}
-                        className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${
+                        className={`relative px-4 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 overflow-hidden ${
                           isSending
                             ? "bg-gray-700/50 text-gray-400 cursor-not-allowed"
-                            : "bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 text-white hover:shadow-lg hover:shadow-green-500/25 hover:scale-[1.02] active:scale-[0.98]"
+                            : "bg-[#2a2a2a] text-white border border-indigo-500/30 hover:border-indigo-500/60"
                         }`}
                       >
-                        {isSending ? (
-                          <div className="flex items-center gap-1">
-                            <div className="w-1 h-1 rounded-full bg-white/80 animate-bounce [animation-delay:-0.3s]" />
-                            <div className="w-1 h-1 rounded-full bg-white/80 animate-bounce [animation-delay:-0.15s]" />
-                            <div className="w-1 h-1 rounded-full bg-white/80 animate-bounce" />
+                        {/* Background gradient for send button */}
+                        {!isSending && (
+                          <div className="absolute inset-0">
+                            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 via-cyan-500 to-indigo-500 opacity-20" />
                           </div>
-                        ) : (
-                          <>
-                            <Send className="w-3.5 h-3.5" />
-                            Send
-                          </>
                         )}
+
+                        <div className="relative z-10 flex items-center gap-1.5">
+                          {isSending ? (
+                            <div className="flex items-center gap-1">
+                              <div className="w-1 h-1 rounded-full bg-white/80 animate-bounce [animation-delay:-0.3s]" />
+                              <div className="w-1 h-1 rounded-full bg-white/80 animate-bounce [animation-delay:-0.15s]" />
+                              <div className="w-1 h-1 rounded-full bg-white/80 animate-bounce" />
+                            </div>
+                          ) : (
+                            <>
+                              <Send className="w-3.5 h-3.5" />
+                              Send
+                            </>
+                          )}
+                        </div>
                       </button>
                     )}
                   </div>
                 </div>
 
-                <div className="relative h-[350px] rounded-xl overflow-hidden border border-gray-700/50">
+                <div className="relative h-[350px] rounded-xl overflow-hidden border border-indigo-500/20">
                   {mode === "ai" ? (
-                    <div className="absolute inset-0 w-full h-full bg-gray-800/10 px-3 py-2 text-white overflow-auto">
+                    <div className="absolute inset-0 w-full h-full bg-neutral-800/40 px-3 py-2 text-white overflow-auto">
                       {emailContent ? (
                         isTextAnimating ? (
                           <TextGenerationEffect
@@ -685,7 +748,7 @@ export default function Contact() {
                       ) : (
                         <div className="flex items-center justify-center h-full text-gray-500 text-sm italic">
                           <div className="text-center">
-                            <Sparkles className="w-5 h-5 mx-auto mb-2 text-blue-400/50" />
+                            <Sparkles className="w-5 h-5 mx-auto mb-2 text-cyan-400/50" />
                             <p>
                               Enter a prompt and click "Generate" to create an
                               email
@@ -698,7 +761,7 @@ export default function Contact() {
                     <textarea
                       value={emailContent}
                       onChange={(e) => setEmailContent(e.target.value)}
-                      className="absolute inset-0 w-full h-full bg-transparent px-1 py-1 text-sm text-white border-none focus:ring-0 resize-none "
+                      className="absolute inset-0 w-full h-full bg-neutral-800/40 px-1 py-1 text-sm text-white border-none focus:ring-0 resize-none"
                       placeholder="Write your message..."
                     />
                   )}
@@ -708,7 +771,7 @@ export default function Contact() {
                 {mode === "ai" && (
                   <div className="mt-2 flex items-center justify-end">
                     <div className="text-xs text-gray-500 flex items-center gap-1.5">
-                      <Sparkles className="w-3 h-3 text-blue-400" />
+                      <Sparkles className="w-3 h-3 text-cyan-400" />
                       <span>Powered by deephermes-3-llama-3</span>
                     </div>
                   </div>
