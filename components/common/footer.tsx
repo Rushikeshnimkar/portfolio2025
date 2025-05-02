@@ -20,7 +20,7 @@ export function Footer() {
               <FaGithub size={20} />
             </a>
             <a
-              href="https://linkedin.com/in/rushikesh-nimkar"
+              href="https://www.linkedin.com/in/rushikesh-nimkar-0961361ba/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-neutral-400 hover:text-blue-500 transition-colors"
