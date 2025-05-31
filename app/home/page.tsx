@@ -485,7 +485,7 @@ export default function HomePage() {
               I turn coffee into code and bugs into features. Full-stack
               developer who enjoys building digital puzzles and occasionally
               solving them. Currently exploring blockchain, because why not add
-              more blocks to my stacks
+              more blocks to my stacks?
             </motion.p>
 
             <motion.div
