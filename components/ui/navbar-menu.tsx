@@ -119,7 +119,7 @@ export const MenuItem = ({
             {/* Backdrop with enhanced blur - no animation delay */}
             <motion.div
               layoutId="active"
-              className="bg-neutral-900/95 backdrop-blur-sm rounded-2xl overflow-hidden border border-neutral-700/50 shadow-2xl relative"
+              className="bg-neutral-900/95 rounded-2xl overflow-hidden border border-neutral-700/50 shadow-2xl relative"
             >
               {/* Subtle inner glow - no delay */}
               <motion.div

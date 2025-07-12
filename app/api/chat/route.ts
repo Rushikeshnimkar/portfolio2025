@@ -54,7 +54,7 @@ function isAllowedOrigin(origin: string | null) {
     "https://www.rushikeshnimkar.xyz",
 
     // Include localhost for development(uncomment for development)
-    "http://localhost:3000",
+    // "http://localhost:3000",
   ];
   return origin && allowedOrigins.includes(origin);
 }
@@ -603,12 +603,15 @@ export async function POST(req: Request) {
 
   // If origin is not allowed, return 403 Forbidden
   if (!isAllowedOrigin(origin)) {
-    return new NextResponse(JSON.stringify({ error: "Unauthorized origin" }), {
-      status: 403,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return new NextResponse(
+      JSON.stringify({ error: "Unauthorized origin lol noob" }),
+      {
+        status: 403,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
   }
 
   // JWT Authentication

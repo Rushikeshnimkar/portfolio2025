@@ -119,7 +119,7 @@ const YouTubeEmbed = ({ videoId }: { videoId: string }) => {
     <div className="relative w-full aspect-video">
       <iframe
         src={`https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}`}
-        className="absolute inset-0 w-full h-full rounded-t-xl"
+        className="absolute inset-0 w-full h-full rounded-lg"
         title="YouTube video player"
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -220,7 +220,7 @@ export default function Projects() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={transitionConfig}
-                className="bg-neutral-900 rounded-xl overflow-hidden shadow-lg flex flex-col h-full group cursor-pointer will-change-transform"
+                className="bg-neutral-700/30 rounded-xl overflow-hidden border-black border backdrop-blur-sm flex flex-col h-full group cursor-pointer will-change-transform"
                 onClick={() => setSelectedProject(project)}
               >
                 {/* Project Media */}
@@ -276,16 +276,18 @@ export default function Projects() {
                 >
                   <h2
                     id={`project-title-${project.id}`}
-                    className="text-lg sm:text-xl font-bold text-neutral-200 mb-2"
+                    className="text-base sm:text-lg md:text-xl font-semibold text-neutral-200 mb-2"
                   >
                     {project.title}
                   </h2>
+
                   <p
                     id={`project-description-${project.id}`}
-                    className="text-sm text-neutral-400 leading-relaxed mb-3 flex-grow line-clamp-3"
+                    className="text-sm sm:text-base text-neutral-400 leading-relaxed mb-3 flex-grow line-clamp-3"
                   >
                     {project.description}
                   </p>
+
                   <div
                     id={`project-tags-${project.id}`}
                     className="flex flex-wrap gap-2 mb-4"
@@ -293,7 +295,7 @@ export default function Projects() {
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-2 py-1 text-xs rounded-full bg-neutral-800 text-neutral-400 border border-neutral-700"
+                        className="px-2 py-1 text-xs sm:text-sm rounded-full bg-neutral-800 text-neutral-400 border border-neutral-700"
                       >
                         {tag}
                       </span>
@@ -342,7 +344,7 @@ export default function Projects() {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Enhanced Modal for Desktop */}
       <AnimatePresence mode="wait">
         {selectedProject && (
           <motion.div
@@ -351,93 +353,125 @@ export default function Projects() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 md:p-8 mt-16"
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4 md:p-12"
             onClick={() => setSelectedProject(null)}
           >
             <motion.div
               id={`project-modal-${selectedProject.id}`}
               layoutId={`project-${selectedProject.id}`}
-              transition={transitionConfig}
-              className="bg-neutral-900 rounded-xl overflow-hidden shadow-2xl w-full max-h-[85vh] max-w-5xl flex flex-col md:flex-row will-change-transform"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{
+                type: "spring",
+                bounce: 0.1,
+                duration: 0.5,
+              }}
+              className="relative bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-2xl overflow-hidden shadow-2xl border border-neutral-700/50 w-full max-w-7xl max-h-[90vh] flex flex-col md:flex-row will-change-transform"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Modal Media Section - Simplified */}
-              <div className="relative w-full md:w-[65%] bg-neutral-950 flex items-center justify-center p-4 ">
-                {selectedProject.media.type === "image" ? (
-                  <Image
-                    src={selectedProject.media.src}
-                    alt={selectedProject.title}
-                    width={1200}
-                    height={675}
-                    className="w-full h-auto object-contain rounded-lg"
-                    priority
-                    sizes="(max-width: 768px) 100vw, 65vw"
-                  />
-                ) : (
-                  <div className="w-full aspect-video">
-                    <YouTubeEmbed videoId={selectedProject.media.src} />
-                  </div>
-                )}
-              </div>
-
-              {/* Modal Content Section - Simplified */}
-              <div className="p-6 md:p-8 overflow-y-auto md:w-[35%] flex flex-col bg-neutral-900">
-                <h2 className="text-2xl md:text-3xl font-bold text-neutral-100 mb-6">
-                  {selectedProject.title}
-                </h2>
-
-                <div className="space-y-6">
-                  <p className="text-base text-neutral-300 leading-relaxed">
-                    {selectedProject.description}
-                  </p>
-
-                  <div className="flex flex-wrap gap-2">
-                    {selectedProject.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-3 py-1.5 text-sm rounded-full bg-neutral-800 text-neutral-300 border border-neutral-700"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="flex flex-wrap gap-4">
-                    <button
-                      onClick={() =>
-                        window.open(selectedProject.github, "_blank")
-                      }
-                      className="flex items-center gap-2 text-white/90 hover:text-white bg-neutral-800 hover:bg-neutral-700 px-5 py-2.5 rounded-lg transition-colors text-sm font-medium"
-                    >
-                      <FiGithub className="w-5 h-5" />
-                      <span>GitHub</span>
-                    </button>
-                    {selectedProject.link && (
-                      <button
-                        onClick={() =>
-                          window.open(selectedProject.link, "_blank")
-                        }
-                        className="flex items-center gap-2 text-white hover:text-white bg-blue-600 hover:bg-blue-500 px-5 py-2.5 rounded-lg transition-colors text-sm font-medium"
-                      >
-                        <FiExternalLink className="w-5 h-5" />
-                        <span>Live Demo</span>
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* Close Button - Simplified */}
+              {/* Enhanced Close Button */}
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   setSelectedProject(null);
                 }}
-                className="absolute top-4 right-4 text-white/90 hover:text-white bg-black/50 hover:bg-black/60 rounded-full p-2.5 transition-colors z-10"
+                className="absolute top-6 right-6 z-20 text-white/80 hover:text-white bg-black/40 hover:bg-black/60 backdrop-blur-sm rounded-full p-3 transition-all duration-200 hover:scale-110"
               >
                 <FiX className="w-6 h-6" />
               </button>
+
+              {/* Enhanced Media Section */}
+              <div className="relative w-full md:w-[60%] bg-black/20 flex items-center justify-center p-6 md:p-8">
+                <div className="w-full max-w-4xl">
+                  {selectedProject.media.type === "image" ? (
+                    <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-neutral-950 shadow-2xl">
+                      <Image
+                        src={selectedProject.media.src}
+                        alt={selectedProject.title}
+                        fill
+                        className="object-cover"
+                        priority
+                        sizes="60vw"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-full aspect-video rounded-xl overflow-hidden shadow-2xl">
+                      <YouTubeEmbed videoId={selectedProject.media.src} />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Enhanced Content Section */}
+              <div className="p-8 md:p-12 overflow-y-auto md:w-[40%] flex flex-col bg-gradient-to-b from-neutral-900/95 to-neutral-800/95 backdrop-blur-sm">
+                <div className="space-y-8">
+                  {/* Title Section */}
+                  <div>
+                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
+                      {selectedProject.title}
+                    </h2>
+                    <div className="w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
+                  </div>
+
+                  {/* Description Section */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-neutral-200 uppercase tracking-wide">
+                      About
+                    </h3>
+                    <p className="text-neutral-300 leading-relaxed text-lg">
+                      {selectedProject.description}
+                    </p>
+                  </div>
+
+                  {/* Tags Section */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-neutral-200 uppercase tracking-wide">
+                      Technologies
+                    </h3>
+                    <div className="flex flex-wrap gap-3">
+                      {selectedProject.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-4 py-2 text-sm font-medium rounded-full bg-gradient-to-r from-neutral-800 to-neutral-700 text-neutral-200 border border-neutral-600/50 hover:border-neutral-500/50 transition-colors"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="space-y-4 pt-4">
+                    <h3 className="text-lg font-semibold text-neutral-200 uppercase tracking-wide">
+                      Links
+                    </h3>
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <button
+                        onClick={() =>
+                          window.open(selectedProject.github, "_blank")
+                        }
+                        className="flex items-center justify-center gap-3 text-white bg-gradient-to-r from-neutral-800 to-neutral-700 hover:from-neutral-700 hover:to-neutral-600 px-6 py-3 rounded-xl transition-all duration-200 font-medium border border-neutral-600/50 hover:border-neutral-500/50 hover:scale-105 shadow-lg"
+                      >
+                        <FiGithub className="w-5 h-5" />
+                        <span>View Source</span>
+                      </button>
+                      {selectedProject.link && (
+                        <button
+                          onClick={() =>
+                            window.open(selectedProject.link, "_blank")
+                          }
+                          className="flex items-center justify-center gap-3 text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 px-6 py-3 rounded-xl transition-all duration-200 font-medium shadow-lg hover:scale-105"
+                        >
+                          <FiExternalLink className="w-5 h-5" />
+                          <span>Live Demo</span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </motion.div>
           </motion.div>
         )}

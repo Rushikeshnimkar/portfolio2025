@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 
     if (!isAllowedOrigin(origin)) {
       return new NextResponse(
-        JSON.stringify({ error: "Unauthorized origin" }),
+        JSON.stringify({ error: "Unauthorized origin " }),
         {
           status: 403,
           headers: {
