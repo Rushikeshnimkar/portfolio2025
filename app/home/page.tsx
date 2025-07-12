@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { TextHoverEffect } from "@/components/ui/text-hover-effect";
+
 import { useState, useEffect } from "react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
@@ -420,17 +420,6 @@ export default function HomePage() {
                   </div>
                 </motion.div>
               </div>
-            </motion.div>
-
-            {/* Bitcoin Symbol */}
-            <motion.div
-              id="home-bitcoin-symbol"
-              className="absolute -bottom-6 right-0 sm:-bottom-10 md:-bottom-12 scale-50 sm:scale-90 md:scale-100"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1, duration: 0.3 }}
-            >
-              <TextHoverEffect text="₿" />
             </motion.div>
           </div>
 

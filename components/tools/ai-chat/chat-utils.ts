@@ -1,6 +1,54 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { Message, StructuredContent, ThemeChange } from "./types";
 
+const useJWTAuth = () => {
+  const [isTokenLoading, setIsTokenLoading] = useState(false);
+
+  // Function to generate a new token for each request
+  const generateNewToken = useCallback(async (): Promise<string | null> => {
+    if (isTokenLoading) {
+      return null;
+    }
+
+    setIsTokenLoading(true);
+
+    try {
+      const response = await fetch("/api/auth", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          type: "anonymous",
+          sessionId: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`, // Unique session ID
+        }),
+      });
+
+      if (response.ok) {
+        const { token: newToken } = await response.json();
+        return newToken;
+      }
+    } catch (error) {
+      console.error("Failed to get authentication token:", error);
+    } finally {
+      setIsTokenLoading(false);
+    }
+
+    return null;
+  }, [isTokenLoading]);
+
+  // Function to clear any stored tokens (if needed for logout)
+  const clearToken = useCallback(() => {
+    sessionStorage.removeItem("jwt_token");
+  }, []);
+
+  return {
+    generateNewToken,
+    clearToken,
+    isTokenLoading,
+  };
+};
+
 /**
  * Hook for handling theme changes
  */
@@ -184,8 +232,12 @@ export const useMessageHandler = (
   const [error, setError] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Destructure only what we need from themeHandlers to avoid unused variables
-  const { setIsThemeMode, setThemeChangeHistory } = themeHandlers;
+  // Use JWT auth hook
+  const { generateNewToken } = useJWTAuth();
+
+  // Destructure only what we need from themeHandlers
+  const { setIsThemeMode, setThemeChangeHistory, applyThemeChanges } =
+    themeHandlers;
 
   // Function to determine if a message is a theme request
   const isThemeRequest = useCallback((message: string) => {
@@ -256,20 +308,39 @@ export const useMessageHandler = (
         // Execute the code and get the changes
         const changes = await executeThemeCode(jsCode);
 
-        // Save changes to history
-        if (changes && changes.length > 0) {
-          setThemeChangeHistory((prev) => [...prev, ...changes]);
+        // Apply changes directly to DOM
+        if (changes && Array.isArray(changes)) {
+          applyThemeChanges(changes);
 
-          // Save to localStorage that theme changes have been applied
+          // Save changes to history
+          const changeDescriptions = changes.map((change: ThemeChange) => {
+            switch (change.type) {
+              case "style":
+                return `Changed ${change.property} to ${change.value} for ${change.selector}`;
+              case "visibility":
+                return `${change.action === "hide" ? "Hidden" : "Showed"} ${
+                  change.selector
+                }`;
+              case "class":
+                return `${
+                  change.action === "add" ? "Added" : "Removed"
+                } class ${change.class} ${
+                  change.action === "add" ? "to" : "from"
+                } ${change.selector}`;
+              default:
+                return `Applied change to ${change.selector}`;
+            }
+          });
+
+          setThemeChangeHistory((prev) => [...prev, ...changeDescriptions]);
+
+          // Save to localStorage
           localStorage.setItem("hasThemeChanges", "true");
+          localStorage.setItem("websiteThemeChanges", JSON.stringify(changes));
 
-          // Remove any potential JSON blocks from the displayed message
-          const cleanContent =
-            `**Theme Applied Successfully!**\n\nChanges made:\n${changes
-              .map((change: string) => `- ${change}`)
-              .join("\n")}`
-              .replace(/```json[\s\S]*?```/g, "")
-              .trim();
+          const cleanContent = `**Theme Applied Successfully!**\n\nChanges made:\n${changeDescriptions
+            .map((change) => `- ${change}`)
+            .join("\n")}`;
 
           return {
             content: cleanContent,
@@ -298,9 +369,9 @@ export const useMessageHandler = (
     [
       extractCodeFromMarkdown,
       executeThemeCode,
-      setIsLoading,
       setIsThemeMode,
       setThemeChangeHistory,
+      applyThemeChanges,
     ]
   );
 
@@ -313,8 +384,6 @@ export const useMessageHandler = (
           const jsonMatch = content.match(/```json([\s\S]*?)```/);
           if (jsonMatch && jsonMatch[1]) {
             const jsonData = JSON.parse(jsonMatch[1].trim());
-
-            // Return the parsed structured content
             return jsonData;
           }
         }
@@ -327,17 +396,26 @@ export const useMessageHandler = (
     []
   );
 
-  // Modified processMessage to handle structured content properly
+  // Process regular messages
   const processMessage = useCallback(
     async (userMessage: string) => {
       setIsLoading(true);
+      setError("");
 
       try {
-        // Regular chat processing
+        // Generate a new token for this specific request
+        const authToken = await generateNewToken();
+
+        if (!authToken) {
+          throw new Error("Unable to authenticate. Please try again.");
+        }
+
+        // Regular chat processing with JWT header
         const response = await fetch("/api/chat", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
           },
           body: JSON.stringify({
             prompt: userMessage,
@@ -347,6 +425,9 @@ export const useMessageHandler = (
         });
 
         if (!response.ok) {
+          if (response.status === 401) {
+            throw new Error("Authentication failed. Please try again.");
+          }
           throw new Error("Failed to get response");
         }
 
@@ -381,13 +462,17 @@ export const useMessageHandler = (
       } catch (error) {
         const errorMessage =
           error instanceof Error ? error.message : "An error occurred";
+        setError(errorMessage);
         throw new Error(errorMessage);
       } finally {
         setIsLoading(false);
       }
     },
-    [messages, parseStructuredContent, setIsLoading, setIsSearching]
+    [messages, parseStructuredContent, generateNewToken]
   );
+
+  // Remove the auto-refresh token effect since we're generating new tokens for each request
+  // No need for token refresh when each request gets a new token
 
   // Scroll to bottom after messages update
   useEffect(() => {
@@ -400,9 +485,7 @@ export const useMessageHandler = (
     messages,
     setMessages,
     isLoading,
-    setIsLoading,
     isSearching,
-    setIsSearching,
     error,
     setError,
     messagesEndRef,

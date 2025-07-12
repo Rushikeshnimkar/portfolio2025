@@ -12,6 +12,40 @@ import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { MemorySaver } from "@langchain/langgraph";
 import { queryVectorStore } from "@/lib/embeddings";
+import jwt from "jsonwebtoken";
+
+// JWT Configuration
+const JWT_SECRET = process.env.JWT_SECRET || "";
+const JWT_EXPIRY = process.env.JWT_EXPIRY || "1m";
+
+// JWT Token verification function
+function verifyToken(token: string): {
+  valid: boolean;
+  payload?: any;
+  error?: string;
+} {
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    return { valid: true, payload: decoded };
+  } catch (error) {
+    if (error instanceof jwt.TokenExpiredError) {
+      return { valid: false, error: "Token expired" };
+    } else if (error instanceof jwt.JsonWebTokenError) {
+      return { valid: false, error: "Invalid token" };
+    } else {
+      return { valid: false, error: "Token verification failed" };
+    }
+  }
+}
+
+// Function to generate JWT token (you might want to use this in a separate auth endpoint)
+export function generateToken(payload: any): string {
+  const options = {
+    expiresIn: JWT_EXPIRY,
+  } as jwt.SignOptions;
+
+  return jwt.sign(payload, JWT_SECRET, options);
+}
 
 // Add CORS check middleware
 function isAllowedOrigin(origin: string | null) {
@@ -20,7 +54,7 @@ function isAllowedOrigin(origin: string | null) {
     "https://www.rushikeshnimkar.xyz",
 
     // Include localhost for development(uncomment for development)
-    // "http://localhost:3000",
+    "http://localhost:3000",
   ];
   return origin && allowedOrigins.includes(origin);
 }
@@ -577,6 +611,47 @@ export async function POST(req: Request) {
     });
   }
 
+  // JWT Authentication
+  const authHeader = headersList.get("authorization");
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return new NextResponse(
+      JSON.stringify({
+        error: "Authentication required",
+        message: "Missing or invalid authorization header",
+      }),
+      {
+        status: 401,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": origin || "",
+        },
+      }
+    );
+  }
+
+  const token = authHeader.substring(7); // Remove "Bearer " prefix
+  const tokenVerification = verifyToken(token);
+
+  if (!tokenVerification.valid) {
+    return new NextResponse(
+      JSON.stringify({
+        error: "Authentication failed",
+        message: tokenVerification.error,
+      }),
+      {
+        status: 401,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": origin || "",
+        },
+      }
+    );
+  }
+
+  // Optional: Add rate limiting based on JWT payload
+  const userPayload = tokenVerification.payload;
+  console.log("Authenticated user:", userPayload);
+
   try {
     const {
       prompt,
@@ -588,7 +663,7 @@ export async function POST(req: Request) {
       sessionId?: string;
     };
 
-    console.log("Received request with prompt:", prompt);
+    console.log("Received authenticated request with prompt:", prompt);
 
     // Check if the prompt likely needs web search
     const isSearchQuery = needsWebSearch(prompt);

@@ -5,6 +5,38 @@ import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { MenuIcon, X } from "lucide-react";
 
+// Apple-like spring configurations
+const appleSpring = {
+  type: "spring",
+  mass: 0.4,
+  damping: 15,
+  stiffness: 300,
+  restDelta: 0.001,
+  restSpeed: 0.001,
+};
+
+const appleWobbleSpring = {
+  type: "spring",
+  mass: 0.6,
+  damping: 12,
+  stiffness: 400,
+  restDelta: 0.001,
+  restSpeed: 0.001,
+};
+
+const appleBounceSpring = {
+  type: "spring",
+  mass: 0.3,
+  damping: 20,
+  stiffness: 500,
+  restDelta: 0.001,
+  restSpeed: 0.001,
+};
+
+// Custom easing curves
+
+const appleEaseOut = [0.16, 1, 0.3, 1];
+
 export function Navbar() {
   const [active, setActive] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -98,10 +130,15 @@ export function Navbar() {
       <AnimatePresence>
         {isVisible && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, y: -30, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{
+              opacity: 0,
+              y: -20,
+              scale: 0.95,
+              transition: { duration: 0.2, ease: appleEaseOut },
+            }}
+            transition={appleWobbleSpring}
             className={cn(
               "fixed top-4 inset-x-0 max-w-2xl mx-auto z-50 hidden md:block"
             )}
@@ -110,7 +147,7 @@ export function Navbar() {
               <HoveredLink
                 href="/#home"
                 className={cn(
-                  "transition-colors duration-200",
+                  "transition-all duration-300 relative",
                   isActive("#home")
                     ? "text-blue-500 font-bold"
                     : "text-neutral-200"
@@ -122,7 +159,7 @@ export function Navbar() {
               <HoveredLink
                 href="/#projects"
                 className={cn(
-                  "transition-colors duration-200",
+                  "transition-all duration-300 relative",
                   isActive("#projects")
                     ? "text-blue-500 font-bold"
                     : "text-neutral-200"
@@ -139,50 +176,49 @@ export function Navbar() {
                 childSections={["about", "experience", "skills"]}
               >
                 <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 15, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ delay: 0.05, ...appleWobbleSpring }}
                   className="flex flex-col space-y-4 text-sm min-w-[200px]"
                 >
-                  <HoveredLink
-                    href="/#about"
-                    className={cn(
-                      "transition-colors duration-200",
-                      currentSection === "about"
-                        ? "text-blue-500 font-bold"
-                        : "text-neutral-200"
-                    )}
-                  >
-                    About Me
-                  </HoveredLink>
-                  <HoveredLink
-                    href="/#experience"
-                    className={cn(
-                      "transition-colors duration-200",
-                      currentSection === "experience"
-                        ? "text-blue-500 font-bold"
-                        : "text-neutral-200"
-                    )}
-                  >
-                    Experience
-                  </HoveredLink>
-                  <HoveredLink
-                    href="/#skills"
-                    className={cn(
-                      "transition-colors duration-200",
-                      currentSection === "skills"
-                        ? "text-blue-500 font-bold"
-                        : "text-neutral-200"
-                    )}
-                  >
-                    Skills
-                  </HoveredLink>
+                  {[
+                    { href: "/#about", label: "About Me", section: "about" },
+                    {
+                      href: "/#experience",
+                      label: "Experience",
+                      section: "experience",
+                    },
+                    { href: "/#skills", label: "Skills", section: "skills" },
+                  ].map((item, index) => (
+                    <motion.div
+                      key={item.section}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{
+                        delay: 0.1 + index * 0.05,
+                        ...appleBounceSpring,
+                      }}
+                    >
+                      <HoveredLink
+                        href={item.href}
+                        className={cn(
+                          "transition-all duration-300 block",
+                          currentSection === item.section
+                            ? "text-blue-500 font-bold"
+                            : "text-neutral-200"
+                        )}
+                      >
+                        {item.label}
+                      </HoveredLink>
+                    </motion.div>
+                  ))}
                 </motion.div>
               </MenuItem>
 
               <HoveredLink
                 href="/#contact"
                 className={cn(
-                  "transition-colors duration-200",
+                  "transition-all duration-300 relative",
                   isActive("#contact")
                     ? "text-blue-500 font-bold"
                     : "text-neutral-200"
@@ -199,159 +235,282 @@ export function Navbar() {
       <AnimatePresence>
         {isVisible && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden fixed top-4 inset-x-0 z-50"
+            initial={{ opacity: 0, y: -30, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{
+              opacity: 0,
+              y: -20,
+              scale: 0.95,
+              transition: { duration: 0.2, ease: appleEaseOut },
+            }}
+            transition={appleWobbleSpring}
+            className="md:hidden fixed top-4 left-6 right-6 z-50"
           >
-            <div className="flex items-center justify-between px-4">
+            <div className="flex items-center justify-between px-2">
               <motion.button
-                className="p-3 rounded-xl bg-neutral-900/90 backdrop-blur-sm text-neutral-200 border border-neutral-800"
+                className="p-3 rounded-xl bg-neutral-900/90 backdrop-blur-xl text-neutral-200 border border-neutral-700/50 relative overflow-hidden"
                 onClick={toggleMobileMenu}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{
+                  scale: 1.05,
+                  transition: appleBounceSpring,
+                }}
+                whileTap={{
+                  scale: 0.95,
+                  transition: { duration: 0.1 },
+                }}
               >
-                {isMobileMenuOpen ? <X size={20} /> : <MenuIcon size={20} />}
+                {/* Enhanced background glow */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileHover={{
+                    opacity: 1,
+                    scale: 1,
+                    transition: appleSpring,
+                  }}
+                  className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl"
+                />
+
+                {/* Icon with rotation animation */}
+                <motion.div
+                  animate={{
+                    rotate: isMobileMenuOpen ? 180 : 0,
+                    scale: isMobileMenuOpen ? 1.1 : 1,
+                  }}
+                  transition={appleWobbleSpring}
+                  className="relative z-10"
+                >
+                  {isMobileMenuOpen ? <X size={20} /> : <MenuIcon size={20} />}
+                </motion.div>
               </motion.button>
-              <div className="text-sm font-medium bg-neutral-900/90 backdrop-blur-sm text-blue-500 py-2 px-4 rounded-xl border border-neutral-800">
-                {(() => {
-                  // If no current section is detected or it's the main-content, show Home
-                  if (
-                    !currentSection ||
-                    currentSection === "main-content" ||
-                    currentSection === "about-content"
-                  ) {
-                    return "Home";
-                  }
 
-                  // Special handling for home section
-                  if (currentSection === "home") {
-                    return "Home";
-                  }
+              {/* Enhanced current section indicator */}
+              <motion.div
+                className="text-sm font-medium bg-neutral-900/90 backdrop-blur-xl text-blue-500 py-2 px-4 rounded-xl border border-neutral-700/50 relative overflow-hidden"
+                whileHover={{
+                  scale: 1.02,
+                  transition: appleBounceSpring,
+                }}
+              >
+                {/* Background glow */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={appleSpring}
+                  className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl"
+                />
 
-                  // For sections with ID containing a dash, extract the first part
-                  if (currentSection.includes("-")) {
-                    const mainSection = currentSection.split("-")[0];
-                    // Capitalize the first letter
+                {/* Text with subtle animation */}
+                <motion.span
+                  key={currentSection} // Re-animate when section changes
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={appleBounceSpring}
+                  className="relative z-10"
+                >
+                  {(() => {
+                    // If no current section is detected or it's the main-content, show Home
+                    if (
+                      !currentSection ||
+                      currentSection === "main-content" ||
+                      currentSection === "about-content"
+                    ) {
+                      return "Home";
+                    }
+
+                    // Special handling for home section
+                    if (currentSection === "home") {
+                      return "Home";
+                    }
+
+                    // For sections with ID containing a dash, extract the first part
+                    if (currentSection.includes("-")) {
+                      const mainSection = currentSection.split("-")[0];
+                      // Capitalize the first letter
+                      return (
+                        mainSection.charAt(0).toUpperCase() +
+                        mainSection.slice(1)
+                      );
+                    }
+
+                    // Default case: just capitalize the section name
                     return (
-                      mainSection.charAt(0).toUpperCase() + mainSection.slice(1)
+                      currentSection.charAt(0).toUpperCase() +
+                      currentSection.slice(1)
                     );
-                  }
-
-                  // Default case: just capitalize the section name
-                  return (
-                    currentSection.charAt(0).toUpperCase() +
-                    currentSection.slice(1)
-                  );
-                })()}
-              </div>
+                  })()}
+                </motion.span>
+              </motion.div>
             </div>
 
             <AnimatePresence>
               {isMobileMenuOpen && (
                 <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="absolute top-16 inset-x-4 rounded-2xl bg-neutral-900/95 backdrop-blur-md p-3 shadow-xl border border-neutral-800"
+                  initial={{
+                    opacity: 0,
+                    y: -20,
+                    scale: 0.95,
+                    rotateX: -10,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    rotateX: 0,
+                  }}
+                  exit={{
+                    opacity: 0,
+                    y: -15,
+                    scale: 0.95,
+                    rotateX: -5,
+                    transition: { duration: 0.2, ease: appleEaseOut },
+                  }}
+                  transition={appleWobbleSpring}
+                  style={{ transformPerspective: 1000 }}
+                  className=" top-6 left-0 right-0 mx-2 rounded-2xl bg-neutral-900/40 backdrop-blur-md p-3 shadow-2xl border border-neutral-700/50 relative overflow-hidden"
                 >
-                  <div className="flex flex-col space-y-2">
-                    <MobileLink
-                      href="/#home"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={cn(
-                        isActive("#home")
-                          ? "text-blue-500 font-medium bg-blue-500/10 shadow-inner"
-                          : "text-neutral-200 hover:bg-neutral-800/50"
-                      )}
-                    >
-                      Home
-                    </MobileLink>
+                  {/* Enhanced background effects - no delays */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={appleSpring}
+                    className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-2xl"
+                  />
 
-                    <MobileLink
-                      href="/#projects"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={cn(
-                        isActive("#projects")
-                          ? "text-blue-500 font-medium bg-blue-500/10 shadow-inner"
-                          : "text-neutral-200 hover:bg-neutral-800/50"
-                      )}
-                    >
-                      Projects
-                    </MobileLink>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={appleSpring}
+                    className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-blue-500/5 rounded-2xl"
+                  />
 
-                    <MobileMenuItem
-                      title="About"
-                      isActive={isAboutDropdownOpen}
-                      onClick={() =>
-                        setIsAboutDropdownOpen(!isAboutDropdownOpen)
-                      }
-                    >
+                  <div className="flex flex-col space-y-2 relative z-10">
+                    {[
+                      {
+                        href: "/#home",
+                        label: "Home",
+                        active: isActive("#home"),
+                      },
+                      {
+                        href: "/#projects",
+                        label: "Projects",
+                        active: isActive("#projects"),
+                      },
+                    ].map((item, index) => (
                       <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="overflow-hidden"
+                        key={item.label}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{
+                          delay: 0.1 + index * 0.05,
+                          ...appleBounceSpring,
+                        }}
                       >
-                        <div className="mt-2 ml-3 flex flex-col space-y-2">
-                          <MobileLink
-                            href="/#about"
-                            onClick={() => {
-                              setIsMobileMenuOpen(false);
-                              setIsAboutDropdownOpen(false);
-                            }}
-                            className={cn(
-                              currentSection === "about"
-                                ? "text-blue-500 font-medium bg-blue-500/10 shadow-inner"
-                                : "text-neutral-300 hover:bg-neutral-800/50"
-                            )}
-                          >
-                            About Me
-                          </MobileLink>
-                          <MobileLink
-                            href="/#experience"
-                            onClick={() => {
-                              setIsMobileMenuOpen(false);
-                              setIsAboutDropdownOpen(false);
-                            }}
-                            className={cn(
-                              currentSection === "experience"
-                                ? "text-blue-500 font-medium bg-blue-500/10 shadow-inner"
-                                : "text-neutral-300 hover:bg-neutral-800/50"
-                            )}
-                          >
-                            Experience
-                          </MobileLink>
-                          <MobileLink
-                            href="/#skills"
-                            onClick={() => {
-                              setIsMobileMenuOpen(false);
-                              setIsAboutDropdownOpen(false);
-                            }}
-                            className={cn(
-                              currentSection === "skills"
-                                ? "text-blue-500 font-medium bg-blue-500/10 shadow-inner"
-                                : "text-neutral-300 hover:bg-neutral-800/50"
-                            )}
-                          >
-                            Skills
-                          </MobileLink>
-                        </div>
+                        <MobileLink
+                          href={item.href}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className={cn(
+                            item.active
+                              ? "text-blue-500 font-medium bg-blue-500/10 shadow-inner"
+                              : "text-neutral-200 hover:bg-neutral-800/50"
+                          )}
+                        >
+                          {item.label}
+                        </MobileLink>
                       </motion.div>
-                    </MobileMenuItem>
+                    ))}
 
-                    <MobileLink
-                      href="/#contact"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={cn(
-                        isActive("#contact")
-                          ? "text-blue-500 font-medium bg-blue-500/10 shadow-inner"
-                          : "text-neutral-200 hover:bg-neutral-800/50"
-                      )}
+                    {/* Enhanced About dropdown - moved to third position */}
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{
+                        delay: 0.2,
+                        ...appleBounceSpring,
+                      }}
                     >
-                      Contact
-                    </MobileLink>
+                      <MobileMenuItem
+                        title="About"
+                        isActive={isAboutDropdownOpen}
+                        onClick={() =>
+                          setIsAboutDropdownOpen(!isAboutDropdownOpen)
+                        }
+                      >
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={appleWobbleSpring}
+                          className="overflow-hidden"
+                        >
+                          <div className="mt-2 ml-3 flex flex-col space-y-2">
+                            {[
+                              {
+                                href: "/#about",
+                                label: "About Me",
+                                section: "about",
+                              },
+                              {
+                                href: "/#experience",
+                                label: "Experience",
+                                section: "experience",
+                              },
+                              {
+                                href: "/#skills",
+                                label: "Skills",
+                                section: "skills",
+                              },
+                            ].map((item, index) => (
+                              <motion.div
+                                key={item.section}
+                                initial={{ opacity: 0, x: -10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{
+                                  delay: 0.1 + index * 0.05,
+                                  ...appleBounceSpring,
+                                }}
+                              >
+                                <MobileLink
+                                  href={item.href}
+                                  onClick={() => {
+                                    setIsMobileMenuOpen(false);
+                                    setIsAboutDropdownOpen(false);
+                                  }}
+                                  className={cn(
+                                    currentSection === item.section
+                                      ? "text-blue-500 font-medium bg-blue-500/10 shadow-inner"
+                                      : "text-neutral-300 hover:bg-neutral-800/50"
+                                  )}
+                                >
+                                  {item.label}
+                                </MobileLink>
+                              </motion.div>
+                            ))}
+                          </div>
+                        </motion.div>
+                      </MobileMenuItem>
+                    </motion.div>
+
+                    {/* Contact - moved to fourth position */}
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{
+                        delay: 0.25,
+                        ...appleBounceSpring,
+                      }}
+                    >
+                      <MobileLink
+                        href="/#contact"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={cn(
+                          isActive("#contact")
+                            ? "text-blue-500 font-medium bg-blue-500/10 shadow-inner"
+                            : "text-neutral-200 hover:bg-neutral-800/50"
+                        )}
+                      >
+                        Contact
+                      </MobileLink>
+                    </motion.div>
                   </div>
                 </motion.div>
               )}
@@ -363,7 +522,7 @@ export function Navbar() {
   );
 }
 
-// Mobile-specific components
+// Enhanced Mobile-specific components
 const MobileMenuItem = ({
   title,
   children,
@@ -376,20 +535,42 @@ const MobileMenuItem = ({
   onClick: () => void;
 }) => (
   <motion.div className="relative">
-    <button
+    <motion.button
       onClick={onClick}
+      whileHover={{
+        scale: 1.02,
+        x: 2,
+        transition: appleBounceSpring,
+      }}
+      whileTap={{
+        scale: 0.98,
+        transition: { duration: 0.1 },
+      }}
       className={cn(
-        "w-full text-left p-3 rounded-xl text-sm font-medium transition-all duration-200",
+        "w-full text-left p-3 rounded-xl text-sm font-medium transition-all duration-300 relative overflow-hidden",
         isActive
           ? "text-blue-500 bg-blue-500/10 shadow-inner"
           : "text-neutral-200 hover:bg-neutral-800/50"
       )}
     >
-      <div className="flex items-center justify-between">
+      {/* Enhanced background for active state */}
+      {isActive && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={appleWobbleSpring}
+          className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl"
+        />
+      )}
+
+      <div className="flex items-center justify-between relative z-10">
         <span>{title}</span>
         <motion.span
-          animate={{ rotate: isActive ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
+          animate={{
+            rotate: isActive ? 180 : 0,
+            scale: isActive ? 1.1 : 1,
+          }}
+          transition={appleWobbleSpring}
         >
           <svg
             className="w-4 h-4 opacity-60"
@@ -406,7 +587,7 @@ const MobileMenuItem = ({
           </svg>
         </motion.span>
       </div>
-    </button>
+    </motion.button>
     <AnimatePresence>{isActive && children}</AnimatePresence>
   </motion.div>
 );
@@ -422,14 +603,38 @@ const MobileLink = ({
   className?: string;
   onClick?: () => void;
 }) => (
-  <a
-    href={href}
-    onClick={onClick}
-    className={cn(
-      "block text-sm transition-all duration-200 p-3 rounded-xl",
-      className
-    )}
+  <motion.div
+    whileHover={{
+      scale: 1.02,
+      x: 4,
+      transition: appleBounceSpring,
+    }}
+    whileTap={{
+      scale: 0.98,
+      transition: { duration: 0.1 },
+    }}
   >
-    {children}
-  </a>
+    <a
+      href={href}
+      onClick={onClick}
+      className={cn(
+        "block text-sm transition-all duration-300 p-3 rounded-xl relative overflow-hidden",
+        className
+      )}
+    >
+      {/* Subtle background animation on hover - only for non-active items */}
+      {!className?.includes("text-blue-500") && (
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl"
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileHover={{
+            opacity: 1,
+            scale: 1,
+            transition: appleSpring,
+          }}
+        />
+      )}
+      <span className="relative z-10">{children}</span>
+    </a>
+  </motion.div>
 );

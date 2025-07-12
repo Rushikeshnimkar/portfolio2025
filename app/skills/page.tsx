@@ -96,13 +96,13 @@ export default function Skills() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-neutral-900/60 backdrop-blur-sm rounded-2xl border border-neutral-800 overflow-hidden"
+              className="bg-neutral-700/30 backdrop-blur-lg rounded-2xl border border-neutral-800 overflow-hidden"
             >
               <div
                 id={`category-header-${category
                   .toLowerCase()
                   .replace(/\s+/g, "-")}`}
-                className="bg-gradient-to-r from-cyan-500/10 to-purple-600/10 p-6 border-b border-neutral-800"
+                className=" p-6 border-b border-neutral-800"
               >
                 <div className="flex items-center gap-3">
                   <div

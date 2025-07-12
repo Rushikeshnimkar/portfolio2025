@@ -140,18 +140,47 @@ export default function Contact() {
     }
   };
 
-  const handleSendEmail = async () => {
-    if (
-      (!emailContent && mode === "ai") ||
-      (!emailContent && !senderEmail && mode === "manual") ||
-      isSending
-    )
-      return;
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+  };
 
-    // Add email validation for AI mode
-    if (mode === "ai") {
-      const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
-      if (!emailRegex.test(emailContent)) {
+  const extractEmailFromContent = (content: string): string | null => {
+    const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
+    const matches = content.match(emailRegex);
+    return matches ? matches[0] : null;
+  };
+
+  const handleSendEmail = async () => {
+    if (!emailContent || isSending) return;
+
+    // Validation based on mode
+    if (mode === "manual") {
+      // Manual mode: require name, email, and subject
+      if (!senderName.trim()) {
+        setStatus("error");
+        setErrorMessage("Please enter your name");
+        return;
+      }
+      if (!senderEmail.trim()) {
+        setStatus("error");
+        setErrorMessage("Please enter your email");
+        return;
+      }
+      if (!validateEmail(senderEmail)) {
+        setStatus("error");
+        setErrorMessage("Please enter a valid email address");
+        return;
+      }
+      if (!subject.trim()) {
+        setStatus("error");
+        setErrorMessage("Please enter a subject");
+        return;
+      }
+    } else {
+      // AI mode: check if generated content contains an email
+      const extractedEmail = extractEmailFromContent(emailContent);
+      if (!extractedEmail) {
         setStatus("error");
         setErrorMessage("Generated email must include a valid email address");
         return;
@@ -220,6 +249,17 @@ export default function Contact() {
   const handleMessageCountChange = (count: number) => {
     setMessageCount(count);
     console.log("Message count:", count); // For debugging
+  };
+
+  // Check if send button should be enabled
+  const canSendEmail = () => {
+    if (!emailContent) return false;
+
+    if (mode === "manual") {
+      return senderName.trim() && senderEmail.trim() && subject.trim();
+    }
+
+    return true; // AI mode just needs content
   };
 
   return (
@@ -416,6 +456,7 @@ export default function Contact() {
                   onClick={(e) => {
                     setMode(m as "ai" | "manual");
                     setShowTemplates(false);
+                    // Don't clear emailContent when switching modes
                   }}
                   className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
                     mode === m
@@ -601,7 +642,7 @@ export default function Contact() {
                         className="text-sm font-medium text-gray-300 mb-1 flex items-center gap-1.5"
                       >
                         <User className="w-3.5 h-3.5 text-gray-400" />
-                        Your Name
+                        Your Name *
                       </label>
                       <input
                         type="text"
@@ -618,7 +659,7 @@ export default function Contact() {
                         className="text-sm font-medium text-gray-300 mb-1 flex items-center gap-1.5"
                       >
                         <Mail className="w-3.5 h-3.5 text-gray-400" />
-                        Your Email
+                        Your Email *
                       </label>
                       <input
                         type="email"
@@ -635,7 +676,7 @@ export default function Contact() {
                         className="block text-sm font-medium text-gray-300 mb-1 flex items-center gap-1.5"
                       >
                         <MessageSquare className="w-3.5 h-3.5 text-gray-400" />
-                        Subject
+                        Subject *
                       </label>
                       <input
                         type="text"

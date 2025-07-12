@@ -78,7 +78,7 @@ export const MessageDisplay: React.FC<MessageDisplayProps> = ({
 
       {error ? (
         <div
-          className="bg-neutral-900/90 border border-red-500/30 rounded-lg p-4 text-sm"
+          className="bg-neutral-900/90 text-red-600 border border-red-500/30 rounded-lg p-4 text-sm"
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize(error),
           }}
