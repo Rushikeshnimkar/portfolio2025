@@ -130,6 +130,10 @@ PINECONE_INDEX_NAME="your index name" # e.g., portfolio-embeddings
 
 # Google Gemini (for embeddings)
 GOOGLE_API_KEY="your Google API key" # https://ai.google.dev/
+
+#jwt auth
+JWT_EXPIRY="1m"
+JWT_SECRET="your jwt token" # use this command for linux = "openssl rand -hex 64" or node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"  (works on windows/linux/mac)
 ```
 
 ## Vector Store Configuration
