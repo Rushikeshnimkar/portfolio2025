@@ -87,20 +87,13 @@ const projects: Project[] = [
 
 // Function to extract YouTube video ID from URL
 const extractYouTubeId = (url: string): string => {
-  // Handle youtu.be format
   if (url.includes("youtu.be")) {
     return url.split("/").pop() || "";
   }
-
-  // Handle youtube.com format
   const match = url.match(/[?&]v=([^&]+)/);
   if (match) return match[1];
-
-  // Handle youtube.com/embed format
   const embedMatch = url.match(/youtube\.com\/embed\/([^/?]+)/);
   if (embedMatch) return embedMatch[1];
-
-  // If it's already just an ID or we can't parse it, return as is
   return url;
 };
 
@@ -112,9 +105,7 @@ const getYouTubeThumbnail = (url: string): string => {
 
 // YouTube embed component with autoplay
 const YouTubeEmbed = ({ videoId }: { videoId: string }) => {
-  // Extract the video ID if a full URL was provided
   const id = extractYouTubeId(videoId);
-
   return (
     <div className="relative w-full aspect-video">
       <iframe
@@ -129,20 +120,48 @@ const YouTubeEmbed = ({ videoId }: { videoId: string }) => {
   );
 };
 
-// Add this new constant for shared transition config
-const transitionConfig = {
-  type: "spring",
-  bounce: 0.15,
-  duration: 0.4,
+// 1. Grid Container Variants: For staggering the project cards
+const gridContainerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2, // Time delay between each child animation
+    },
+  },
+};
+
+// 2. Project Card Variants: For individual card animations
+const projectCardVariants = {
+  hidden: { y: 20, opacity: 0 },
+  show: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 10,
+    },
+  },
+};
+
+// 3. Modal Content Variants: For animating content inside the modal
+const modalContentVariants = {
+  hidden: { y: 20, opacity: 0 },
+  show: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut",
+    },
+  },
 };
 
 export default function Projects() {
-  // State to hold the currently selected project for the modal
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  // Add structured data for SEO
   useEffect(() => {
-    // Create JSON-LD structured data for portfolio
     const structuredData = {
       "@context": "https://schema.org",
       "@type": "ProfilePage",
@@ -153,36 +172,29 @@ export default function Projects() {
         "@type": "Person",
         name: "Rushikesh Nimkar",
         url: "https://github.com/Rushikeshnimkar",
-        sameAs: [
-          "https://github.com/Rushikeshnimkar",
-          // Add other social profiles if available
-        ],
+        sameAs: ["https://github.com/Rushikeshnimkar"],
       },
     };
 
-    // Add structured data to the document
     const script = document.createElement("script");
     script.type = "application/ld+json";
     script.text = JSON.stringify(structuredData);
     document.head.appendChild(script);
 
-    // Add effect to handle body scroll lock when modal is open
     if (selectedProject) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
     }
 
-    // Cleanup function to restore scroll on component unmount or modal close
     return () => {
       document.head.removeChild(script);
       document.body.style.overflow = "auto";
     };
-  }, [selectedProject]); // Re-run effect when selectedProject changes
+  }, [selectedProject]);
 
   return (
     <>
-      {/* Add SEO metadata */}
       <Head>
         <title>{SEO.title}</title>
         <meta name="description" content={SEO.description} />
@@ -200,26 +212,30 @@ export default function Projects() {
         className="min-h-screen w-full text-white mt-10 relative z-10"
       >
         <div id="projects-container" className="max-w-7xl mx-auto px-4 py-8">
-          <h1
+          <motion.h1
             id="projects-title"
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, type: "spring", bounce: 0.3 }}
             className="text-4xl mb-10 text-center sm:text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-neutral-200 to-neutral-500"
           >
             Projects
-          </h1>
+          </motion.h1>
 
-          {/* Project Grid Layout */}
-          <div
+          {/* Project Grid Layout with new variants */}
+          <motion.div
             id="projects-grid"
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+            variants={gridContainerVariants}
+            initial="hidden"
+            animate="show"
           >
             {projects.map((project, index) => (
               <motion.div
                 key={project.id}
                 id={`project-card-${project.id}`}
                 layoutId={`project-${project.id}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={transitionConfig}
+                variants={projectCardVariants} // Apply card animation
                 className="bg-neutral-700/30 rounded-xl overflow-hidden border-black border backdrop-blur-sm flex flex-col h-full group cursor-pointer will-change-transform"
                 onClick={() => setSelectedProject(project)}
               >
@@ -238,7 +254,6 @@ export default function Projects() {
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                   ) : (
-                    // Show YouTube thumbnail with play overlay in grid
                     <div className="relative w-full h-full cursor-pointer">
                       <Image
                         src={getYouTubeThumbnail(project.media.src)}
@@ -247,7 +262,6 @@ export default function Projects() {
                         className="object-cover group-hover:scale-105 transition-transform duration-500"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
-                      {/* Play button overlay */}
                       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                         <svg
                           width="64"
@@ -281,12 +295,30 @@ export default function Projects() {
                     {project.title}
                   </h2>
 
-                  <p
+                  {/* Enhanced 3-line description with better ellipsis handling */}
+                  <div
                     id={`project-description-${project.id}`}
-                    className="text-sm sm:text-base text-neutral-400 leading-relaxed mb-3 flex-grow line-clamp-3"
+                    className="text-sm sm:text-base text-neutral-400 leading-relaxed mb-3 flex-grow relative"
                   >
-                    {project.description}
-                  </p>
+                    <p
+                      className="overflow-hidden"
+                      style={{
+                        display: "-webkit-box",
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: "vertical",
+                        lineHeight: "1.5",
+                        maxHeight: "4.5em", // 3 lines * 1.5 line-height
+                      }}
+                      title={project.description} // Show full text on hover
+                    >
+                      {project.description}
+                    </p>
+
+                    {/* Gradient fade effect for better visual indication of truncation */}
+                    {project.description.length > 150 && (
+                      <div className="absolute bottom-0 right-0 w-8 h-6 bg-gradient-to-l from-neutral-700/30 to-transparent pointer-events-none" />
+                    )}
+                  </div>
 
                   <div
                     id={`project-tags-${project.id}`}
@@ -308,7 +340,10 @@ export default function Projects() {
                     className="flex flex-wrap gap-3 mt-auto"
                   >
                     <button
-                      onClick={() => window.open(project.github, "_blank")}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        window.open(project.github, "_blank");
+                      }}
                       className="flex items-center gap-2 text-white/80 hover:text-white bg-neutral-800 hover:bg-neutral-700 px-3 py-1.5 rounded-lg transition-colors text-xs sm:text-sm"
                       aria-label={`View source code for ${project.title} on GitHub`}
                       title="View on GitHub"
@@ -318,7 +353,10 @@ export default function Projects() {
                     </button>
                     {project.link && (
                       <button
-                        onClick={() => window.open(project.link, "_blank")}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          window.open(project.link, "_blank");
+                        }}
                         className="flex items-center gap-2 text-white/90 hover:text-white bg-blue-600/80 hover:bg-blue-600 px-3 py-1.5 rounded-lg transition-colors text-xs sm:text-sm"
                         aria-label={`View live demo of ${project.title}`}
                         title="View Live Demo"
@@ -331,9 +369,8 @@ export default function Projects() {
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
 
-          {/* SEO-friendly footer section */}
           <footer className="mt-20 text-center text-sm text-neutral-600 hidden">
             <p>
               Portfolio template showcasing web development and software
@@ -344,34 +381,32 @@ export default function Projects() {
         </div>
       </div>
 
-      {/* Enhanced Modal for Desktop */}
-      <AnimatePresence mode="wait">
+      {/* Enhanced Modal with better transitions */}
+      <AnimatePresence>
         {selectedProject && (
           <motion.div
             id="project-modal-backdrop"
-            key="modal-backdrop"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
             className="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4 md:p-12"
             onClick={() => setSelectedProject(null)}
           >
             <motion.div
               id={`project-modal-${selectedProject.id}`}
               layoutId={`project-${selectedProject.id}`}
-              initial={{ scale: 0.8, opacity: 0 }}
+              initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
+              exit={{ scale: 0.9, opacity: 0 }}
               transition={{
                 type: "spring",
-                bounce: 0.1,
-                duration: 0.5,
+                stiffness: 260,
+                damping: 30,
               }}
               className="relative bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-2xl overflow-hidden shadow-2xl border border-neutral-700/50 w-full max-w-7xl max-h-[90vh] flex flex-col md:flex-row will-change-transform"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Enhanced Close Button */}
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -382,7 +417,6 @@ export default function Projects() {
                 <FiX className="w-6 h-6" />
               </button>
 
-              {/* Enhanced Media Section */}
               <div className="relative w-full md:w-[60%] bg-black/20 flex items-center justify-center p-6 md:p-8">
                 <div className="w-full max-w-4xl">
                   {selectedProject.media.type === "image" ? (
@@ -404,29 +438,37 @@ export default function Projects() {
                 </div>
               </div>
 
-              {/* Enhanced Content Section */}
-              <div className="p-8 md:p-12 overflow-y-auto md:w-[40%] flex flex-col bg-gradient-to-b from-neutral-900/95 to-neutral-800/95 backdrop-blur-sm">
+              {/* Animated Modal Content */}
+              <motion.div
+                className="p-8 md:p-12 overflow-y-auto md:w-[40%] flex flex-col bg-gradient-to-b from-neutral-900/95 to-neutral-800/95 backdrop-blur-sm"
+                variants={gridContainerVariants} // Reuse container for staggering
+                initial="hidden"
+                animate="show"
+              >
                 <div className="space-y-8">
-                  {/* Title Section */}
-                  <div>
+                  <motion.div variants={modalContentVariants}>
                     <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
                       {selectedProject.title}
                     </h2>
                     <div className="w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
-                  </div>
+                  </motion.div>
 
-                  {/* Description Section */}
-                  <div className="space-y-4">
+                  <motion.div
+                    variants={modalContentVariants}
+                    className="space-y-4"
+                  >
                     <h3 className="text-lg font-semibold text-neutral-200 uppercase tracking-wide">
                       About
                     </h3>
                     <p className="text-neutral-300 leading-relaxed text-lg">
                       {selectedProject.description}
                     </p>
-                  </div>
+                  </motion.div>
 
-                  {/* Tags Section */}
-                  <div className="space-y-4">
+                  <motion.div
+                    variants={modalContentVariants}
+                    className="space-y-4"
+                  >
                     <h3 className="text-lg font-semibold text-neutral-200 uppercase tracking-wide">
                       Technologies
                     </h3>
@@ -440,10 +482,12 @@ export default function Projects() {
                         </span>
                       ))}
                     </div>
-                  </div>
+                  </motion.div>
 
-                  {/* Action Buttons */}
-                  <div className="space-y-4 pt-4">
+                  <motion.div
+                    variants={modalContentVariants}
+                    className="space-y-4 pt-4"
+                  >
                     <h3 className="text-lg font-semibold text-neutral-200 uppercase tracking-wide">
                       Links
                     </h3>
@@ -469,9 +513,9 @@ export default function Projects() {
                         </button>
                       )}
                     </div>
-                  </div>
+                  </motion.div>
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
           </motion.div>
         )}
