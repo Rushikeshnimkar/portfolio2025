@@ -32,10 +32,18 @@ A modern portfolio website built with Next.js 15, featuring AI chat integration 
 ---
 ## Model Status
 
-[![Kimi Status (Uptime)](https://api-status-u94c.onrender.com/status.svg?model=moonshotai/kimi-k2&uptime=true)](https://api-status-u94c.onrender.com/status.svg?model=moonshotai/kimi-k2&uptime=true)  
-[![MAI Status (Uptime)](https://api-status-u94c.onrender.com/status.svg?model=microsoft/mai-ds-r1:free&uptime=true)](https://api-status-u94c.onrender.com/status.svg?model=microsoft/mai-ds-r1:free&uptime=true)
+<p align="left">
+  <a href="https://api-status-u94c.onrender.com/status.svg?model=moonshotai/kimi-k2&uptime=true">
+    <img src="https://api-status-u94c.onrender.com/status.svg?model=moonshotai/kimi-k2&uptime=true" alt="Kimi Status (Uptime)" />
+  </a>
+  &nbsp;
+  <a href="https://api-status-u94c.onrender.com/status.svg?model=microsoft/mai-ds-r1:free&uptime=true">
+    <img src="https://api-status-u94c.onrender.com/status.svg?model=microsoft/mai-ds-r1:free&uptime=true" alt="MAI Status (Uptime)" />
+  </a>
+</p>
 
 This badge shows the **real-time operational status** of selected AI models from OpenRouter.
+
 
 Each badge displays:
 - **Model name**: The model's identifier (e.g. `moonshotai/kimi-k2`)
