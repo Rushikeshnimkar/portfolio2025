@@ -49,14 +49,14 @@ Each badge displays:
 - **Model name**: The model's identifier (e.g. `moonshotai/kimi-k2`)
 - **Status**:
   -  `operational` – model is healthy (uptime ≥ 90%)
-  -  `partial outage` – degraded performance (uptime ≥ 50%)
+  -  `Degraded` – degraded performance (uptime ≥ 50%)
   -  `offline` – not available (uptime < 50%)
 - **Uptime**: The average uptime over the past 30 minutes (e.g. `91.3%`)
 
 Clicking the badge opens the live SVG endpoint.
 
 > ⚠️ **Note**:  
-> A `partial outage` does **not** mean the model is completely unusable.  
+> A `Degraded` does **not** mean the model is completely unusable.  
 > It simply indicates that **some requests may fail intermittently** due to degraded uptime or performance.
 
 This badge shows the real-time operational status of the Kimi model.
