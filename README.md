@@ -30,6 +30,30 @@ A modern portfolio website built with Next.js 15, featuring AI chat integration 
 
 
 ---
+## Model Status
+
+[![Kimi Status (Uptime)](https://api-status-u94c.onrender.com/status.svg?model=moonshotai/kimi-k2&uptime=true)](https://api-status-u94c.onrender.com/status.svg?model=moonshotai/kimi-k2&uptime=true)  
+[![MAI Status (Uptime)](https://api-status-u94c.onrender.com/status.svg?model=microsoft/mai-ds-r1:free&uptime=true)](https://api-status-u94c.onrender.com/status.svg?model=microsoft/mai-ds-r1:free&uptime=true)
+
+This badge shows the **real-time operational status** of selected AI models from OpenRouter.
+
+Each badge displays:
+- **Model name**: The model's identifier (e.g. `moonshotai/kimi-k2`)
+- **Status**:
+  -  `operational` – model is healthy (uptime ≥ 90%)
+  -  `partial outage` – degraded performance (uptime ≥ 50%)
+  -  `offline` – not available (uptime < 50%)
+- **Uptime**: The average uptime over the past 30 minutes (e.g. `91.3%`)
+
+Clicking the badge opens the live SVG endpoint.
+
+> ⚠️ **Note**:  
+> A `partial outage` does **not** mean the model is completely unusable.  
+> It simply indicates that **some requests may fail intermittently** due to degraded uptime or performance.
+
+This badge shows the real-time operational status of the Kimi model.
+
+---
 
 ## 🚀 Getting Started
 
