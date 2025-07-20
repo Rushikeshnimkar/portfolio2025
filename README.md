@@ -37,8 +37,8 @@ A modern portfolio website built with Next.js 15, featuring AI chat integration 
     <img src="https://api-status-u94c.onrender.com/status.svg?model=moonshotai/kimi-k2&uptime=true" alt="Kimi Status (Uptime)" />
   </a>
   &nbsp;
-  <a href="https://api-status-u94c.onrender.com/status.svg?model=microsoft/mai-ds-r1:free&uptime=true">
-    <img src="https://api-status-u94c.onrender.com/status.svg?model=microsoft/mai-ds-r1:free&uptime=true" alt="MAI Status (Uptime)" />
+  <a href="https://api-status-u94c.onrender.com/status.svg?model=tngtech/deepseek-r1t-chimera:free&uptime=true">
+    <img src="https://api-status-u94c.onrender.com/status.svg?model=tngtech/deepseek-r1t-chimera:free&uptime=true" alt="MAI Status (Uptime)" />
   </a>
 </p>
 
