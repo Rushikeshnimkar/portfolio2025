@@ -30,6 +30,38 @@ A modern portfolio website built with Next.js 15, featuring AI chat integration 
 
 
 ---
+## Model Status
+
+<p align="left">
+  <a href="https://api-status-u94c.onrender.com/status.svg?model=moonshotai/kimi-k2&uptime=true">
+    <img src="https://api-status-u94c.onrender.com/status.svg?model=moonshotai/kimi-k2&uptime=true" alt="Kimi Status (Uptime)" />
+  </a>
+  &nbsp;
+  <a href="https://api-status-u94c.onrender.com/status.svg?model=microsoft/mai-ds-r1:free&uptime=true">
+    <img src="https://api-status-u94c.onrender.com/status.svg?model=microsoft/mai-ds-r1:free&uptime=true" alt="MAI Status (Uptime)" />
+  </a>
+</p>
+
+This badge shows the **real-time operational status** of selected AI models from OpenRouter.
+
+
+Each badge displays:
+- **Model name**: The model's identifier (e.g. `moonshotai/kimi-k2`)
+- **Status**:
+  -  `operational` – model is healthy (uptime ≥ 90%)
+  -  `Degraded` – degraded performance (uptime ≥ 50%)
+  -  `offline` – not available (uptime < 50%)
+- **Uptime**: The average uptime over the past 30 minutes (e.g. `91.3%`)
+
+Clicking the badge opens the live SVG endpoint.
+
+> ⚠️ **Note**:  
+> A `Degraded` does **not** mean the model is completely unusable.  
+> It simply indicates that **some requests may fail intermittently** due to degraded uptime or performance.
+
+This badge shows the real-time operational status of the Kimi model.
+
+---
 
 ## 🚀 Getting Started
 
