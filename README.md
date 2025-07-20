@@ -33,12 +33,12 @@ A modern portfolio website built with Next.js 15, featuring AI chat integration 
 ## Model Status
 
 <p align="left">
-  <a href="https://api-status-u94c.onrender.com/status.svg?model=moonshotai/kimi-k2&uptime=true">
-    <img src="https://api-status-u94c.onrender.com/status.svg?model=moonshotai/kimi-k2&uptime=true" alt="Kimi Status (Uptime)" />
+  <a href="https://api-status-u94c.onrender.com/status.svg?model=deepseek/deepseek-r1-0528-qwen3-8b:free&uptime=true">
+    <img src="https://api-status-u94c.onrender.com/status.svg?model=deepseek/deepseek-r1-0528-qwen3-8b:free&uptime=true" alt="deepseek-r1 Status (Uptime)" />
   </a>
   &nbsp;
   <a href="https://api-status-u94c.onrender.com/status.svg?model=tngtech/deepseek-r1t-chimera:free&uptime=true">
-    <img src="https://api-status-u94c.onrender.com/status.svg?model=tngtech/deepseek-r1t-chimera:free&uptime=true" alt="MAI Status (Uptime)" />
+    <img src="https://api-status-u94c.onrender.com/status.svg?model=tngtech/deepseek-r1t-chimera:free&uptime=true" alt="deepseek-r1t-chimera Status (Uptime)" />
   </a>
 </p>
 
@@ -46,12 +46,12 @@ This badge shows the **real-time operational status** of selected AI models from
 
 
 Each badge displays:
-- **Model name**: The model's identifier (e.g. `moonshotai/kimi-k2`)
+- **Model name**: The model's identifier 
 - **Status**:
   -  `operational` – model is healthy (uptime ≥ 90%)
   -  `Degraded` – degraded performance (uptime ≥ 50%)
   -  `offline` – not available (uptime < 50%)
-- **Uptime**: The average uptime over the past 30 minutes (e.g. `91.3%`)
+- **Uptime**: The average uptime over the past 30 minutes 
 
 Clicking the badge opens the live SVG endpoint.
 
