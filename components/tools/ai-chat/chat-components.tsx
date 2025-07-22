@@ -51,7 +51,7 @@ export const ChatHeader: React.FC<HeaderProps> = ({ onClose }) => {
         <div>
           <h3 className="font-medium text-neutral-200">AI Assistant</h3>
           <p className="text-sm text-neutral-400">
-            Powered by Deepseek & Web Search
+            Powered by Qwen3 & Web Search
           </p>
         </div>
       </div>
