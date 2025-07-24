@@ -13,6 +13,8 @@ import {
   SiGit,
   SiDocker,
   SiLinux,
+  SiMongodb,
+  SiNodedotjs,
 } from "react-icons/si";
 import { FiCode, FiDatabase, FiTool } from "react-icons/fi";
 import { TbBrain } from "react-icons/tb";
@@ -28,10 +30,12 @@ const skills = {
     },
     { name: "JavaScript", icon: <SiJavascript className="text-[#F7DF1E]" /> },
   ],
-  "Backend Development": [
+  "Backend & Databases": [
     { name: "Go", icon: <SiGo className="text-[#00ADD8]" /> },
     { name: "MySQL", icon: <SiMysql className="text-[#4479A1]" /> },
     { name: "PostgreSQL", icon: <SiPostgresql className="text-[#336791]" /> },
+    { name: "MongoDB", icon: <SiMongodb className="text-[#47A248]" /> },
+    { name: "Node.js", icon: <SiNodedotjs className="text-[#339933]" /> },
   ],
   "AI & ML Technologies": [
     { name: "LangChain", icon: <TbBrain className="text-[#00A3A3]" /> },
@@ -46,7 +50,7 @@ const skills = {
 
 const categoryIcons = {
   "Frontend Development": <FiCode className="w-6 h-6" />,
-  "Backend Development": <FiDatabase className="w-6 h-6" />,
+  "Backend & Databases": <FiDatabase className="w-6 h-6" />,
   "AI & ML Technologies": <TbBrain className="w-6 h-6" />,
   "Tools & Technologies": <FiTool className="w-6 h-6" />,
 };
