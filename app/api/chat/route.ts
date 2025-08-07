@@ -265,7 +265,7 @@ class OpenRouterChatModel extends ChatOpenAI {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            model: "moonshotai/kimi-k2:free",
+            model: "qwen/qwen3-30b-a3b:free",
             messages: formattedMessages,
           }),
         }

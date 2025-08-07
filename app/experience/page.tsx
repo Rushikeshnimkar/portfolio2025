@@ -5,26 +5,24 @@ import { FiMapPin, FiAward, FiBriefcase, FiBook } from "react-icons/fi";
 export default function ExperiencePage() {
   const data = [
     {
-      title: "2020-2024",
+      title: "Present",
       content: (
-        <div className="space-y-4">
-          <div className="flex items-center gap-2 text-white">
+        <div className="flex gap-4">
+          <div className="flex-shrink-0 pt-1">
             <FiBook className="w-5 h-5 text-blue-400" />
-            <div>
-              <h3 className="text-lg font-semibold">Bachelor of Engineering</h3>
-              <div className="flex items-center gap-2 text-neutral-400 text-sm mt-1">
-                <FiMapPin className="w-4 h-4" />
-                <span>Pune, IN</span>
-              </div>
-            </div>
           </div>
-
-          <div className="pl-7">
+          <div className="space-y-2">
+            <h3 className="text-lg font-semibold text-white">
+              Postgraduate Diploma in Advanced Computing
+            </h3>
+            <div className="flex items-center gap-2 text-neutral-400 text-sm">
+              <FiMapPin className="w-4 h-4" />
+              <span>CDAC SMVITA, Mumbai, IN</span>
+            </div>
             <p className="text-neutral-300 text-sm leading-relaxed">
-              Graduated with BE in Computer Engineering, focusing on software
-              development and computer science fundamentals. Developed strong
-              problem-solving skills and technical expertise through
-              comprehensive coursework and practical projects.
+              Currently pursuing a Postgraduate Diploma in Advanced Computing
+              (PG-DAC) from CDAC SMVITA, Mumbai. Focusing on full-stack
+              development, cloud technologies, and hands-on project building.
             </p>
           </div>
         </div>
@@ -33,20 +31,19 @@ export default function ExperiencePage() {
     {
       title: "Feb 2024 - Feb 2025",
       content: (
-        <div className="space-y-4">
-          <div className="flex items-center gap-2 text-white">
+        <div className="flex gap-4">
+          <div className="flex-shrink-0 pt-1">
             <FiBriefcase className="w-5 h-5 text-blue-400" />
-            <div>
-              <h3 className="text-lg font-semibold">Fullstack Developer</h3>
-              <div className="flex items-center gap-2 text-neutral-400 text-sm mt-1">
-                <span className="font-medium">Lazarus Network</span>
-                <span>•</span>
-                <span>Remote</span>
-              </div>
-            </div>
           </div>
-
-          <div className="pl-7">
+          <div className="space-y-2">
+            <h3 className="text-lg font-semibold text-white">
+              Fullstack Developer
+            </h3>
+            <div className="flex items-center gap-2 text-neutral-400 text-sm">
+              <span className="font-medium">Lazarus Network</span>
+              <span>•</span>
+              <span>Remote</span>
+            </div>
             <div className="space-y-3 text-sm text-neutral-300">
               <p className="leading-relaxed">
                 Full-stack development role focusing on building scalable web
@@ -78,15 +75,42 @@ export default function ExperiencePage() {
       ),
     },
     {
+      title: "2020-2024",
+      content: (
+        <div className="flex gap-4">
+          <div className="flex-shrink-0 pt-1">
+            <FiBook className="w-5 h-5 text-blue-400" />
+          </div>
+          <div className="space-y-2">
+            <h3 className="text-lg font-semibold text-white">
+              Bachelor of Engineering
+            </h3>
+            <div className="flex items-center gap-2 text-neutral-400 text-sm">
+              <FiMapPin className="w-4 h-4" />
+              <span>Pune, IN</span>
+            </div>
+            <p className="text-neutral-300 text-sm leading-relaxed">
+              Graduated with BE in Computer Engineering, focusing on software
+              development and computer science fundamentals. Developed strong
+              problem-solving skills and technical expertise through
+              comprehensive coursework and practical projects.
+            </p>
+          </div>
+        </div>
+      ),
+    },
+    {
       title: "Awards and Honors",
       content: (
-        <div className="space-y-4">
-          <div className="flex items-center gap-2 text-white">
+        <div className="flex gap-4">
+          <div className="flex-shrink-0 pt-1">
             <FiAward className="w-5 h-5 text-blue-400" />
-            <h3 className="text-lg font-semibold">Hackathon Achievements</h3>
           </div>
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-white">
+              Hackathon Achievements
+            </h3>
 
-          <div className="pl-7 space-y-6 ">
             {/* Solana Radar Hackathon */}
             <div className="space-y-2">
               <div className="flex items-center gap-3">
@@ -169,7 +193,7 @@ export default function ExperiencePage() {
   ];
 
   return (
-    <div className="w-full ">
+    <div className="w-full">
       <Timeline data={data} />
     </div>
   );

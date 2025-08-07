@@ -1,5 +1,5 @@
 "use client";
-import { useScroll, useTransform, motion } from "framer-motion";
+import { useScroll, useTransform, motion, useInView } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 
 interface TimelineEntry {
@@ -29,17 +29,15 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
 
   return (
     <div
-      className="w-full  font-sans relative overflow-hidden"
+      className="w-full font-sans relative overflow-hidden"
       ref={containerRef}
     >
-      <div className="absolute inset-0  pointer-events-none" />
-
       <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10 relative z-10">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-2xl md:text-4xl font-bold mb-4 text-white bg-clip-text text-transparent bg-gradient-to-r from-neutral-200 to-neutral-400"
+          className="text-2xl md:text-4xl font-bold mb-4 text-white"
         >
           Journey Through Time
         </motion.h2>
@@ -55,50 +53,93 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
 
       <div ref={ref} className="relative max-w-7xl mx-auto pb-20">
         {data.map((item, index) => (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            key={index}
-            className="flex justify-start pt-10 md:pt-40 md:gap-10"
-          >
-            <div className="sticky flex flex-col md:flex-row z-40 items-center top-20 self-start max-w-xs lg:max-w-sm md:w-full">
-              <div className="relative h-10 w-10">
-                <div className="h-10 absolute left-3 md:left-3 w-10 rounded-full bg-neutral-950 flex items-center justify-center border border-neutral-800">
-                  <div className="h-4 w-4 rounded-full bg-blue-500/50 dark:bg-blue-500/50 border border-blue-500 p-2" />
-                </div>
-              </div>
-              <h3 className="hidden md:block text-xl md:pl-20 md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500/50 to-purple-500/50">
-                {item.title}
-              </h3>
-            </div>
-
-            <div className="relative pl-20 pr-4 md:pl-4 w-full">
-              <h3 className="md:hidden block text-2xl mb-4 text-left font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500/50 to-purple-500/50">
-                {item.title}
-              </h3>
-              <div className="text-neutral-300 prose prose-invert">
-                {item.content}
-              </div>
-            </div>
-          </motion.div>
+          <TimelineItem key={index} item={item} index={index} />
         ))}
 
         <div
           style={{
             height: height + "px",
           }}
-          className="absolute md:left-8 left-8 top-0 w-[2px] bg-gradient-to-b from-transparent via-neutral-800 to-transparent"
+          className="absolute md:left-8 left-8 top-0 w-[2px] bg-gradient-to-b from-transparent via-neutral-700 to-transparent"
         >
           <motion.div
             style={{
               height: heightTransform,
               opacity: opacityTransform,
             }}
-            className="absolute inset-x-0 top-0 bg-gradient-to-b from-blue-500 via-purple-500 to-transparent rounded-full"
+            className="absolute inset-x-0 top-0 w-full bg-gradient-to-b from-blue-500/30 via-blue-500 to-blue-500/30"
           />
         </div>
       </div>
     </div>
+  );
+};
+
+const TimelineItem = ({
+  item,
+  index,
+}: {
+  item: TimelineEntry;
+  index: number;
+}) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, {
+    once: false,
+    margin: "-30% 0px -70% 0px",
+  });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{
+        duration: 0.6,
+        delay: index * 0.15,
+        ease: "easeOut",
+      }}
+      viewport={{ once: true, margin: "-100px" }}
+      className="flex justify-start pt-10 md:pt-20 md:gap-10"
+    >
+      <div className="sticky flex flex-col md:flex-row z-40 items-center top-20 self-start max-w-xs lg:max-w-sm md:w-full">
+        <div className="relative h-10 w-10">
+          <div className="h-10 absolute left-3 md:left-3 w-10 rounded-full bg-neutral-900 flex items-center justify-center border border-neutral-700">
+            <motion.div
+              className="h-3 w-3 rounded-full bg-blue-500"
+              animate={{
+                scale: isInView ? 1.5 : 1,
+                backgroundColor: isInView ? "#3b82f6" : "#60a5fa",
+              }}
+              transition={{ duration: 0.3 }}
+            />
+          </div>
+        </div>
+        <h3 className="hidden md:block text-lg md:pl-6 md:text-2xl font-semibold text-white">
+          {item.title}
+        </h3>
+      </div>
+
+      <div className="relative pl-20 pr-4 md:pl-6 w-full">
+        <h3 className="md:hidden block text-xl mb-4 text-left font-semibold text-white">
+          {item.title}
+        </h3>
+        <motion.div
+          className="backdrop-blur-sm bg-gradient-to-br from-white/5 to-white/10 border border-white/10 rounded-xl p-6 shadow-sm"
+          animate={{
+            boxShadow: isInView
+              ? "0 0 20px rgba(200, 255, 255, 0.3), 0 0 30px rgba(25, 5, 55, 0.2)"
+              : "none",
+            borderColor: isInView
+              ? "rgba(255, 255, 255, 0.3)"
+              : "rgba(255, 255, 255, 0.1)",
+          }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className="text-neutral-300 text-base leading-relaxed">
+            {item.content}
+          </div>
+        </motion.div>
+      </div>
+    </motion.div>
   );
 };
