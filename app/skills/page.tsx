@@ -16,6 +16,7 @@ import {
   SiMongodb,
   SiNodedotjs,
 } from "react-icons/si";
+import { RiJavaLine } from "react-icons/ri";
 import { FiCode, FiDatabase, FiTool } from "react-icons/fi";
 import { TbBrain } from "react-icons/tb";
 
@@ -32,6 +33,7 @@ const skills = {
   ],
   "Backend & Databases": [
     { name: "Go", icon: <SiGo className="text-[#00ADD8]" /> },
+    { name: "Java", icon: <RiJavaLine className="text-[#ED8B00]" /> },
     { name: "MySQL", icon: <SiMysql className="text-[#4479A1]" /> },
     { name: "PostgreSQL", icon: <SiPostgresql className="text-[#336791]" /> },
     { name: "MongoDB", icon: <SiMongodb className="text-[#47A248]" /> },
