@@ -17,24 +17,24 @@ A modern portfolio website built with Next.js 15, featuring AI chat integration 
 
 ## 🛠 Tech Stack
 
-| Layer       | Technologies |
-|------------|--------------|
-| **Frontend** | Next.js 15, TypeScript, Tailwind CSS, Framer Motion |
-| **Backend**  | Node.js, Next.js API Routes |
-| **AI Integration** | OpenRouter API |
-| **Embeddings** | Google Gemini |
-| **Vector Database** | Pinecone |
-| **Search** | Tavily API |
-| **Email** | Nodemailer, Abstract API |
-| **Deployment** | Vercel + Edge Functions |
-
+| Layer               | Technologies                                        |
+| ------------------- | --------------------------------------------------- |
+| **Frontend**        | Next.js 15, TypeScript, Tailwind CSS, Framer Motion |
+| **Backend**         | Node.js, Next.js API Routes                         |
+| **AI Integration**  | OpenRouter API                                      |
+| **Embeddings**      | Google Gemini                                       |
+| **Vector Database** | Pinecone                                            |
+| **Search**          | Tavily API                                          |
+| **Email**           | Nodemailer, Abstract API                            |
+| **Deployment**      | Vercel + Edge Functions                             |
 
 ---
+
 ## Model Status
 
 <p align="left">
-  <a href="https://api-status-u94c.onrender.com/status.svg?model=qwen/qwen3-235b-a22b-2507:free&uptime=true">
-    <img src="https://api-status-u94c.onrender.com/status.svg?model=qwen/qwen3-235b-a22b-2507:free&uptime=true" alt="qwen/qwen3-235b-a22b-2507:free Status (Uptime)" />
+  <a href="https://api-status-u94c.onrender.com/status.svg?model=qwen/qwen3-30b-a3b:free&uptime=true">
+    <img src="https://api-status-u94c.onrender.com/status.svg?model=qwen/qwen3-30b-a3b:free&uptime=true" alt="qwen/qwen3-30b-a3b:free:free Status (Uptime)" />
   </a>
   &nbsp;
   <a href="https://api-status-u94c.onrender.com/status.svg?model=tngtech/deepseek-r1t-chimera:free&uptime=true">
@@ -44,14 +44,14 @@ A modern portfolio website built with Next.js 15, featuring AI chat integration 
 
 This badge shows the **real-time operational status** of selected AI models from OpenRouter.
 
-
 Each badge displays:
-- **Model name**: The model's identifier 
+
+- **Model name**: The model's identifier
 - **Status**:
-  -  `operational` – model is healthy (uptime ≥ 90%)
-  -  `Degraded` – degraded performance (uptime ≥ 50%)
-  -  `offline` – not available (uptime < 50%)
-- **Uptime**: The average uptime over the past 30 minutes 
+  - `operational` – model is healthy (uptime ≥ 90%)
+  - `Degraded` – degraded performance (uptime ≥ 50%)
+  - `offline` – not available (uptime < 50%)
+- **Uptime**: The average uptime over the past 30 minutes
 
 Clicking the badge opens the live SVG endpoint.
 
@@ -143,7 +143,6 @@ The portfolio uses Pinecone vector database to store and retrieve embeddings:
 - Email validation to prevent spam
 - Rate limiting on sensitive endpoints
 
-
 ## Environment Variables
 
 Create a `.env` file in the root directory and add your environment variables:
@@ -178,7 +177,6 @@ The vector store is configured in `lib/embeddings.ts` with the following setting
 
 You can modify these settings in the `initializeVectorStore` function if needed.
 
-
 ## 📸 Preview
 
 <p align="center">
@@ -186,8 +184,6 @@ You can modify these settings in the `initializeVectorStore` function if needed.
   &nbsp;
   <img src="https://github.com/user-attachments/assets/2dadd649-c3d2-4e54-b554-7c2d2049c9d8" alt="Preview 2" width="45%" />
 </p>
-
-
 
 ---
 
@@ -202,7 +198,3 @@ This project is open source under the [MIT License](https://opensource.org/licen
 **Rushikesh Nimkar**  
 🔗 [rushikeshnimkar.xyz](https://rushikeshnimkar.xyz)  
 📧 rushikeshnimkar396@gmail.com
-
-
-
-
