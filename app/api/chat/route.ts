@@ -129,7 +129,7 @@ const EMAIL_PATTERN =
 const PHONE_PATTERN = /phone|call|mobile|cell|telephone|contact number/i;
 const LOCATION_PATTERN =
   /location|address|where.*live|where.*based|city|town|where.*from/i;
-
+const DISCORD_PATTERN = /discord|server|chat|community/i;
 // Add specific patterns for individual projects
 const GITSPLIT_PATTERN =
   /gitsplit|funding platform|open-source funding|ethglobal/i;
@@ -183,6 +183,7 @@ function detectQueryType(message: string): string | null {
   if (GITHUB_PATTERN.test(lowerMessage) && !lowerMessage.includes("projects"))
     return "github_link";
   if (LINKEDIN_PATTERN.test(lowerMessage)) return "linkedin_link";
+  if (DISCORD_PATTERN.test(lowerMessage)) return "discord_contact";
   if (PORTFOLIO_PATTERN.test(lowerMessage)) return "portfolio_link";
   if (PROJECT_LINKS_PATTERN.test(lowerMessage)) return "project_links";
 
@@ -360,6 +361,10 @@ function generateStructuredResponse(queryType: string): string {
       location: "Nagpur",
       type: "Location",
     },
+    discord_contact: {
+    discord: "https://discord.gg/T8Uc2BUK",
+    type: "Discord",
+  },
   };
 
   // Define individual link templates
@@ -387,6 +392,13 @@ function generateStructuredResponse(queryType: string): string {
         description: "Connect with me professionally on LinkedIn",
       },
     ],
+    discord_link: [
+  {
+    title: "Discord Server",
+    url: "https://discord.gg/T8Uc2BUK",
+    description: "Join my Discord community",
+  },
+],
     portfolio_link: [
       {
         title: "Portfolio Website",
