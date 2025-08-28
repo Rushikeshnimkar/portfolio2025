@@ -1,11 +1,12 @@
 import React from "react";
-import { FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaEnvelope, FaGithub, FaLinkedin,FaDiscord } from "react-icons/fa";
 
 export interface Contact {
   email: string;
   linkedin?: string;
   github?: string;
   phone?: string;
+   discord?: string
 }
 
 interface ContactCardProps {
@@ -54,6 +55,19 @@ export const ContactCard: React.FC<ContactCardProps> = ({ contact }) => (
           </a>
         </div>
       )}
+      {contact.discord && (
+        <div className="flex items-center gap-3">
+          <FaDiscord className="text-neutral-400" />
+          <a
+            href={contact.discord}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-400 hover:underline"
+          >
+            Discord Server
+          </a>
+        </div>
+    )}
       {contact.phone && (
         <div className="flex items-center gap-3">
           <span className="text-neutral-400">📱</span>

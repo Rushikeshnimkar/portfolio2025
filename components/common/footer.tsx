@@ -1,5 +1,5 @@
 "use client";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaGithub, FaLinkedin ,FaDiscord} from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
 export function Footer() {
@@ -35,6 +35,14 @@ export function Footer() {
             >
               <FaXTwitter size={20} />
             </a>
+              <a
+    href="https://discord.gg/T8Uc2BUK"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-neutral-400 hover:text-blue-500 transition-colors"
+  >
+    <FaDiscord size={24} />
+  </a>
           </div>
 
           {/* Copyright */}

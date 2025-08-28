@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 
 import { useState, useEffect } from "react";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaGithub, FaLinkedin,FaDiscord } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import Head from "next/head";
 
@@ -584,6 +584,15 @@ export default function HomePage() {
                 >
                   <FaXTwitter size={24} />
                 </a>
+                  <a
+    href="https://discord.gg/T8Uc2BUK"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-gray-400 hover:text-blue-500 transition-all duration-300 hover:scale-125 hover:-rotate-12"
+  >
+    <FaDiscord size={24} />
+  </a>
+
               </motion.div>
             </motion.div>
           </motion.div>
