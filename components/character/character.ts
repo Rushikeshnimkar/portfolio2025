@@ -9,7 +9,7 @@ Portfolio: https://rushikeshnimkar.xyz/
 GitHub: https://github.com/Rushikeshnimkar
 LinkedIn: https://www.linkedin.com/in/rushikesh-nimkar-0961361ba/
 resume: https://rushikeshnimkar.xyz/resume
-discord: https://discord.gg/T8Uc2BUK
+discord: https://discord.com/users/748192618659315753
 
 
 Summary:

@@ -362,9 +362,9 @@ function generateStructuredResponse(queryType: string): string {
       type: "Location",
     },
     discord_contact: {
-    discord: "https://discord.gg/T8Uc2BUK",
-    type: "Discord",
-  },
+      discord: "https://discord.com/users/748192618659315753",
+      type: "Discord",
+    },
   };
 
   // Define individual link templates
@@ -393,12 +393,12 @@ function generateStructuredResponse(queryType: string): string {
       },
     ],
     discord_link: [
-  {
-    title: "Discord Server",
-    url: "https://discord.gg/T8Uc2BUK",
-    description: "Join my Discord community",
-  },
-],
+      {
+        title: "Discord Server",
+        url: "https://discord.com/users/748192618659315753",
+        description: "Join my Discord community",
+      },
+    ],
     portfolio_link: [
       {
         title: "Portfolio Website",
