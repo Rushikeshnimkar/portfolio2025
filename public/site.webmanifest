@@ -1,7 +1,7 @@
 {
-    "name": "Rushikesh Nimkar",
-    "short_name": "RN",
-    "icons": [
+  "name": "Rushikesh",
+  "short_name": "Rushi",
+  "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
       "sizes": "192x192",
@@ -15,8 +15,7 @@
       "purpose": "maskable"
     }
   ],
-
-    "theme_color": "#ffffff",
-    "background_color": "#ffffff",
-    "display": "standalone"
+  "theme_color": "#141313",
+  "background_color": "#171717",
+  "display": "standalone"
 }
