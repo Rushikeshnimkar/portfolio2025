@@ -266,7 +266,7 @@ class OpenRouterChatModel extends ChatOpenAI {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            model: "qwen/qwen3-30b-a3b:free",
+            model: "x-ai/grok-4-fast:free",
             messages: formattedMessages,
           }),
         }

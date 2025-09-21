@@ -343,7 +343,7 @@ IMPORTANT: Respond ONLY with the JavaScript function 'applyThemeChanges' wrapped
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "tngtech/deepseek-r1t-chimera:free", // Use a consistent model with your existing setup
+          model: "x-ai/grok-4-fast:free", // Use a consistent model with your existing setup
           messages: [
             {
               role: "system",
