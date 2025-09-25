@@ -33,8 +33,8 @@ A modern portfolio website built with Next.js 15, featuring AI chat integration 
 ## Model Status
 
 <p align="left">
-  <a href="https://api-status-u94c.onrender.com/status.svg?model=qwen/qwen3-30b-a3b:free&uptime=true">
-    <img src="https://api-status-u94c.onrender.com/status.svg?model=qwen/qwen3-30b-a3b:free&uptime=true" alt="qwen/qwen3-30b-a3b:free:free Status (Uptime)" />
+  <a href="https://api-status-u94c.onrender.com/status.svg?model=x-ai/grok-4-fast:free&uptime=true">
+    <img src="https://api-status-u94c.onrender.com/status.svg?model=x-ai/grok-4-fast:free&uptime=true" alt="x-ai/grok-4-fast:free Status (Uptime)" />
   </a>
   &nbsp;
   <a href="https://api-status-u94c.onrender.com/status.svg?model=tngtech/deepseek-r1t-chimera:free&uptime=true">
