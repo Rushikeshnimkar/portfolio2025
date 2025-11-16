@@ -813,7 +813,7 @@ export default function Contact() {
                   <div className="mt-2 flex items-center justify-end">
                     <div className="text-xs text-gray-500 flex items-center gap-1.5">
                       <Sparkles className="w-3 h-3 text-cyan-400" />
-                      <span>Powered by deephermes-3-llama-3</span>
+                      <span>Powered by llama-3.2</span>
                     </div>
                   </div>
                 )}

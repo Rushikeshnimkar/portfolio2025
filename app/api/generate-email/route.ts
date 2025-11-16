@@ -46,7 +46,7 @@ async function handler(req: NextRequest) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "nousresearch/deephermes-3-llama-3-8b-preview:free",
+          model: "meta-llama/llama-3.2-3b-instruct:free",
           messages: messages,
           max_tokens: 10000, // Limit response size
           temperature: 0.2, // Add temperature for more consistent responses

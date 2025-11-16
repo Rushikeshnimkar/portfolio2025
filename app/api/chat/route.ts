@@ -266,7 +266,7 @@ class OpenRouterChatModel extends ChatOpenAI {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            model: "alibaba/tongyi-deepresearch-30b-a3b:free",
+            model: "openrouter/sherlock-dash-alpha",
             messages: formattedMessages,
           }),
         }
