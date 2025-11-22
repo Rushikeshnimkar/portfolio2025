@@ -343,7 +343,7 @@ IMPORTANT: Respond ONLY with the JavaScript function 'applyThemeChanges' wrapped
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "microsoft/mai-ds-r1:free", // Use a consistent model with your existing setup
+          model: "x-ai/grok-4.1-fast", // Use a consistent model with your existing setup
           messages: [
             {
               role: "system",

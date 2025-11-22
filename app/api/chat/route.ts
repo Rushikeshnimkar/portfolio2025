@@ -266,7 +266,7 @@ class OpenRouterChatModel extends ChatOpenAI {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            model: "openrouter/sherlock-dash-alpha",
+            model: "x-ai/grok-4.1-fast",
             messages: formattedMessages,
           }),
         }
