@@ -35,19 +35,11 @@ const imageMetadata = {
 
 export default function HomePage() {
   const [activeImage, setActiveImage] = useState(1); // 1 or 2
-  const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
     // Image transition every 5 seconds
     const imageInterval = setInterval(() => {
-      // Start transition
-      setIsTransitioning(true);
-
-      // After transition duration, switch the active image
-      setTimeout(() => {
-        setActiveImage((prev) => (prev === 1 ? 2 : 1));
-        setIsTransitioning(false);
-      }, 1800); // Transition takes 1.8 seconds (slightly longer for smoother effect)
+      setActiveImage((prev) => (prev === 1 ? 2 : 1));
     }, 5000); // Change image every 5 seconds
 
     return () => clearInterval(imageInterval);

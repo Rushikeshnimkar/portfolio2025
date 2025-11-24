@@ -24,7 +24,7 @@ const NeuralBackground: React.FC = () => {
 
         let particles: Particle[] = [];
         let animationFrameId: number;
-        let mouse = { x: -1000, y: -1000 };
+        const mouse = { x: -1000, y: -1000 };
 
         // Configuration
         const particleCount = 60; // Number of nodes
