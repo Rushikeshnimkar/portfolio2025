@@ -94,332 +94,78 @@ export default function HomePage() {
               id="home-profile-image-container"
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3 }}
-              className="relative w-48 h-48 sm:w-60 sm:h-60 md:w-72 md:h-72 lg:w-80 lg:h-80"
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="relative w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96"
             >
-              {/* Background subtle glow */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/10 to-cyan-500/10 filter blur-[60px] -z-10" />
+              {/* Background glow */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/20 to-cyan-500/20 filter blur-[80px] -z-10" />
 
-              {/* Frame with asymmetric accents */}
-              <div className="absolute inset-0">
-                {/* Main frame - square with one rounded corner */}
-                <div className="absolute inset-0 border-2 border-indigo-500/40 rounded-br-3xl" />
+              {/* Main image container with glassmorphism */}
+              <div className="relative w-full h-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl backdrop-blur-sm bg-black/20">
+                {/* Corner accents */}
+                <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-cyan-500/50 rounded-tl-xl z-20" />
+                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-indigo-500/50 rounded-br-xl z-20" />
 
-                {/* Floating accent lines */}
-                <motion.div
-                  className="absolute -top-3 -right-3 w-24 h-1 bg-gradient-to-r from-indigo-600 to-cyan-500"
-                  animate={{
-                    x: [0, 5, 0],
-                    opacity: [0.6, 1, 0.6],
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                  }}
-                />
-                <motion.div
-                  className="absolute -bottom-3 -left-3 w-24 h-1 bg-gradient-to-r from-cyan-500 to-indigo-600"
-                  animate={{
-                    x: [0, -5, 0],
-                    opacity: [0.6, 1, 0.6],
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                    delay: 2,
-                  }}
-                />
-                <motion.div
-                  className="absolute -left-3 -top-3 h-24 w-1 bg-gradient-to-b from-indigo-600 to-cyan-500"
-                  animate={{
-                    y: [0, 5, 0],
-                    opacity: [0.6, 1, 0.6],
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                    delay: 1,
-                  }}
-                />
-              </div>
-
-              {/* Inner image container with diagonal cutout */}
-              <div
-                className="absolute inset-4 overflow-hidden bg-neutral-900/50 backdrop-blur-sm"
-                style={{ perspective: "1200px" }}
-              >
-                {/* Diagonal cutout */}
-                <div
-                  className="absolute top-0 right-0 w-16 h-16 bg-black/0 z-10"
-                  style={{
-                    clipPath: "polygon(100% 0, 0 0, 100% 100%)",
-                  }}
-                />
-
-                {/* New image transition container */}
-                <div
-                  className="relative w-full h-full"
-                  style={{
-                    transformStyle: "preserve-3d",
-                    perspective: "1200px",
-                  }}
-                >
+                {/* Image transition container */}
+                <div className="relative w-full h-full">
                   {/* First image */}
                   <motion.div
-                    className="absolute inset-0 overflow-hidden"
-                    animate={
-                      isTransitioning && activeImage === 2
-                        ? {
-                            x: "-50%",
-                            rotateY: 45,
-                            scale: 0.85,
-                            zIndex: 0,
-                            opacity: 0.8,
-                            filter: "blur(2px)",
-                            z: -100,
-                          }
-                        : {
-                            x: activeImage === 1 ? "0%" : "100%",
-                            rotateY: 0,
-                            scale: 1,
-                            zIndex: activeImage === 1 ? 1 : 0,
-                            opacity: activeImage === 1 ? 1 : 0,
-                            filter: "blur(0px)",
-                            z: 0,
-                          }
-                    }
-                    transition={{
-                      duration: 1.8,
-                      ease: [0.16, 1, 0.3, 1],
+                    className="absolute inset-0"
+                    animate={{
+                      opacity: activeImage === 1 ? 1 : 0,
+                      scale: activeImage === 1 ? 1 : 1.1,
                     }}
-                    style={{
-                      zIndex: activeImage === 1 ? 1 : 0,
-                      transformOrigin: "left center",
-                      transformStyle: "preserve-3d",
-                      boxShadow:
-                        isTransitioning && activeImage === 2
-                          ? "12px 12px 20px rgba(0,0,0,0.4)"
-                          : "none",
-                    }}
+                    transition={{ duration: 1.5 }}
                   >
-                    <div
-                      className="relative w-full h-full overflow-hidden"
-                      style={{ transformStyle: "preserve-3d" }}
-                    >
-                      <Image
-                        src={imageMetadata.profile1.url}
-                        alt={imageMetadata.profile1.alt}
-                        fill
-                        className="object-cover"
-                        priority
-                        sizes="(max-width: 768px) 50vw, 33vw"
-                      />
-                      {/* Dynamic lighting effect */}
-                      {isTransitioning && activeImage === 2 && (
-                        <motion.div
-                          className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 0.5 }}
-                          exit={{ opacity: 0 }}
-                        />
-                      )}
-                    </div>
+                    <Image
+                      src={imageMetadata.profile1.url}
+                      alt={imageMetadata.profile1.alt}
+                      fill
+                      className="object-cover"
+                      priority
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
                   </motion.div>
 
                   {/* Second image */}
                   <motion.div
-                    className="absolute inset-0 overflow-hidden"
-                    animate={
-                      isTransitioning && activeImage === 1
-                        ? {
-                            x: "50%",
-                            rotateY: -45,
-                            scale: 0.85,
-                            zIndex: 0,
-                            opacity: 0.8,
-                            filter: "blur(2px)",
-                            z: -100,
-                          }
-                        : {
-                            x: activeImage === 2 ? "0%" : "-100%",
-                            rotateY: 0,
-                            scale: 1,
-                            zIndex: activeImage === 2 ? 1 : 0,
-                            opacity: activeImage === 2 ? 1 : 0,
-                            filter: "blur(0px)",
-                            z: 0,
-                          }
-                    }
-                    transition={{
-                      duration: 1.8,
-                      ease: [0.16, 1, 0.3, 1],
+                    className="absolute inset-0"
+                    animate={{
+                      opacity: activeImage === 2 ? 1 : 0,
+                      scale: activeImage === 2 ? 1 : 1.1,
                     }}
-                    style={{
-                      zIndex: activeImage === 2 ? 1 : 0,
-                      transformOrigin: "right center",
-                      transformStyle: "preserve-3d",
-                      boxShadow:
-                        isTransitioning && activeImage === 1
-                          ? "12px 12px 20px rgba(0,0,0,0.4)"
-                          : "none",
-                    }}
+                    transition={{ duration: 1.5 }}
                   >
-                    <div
-                      className="relative w-full h-full overflow-hidden"
-                      style={{ transformStyle: "preserve-3d" }}
-                    >
-                      <Image
-                        src={imageMetadata.profile2.url}
-                        alt={imageMetadata.profile2.alt}
-                        fill
-                        className="object-cover"
-                        priority
-                        sizes="(max-width: 768px) 50vw, 33vw"
-                      />
-                      {/* Dynamic lighting effect */}
-                      {isTransitioning && activeImage === 1 && (
-                        <motion.div
-                          className="absolute inset-0 bg-gradient-to-l from-black/50 to-transparent"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 0.5 }}
-                          exit={{ opacity: 0 }}
-                        />
-                      )}
-                    </div>
-                  </motion.div>
-
-                  {/* 3D container effect - perspective container */}
-                  <motion.div
-                    className="absolute inset-0 pointer-events-none"
-                    style={{
-                      transformStyle: "preserve-3d",
-                      perspective: "1200px",
-                    }}
-                  >
-                    {/* Floating 3D elements for enhanced depth */}
-                    {isTransitioning && (
-                      <>
-                        <motion.div
-                          className="absolute w-full h-full border-2 border-cyan-500/30 rounded-sm z-20"
-                          initial={{ z: 0, opacity: 0 }}
-                          animate={{
-                            z: activeImage === 1 ? [-20, 20] : [20, -20],
-                            opacity: [0, 0.6, 0],
-                          }}
-                          transition={{ duration: 1.8, times: [0, 0.5, 1] }}
-                          style={{ transformStyle: "preserve-3d" }}
-                        />
-                        <motion.div
-                          className="absolute w-full h-full border border-indigo-500/20 rounded-sm z-10"
-                          initial={{ z: 0, opacity: 0 }}
-                          animate={{
-                            z: activeImage === 1 ? [30, -10] : [-10, 30],
-                            opacity: [0, 0.4, 0],
-                          }}
-                          transition={{ duration: 1.8, times: [0, 0.5, 1] }}
-                          style={{ transformStyle: "preserve-3d" }}
-                        />
-                      </>
-                    )}
-                  </motion.div>
-
-                  {/* Enhanced transition effect overlay */}
-                  {isTransitioning && (
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-tr from-transparent via-indigo-500/20 to-cyan-500/20 mix-blend-overlay"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: [0, 0.8, 0] }}
-                      transition={{ duration: 1.8, times: [0, 0.5, 1] }}
-                      style={{ filter: "blur(8px)" }}
+                    <Image
+                      src={imageMetadata.profile2.url}
+                      alt={imageMetadata.profile2.alt}
+                      fill
+                      className="object-cover"
+                      priority
+                      sizes="(max-width: 768px) 100vw, 50vw"
                     />
-                  )}
+                  </motion.div>
 
-                  {/* Always present overlay for consistent styling */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-70" />
+                  {/* Overlay gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 </div>
               </div>
 
-              {/* Animated edge highlight */}
+              {/* Floating tech badge */}
               <motion.div
-                className="absolute top-0 right-0 w-full h-full pointer-events-none opacity-70"
-                animate={{
-                  background: [
-                    "linear-gradient(45deg, transparent 60%, rgba(99, 102, 241, 0.3) 100%)",
-                    "linear-gradient(45deg, transparent 60%, rgba(34, 211, 238, 0.3) 100%)",
-                    "linear-gradient(45deg, transparent 60%, rgba(99, 102, 241, 0.3) 100%)",
-                  ],
-                }}
-                transition={{
-                  duration: 5,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                }}
-              />
-
-              {/* Animated particles in corner */}
-              <div className="absolute -top-2 -right-2">
-                <div className="relative">
-                  <motion.div
-                    className="absolute w-1 h-1 rounded-full bg-cyan-500"
-                    animate={{
-                      y: [0, 8, 0],
-                      opacity: [0.4, 1, 0.4],
-                      scale: [1, 1.2, 1],
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      repeatType: "reverse",
-                    }}
-                  />
-                  <motion.div
-                    className="absolute w-1 h-1 rounded-full bg-indigo-500 ml-5"
-                    animate={{
-                      y: [0, 5, 0],
-                      opacity: [0.4, 1, 0.4],
-                      scale: [1, 1.2, 1],
-                    }}
-                    transition={{
-                      duration: 2.5,
-                      repeat: Infinity,
-                      repeatType: "reverse",
-                      delay: 0.5,
-                    }}
-                  />
-                  <motion.div
-                    className="absolute w-1 h-1 rounded-full bg-purple-500 ml-2 mt-2"
-                    animate={{
-                      y: [0, 6, 0],
-                      opacity: [0.4, 1, 0.4],
-                      scale: [1, 1.2, 1],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      repeatType: "reverse",
-                      delay: 1,
-                    }}
-                  />
+                className="absolute -bottom-4 -right-4 bg-neutral-900/90 border border-cyan-500/30 backdrop-blur-md px-4 py-2 rounded-lg shadow-xl z-30"
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.5 }}
+              >
+                <div className="flex items-center gap-2">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  </span>
+                  <span className="text-xs font-mono text-cyan-400">OPEN TO WORK</span>
                 </div>
-              </div>
-
-              {/* Digital element accent */}
-              <div className="absolute -bottom-2 -right-2">
-                <motion.div
-                  className="text-xs font-mono bg-neutral-900/70 text-cyan-400 px-2 py-1 rounded border border-indigo-500/30 backdrop-blur-sm"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.8 }}
-                >
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-1 h-1 rounded-full bg-cyan-500 animate-pulse" />
-                    <span>DEV_2025</span>
-                  </div>
-                </motion.div>
-              </div>
+              </motion.div>
             </motion.div>
           </div>
 

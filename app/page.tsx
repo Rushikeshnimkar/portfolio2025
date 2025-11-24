@@ -9,6 +9,7 @@ import Projects from "./projects/page";
 import { AIChatModal } from "../components/tools/ai-chat-modal";
 import { useState, useEffect } from "react";
 import GitHub from "./github/page";
+import NeuralBackground from "../components/neural-background";
 
 export default function Home() {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -50,31 +51,7 @@ export default function Home() {
 
       <div className="min-h-screen w-full text-white overflow-x-hidden relative">
         {/* Gradient cyberpunk background */}
-        <div
-          className="fixed inset-0 z-[-1] overflow-hidden"
-          data-theme-target="gradient-background"
-          id="gradient-background"
-        >
-          {/* Cyberpunk theme gradient blobs */}
-          <div
-            className="absolute top-10 left-10 w-96 h-96 bg-gradient-to-br from-emerald-600 to-teal-900 rounded-full mix-blend-screen filter blur-3xl opacity-40 animate-blob"
-            data-theme-target="gradient-blob-1"
-            id="gradient-blob-1"
-          />
-          <div
-            className="absolute top-40 right-10 w-96 h-96 bg-gradient-to-bl from-violet-700 to-purple-900 rounded-full mix-blend-screen filter blur-3xl opacity-40 animate-blob animation-delay-2000"
-            data-theme-target="gradient-blob-2"
-            id="gradient-blob-2"
-          />
-          <div
-            className="absolute bottom-10 left-1/3 w-96 h-96 bg-gradient-to-tl from-cyan-800 to-cyan-950 rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-blob animation-delay-4000"
-            data-theme-target="gradient-blob-3"
-            id="gradient-blob-3"
-          />
-
-          {/* Overlay scanlines effect */}
-          <div className="absolute inset-0 bg-scanlines opacity-5 pointer-events-none"></div>
-        </div>
+        <NeuralBackground />
 
         <section
           id="home"
@@ -137,10 +114,9 @@ export default function Home() {
       <button
         onClick={() => setIsChatOpen(!isChatOpen)}
         className={`fixed bottom-6 right-6 p-4 rounded-xl shadow-xl transition-all duration-300 transform z-50 
-          ${
-            isChatOpen
-              ? "bg-neutral-900/80 backdrop-blur-sm border border-emerald-800 hover:bg-neutral-800/80"
-              : "bg-gradient-to-r from-emerald-600 to-teal-800 hover:shadow-[0_0_20px_rgba(16,185,129,0.6)] hover:scale-105"
+          ${isChatOpen
+            ? "bg-neutral-900/80 backdrop-blur-sm border border-emerald-800 hover:bg-neutral-800/80"
+            : "bg-gradient-to-r from-emerald-600 to-teal-800 hover:shadow-[0_0_20px_rgba(16,185,129,0.6)] hover:scale-105"
           }
           group flex items-center justify-center`}
         data-theme-target="chat-button"
