@@ -3,7 +3,7 @@ import { StructuredContent } from "./types";
 // Update the generateStructuredResponse function to handle specific project types
 export function generateStructuredResponse(queryType: string): StructuredContent | null {
     // Define individual project templates
-    const projectTemplates: Record<string, any> = {
+    const projectTemplates: Record<string, { title: string; description: string; technologies: string[]; link: string }[]> = {
         gitsplit_project: [
             {
                 title: "Gitsplit",
@@ -40,7 +40,7 @@ export function generateStructuredResponse(queryType: string): StructuredContent
     };
 
     // Define individual contact templates
-    const contactTemplates: Record<string, any> = {
+    const contactTemplates: Record<string, { email?: string; phone?: string; location?: string; discord?: string; type: string }> = {
         email_contact: {
             email: "rushikeshnimkar396@gmail.com",
             type: "Email",
@@ -60,7 +60,7 @@ export function generateStructuredResponse(queryType: string): StructuredContent
     };
 
     // Define individual link templates
-    const linkTemplates: Record<string, any> = {
+    const linkTemplates: Record<string, { title: string; url: string; description: string }[]> = {
         resume_link: [
             {
                 title: "Resume",
@@ -118,7 +118,7 @@ export function generateStructuredResponse(queryType: string): StructuredContent
     };
 
     // Define the structured data templates for general categories
-    const structuredDataTemplates: Record<string, any> = {
+    const structuredDataTemplates: Record<string, unknown> = {
         skills: [
             { name: "JavaScript", category: "Programming Language" },
             { name: "Java", category: "Programming Language" },

@@ -1,9 +1,9 @@
-import { ChatOpenAI, ChatOpenAICallOptions } from "@langchain/openai";
+import { ChatOpenAI } from "@langchain/openai";
 import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
 import { BaseMessage, AIMessage } from "@langchain/core/messages";
 import { queryVectorStore } from "@/lib/embeddings";
 import { ChatMessage, ChatResponse, OpenRouterFields, OpenRouterMessage } from "./types";
-import { needsWebSearch, detectQueryType } from "./intent-detector";
+import { detectQueryType } from "./intent-detector";
 import { generateStructuredResponse } from "./response-generator";
 
 // Simple in-memory cache for vector search results
@@ -19,7 +19,7 @@ class OpenRouterChatModel extends ChatOpenAI {
         this.isSearchQuery = isSearchQuery;
     }
 
-    async _generate(messages: BaseMessage[], _options: ChatOpenAICallOptions) {
+    async _generate(messages: BaseMessage[]) {
         // Format messages for OpenRouter
         const formattedMessages: OpenRouterMessage[] = messages.map((msg) => ({
             role:
@@ -224,12 +224,12 @@ export class ChatWorkflow {
         // We need to convert our simple message format to LangChain's BaseMessage format
         // for the _generate method we implemented in OpenRouterChatModel
         const langChainMessages = messages.map((msg) => {
-            if (msg.role === "user") return { _getType: () => "human", content: msg.content } as any;
-            if (msg.role === "system") return { _getType: () => "system", content: msg.content } as any;
-            return { _getType: () => "ai", content: msg.content } as any;
+            if (msg.role === "user") return { _getType: () => "human", content: msg.content } as BaseMessage;
+            if (msg.role === "system") return { _getType: () => "system", content: msg.content } as BaseMessage;
+            return { _getType: () => "ai", content: msg.content } as BaseMessage;
         });
 
-        const response = await this.model._generate(langChainMessages, {});
+        const response = await this.model._generate(langChainMessages);
         const content = response.generations[0].text;
 
         return {

@@ -6,7 +6,7 @@ import { TaskType } from "@google/generative-ai";
 
 // Custom class to handle Matryoshka slicing for Gemini embeddings
 class GeminiEmbeddings extends GoogleGenerativeAIEmbeddings {
-  constructor(fields: any) {
+  constructor(fields: ConstructorParameters<typeof GoogleGenerativeAIEmbeddings>[0]) {
     super(fields);
   }
 

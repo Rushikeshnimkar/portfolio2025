@@ -1,4 +1,4 @@
-import { BaseMessage } from "@langchain/core/messages";
+
 
 export interface ChatMessage {
     type: "user" | "assistant";
@@ -7,7 +7,7 @@ export interface ChatMessage {
 
 export interface StructuredContent {
     type: string;
-    data: any;
+    data: unknown;
 }
 
 export interface ChatResponse {
