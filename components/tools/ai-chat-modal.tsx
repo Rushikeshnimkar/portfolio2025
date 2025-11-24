@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { RiRobot2Line } from "react-icons/ri";
 import { IoClose } from "react-icons/io5";
 
 import {
@@ -27,6 +26,7 @@ import {
   isTrustedClick,
 } from "./ai-chat/chat-utils";
 import { AIChatModalProps } from "./ai-chat/types";
+import { RiRobot2Line } from "react-icons/ri";
 
 interface StructuredContent {
   type: "skills" | "projects" | "experience" | "contact" | "links" | "general";
@@ -60,14 +60,9 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
   const [clickbaitText, setClickbaitText] = useState("");
   const [hasInteracted, setHasInteracted] = useState(false);
   const [showAnimation, setShowAnimation] = useState(false);
-  const [buttonPosition, setButtonPosition] = useState<{
-    x: number;
-    y: number;
-  } | null>(null);
 
   // Refs
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const chatButtonRef = useRef<HTMLButtonElement>(null);
 
   // Select a random clickbait prompt on initial load
   useEffect(() => {
@@ -143,20 +138,8 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
     }, 500);
   };
 
-  // Function to capture the button position
-  const captureButtonPosition = () => {
-    if (chatButtonRef.current) {
-      const rect = chatButtonRef.current.getBoundingClientRect();
-      setButtonPosition({
-        x: rect.left + rect.width / 2,
-        y: rect.top + rect.height / 2,
-      });
-    }
-  };
-
   // Function to handle clickbait click
   const handleClickbaitClick = () => {
-    captureButtonPosition();
     setShowClickbait(false);
     setHasInteracted(true);
     localStorage.setItem("hasInteractedWithAI", "true");
@@ -196,10 +179,10 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
         prev.map((msg, idx) =>
           idx === prev.length - 1
             ? {
-                ...msg,
-                content: response.content,
-                structuredContent: response.structuredContent,
-              }
+              ...msg,
+              content: response.content,
+              structuredContent: response.structuredContent,
+            }
             : msg
         )
       );
@@ -254,21 +237,6 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
 
   return (
     <>
-      {/* Chat button with ref to capture position */}
-      <button
-        ref={chatButtonRef}
-        onClick={() => {
-          captureButtonPosition();
-          // Your existing open chat logic
-          setShowClickbait(false);
-          setHasInteracted(true);
-          localStorage.setItem("hasInteractedWithAI", "true");
-        }}
-        className="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-40"
-      >
-        <RiRobot2Line className="w-6 h-6 text-white" />
-      </button>
-
       {/* Clickbait prompt */}
       <AnimatePresence>
         {showClickbait && !isOpen && !hasInteracted && (
@@ -329,7 +297,6 @@ export function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
         {isOpen && showAnimation && (
           <AIChatAnimation
             onAnimationComplete={handleAnimationComplete}
-            buttonPosition={buttonPosition}
           />
         )}
 
