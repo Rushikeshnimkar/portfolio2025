@@ -97,73 +97,10 @@ export default function Contributions() {
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      transition={{ duration: 0.5, delay: 5 }}
+                      transition={{ duration: 0.5 }}
                       className="w-full"
                     >
                       <GitHubContributions username="Rushikeshnimkar" />
-                    </motion.div>
-
-                    {/* Loading animation overlay */}
-                    <motion.div
-                      className="absolute top-0 left-0 right-0 bottom-0 z-20 overflow-x-auto pointer-events-none"
-                      initial={{ opacity: 1 }}
-                      animate={{ opacity: 0 }}
-                      transition={{ duration: 0.4, delay: 4 }}
-                    >
-                      {/* Grid of blocks */}
-                      <div style={{ minWidth: "750px", padding: "16px" }}>
-                        <div className="grid grid-cols-[repeat(53,1fr)] grid-rows-7 gap-[4px]">
-                          {Array.from({ length: 371 }).map((_, index) => {
-                            const colors = [
-                              "rgba(22, 27, 34, 0.5)",
-                              "rgba(14, 68, 41, 0.8)",
-                              "rgba(0, 109, 50, 0.8)",
-                              "rgba(38, 166, 65, 0.8)",
-                              "rgba(57, 211, 83, 0.8)",
-                            ];
-
-                            const random = Math.random();
-                            let colorIndex;
-                            if (random < 0.6) colorIndex = 0;
-                            else if (random < 0.8) colorIndex = 1;
-                            else if (random < 0.9) colorIndex = 2;
-                            else if (random < 0.97) colorIndex = 3;
-                            else colorIndex = 4;
-
-                            return (
-                              <motion.div
-                                key={`block-${index}`}
-                                className="w-full h-full rounded-sm"
-                                style={{
-                                  backgroundColor: colors[colorIndex],
-                                  height: "14px",
-                                  minHeight: "8px",
-                                }}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{
-                                  duration: 0.2,
-                                  delay: Math.random() * 4.5,
-                                }}
-                              />
-                            );
-                          })}
-                        </div>
-                      </div>
-
-                      {/* Loading indicator */}
-                      <div className="absolute bottom-4 left-0 right-0 flex justify-center">
-                        <div className="px-4 py-2 bg-neutral-800/80 rounded-full flex items-center gap-2">
-                          <motion.div
-                            className="w-2 h-2 bg-[rgba(38,166,65,0.8)] rounded-full"
-                            animate={{ scale: [1, 1.5, 1] }}
-                            transition={{ duration: 1, repeat: Infinity }}
-                          />
-                          <span className="text-xs text-neutral-300">
-                            Loading contribution data...
-                          </span>
-                        </div>
-                      </div>
                     </motion.div>
                   </div>
                 )}
