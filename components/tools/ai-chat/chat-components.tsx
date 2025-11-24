@@ -90,9 +90,8 @@ export const MessageDisplay: React.FC<MessageDisplayProps> = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
             key={index}
-            className={`flex ${
-              message.type === "user" ? "justify-end" : "justify-start"
-            } group`}
+            className={`flex ${message.type === "user" ? "justify-end" : "justify-start"
+              } group`}
           >
             {message.type === "assistant" && (
               <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center mr-2 shadow-lg">
@@ -100,15 +99,14 @@ export const MessageDisplay: React.FC<MessageDisplayProps> = ({
               </div>
             )}
             <div
-              className={`max-w-[85%] p-3 rounded-xl shadow-lg ${
-                message.type === "user"
-                  ? "bg-gradient-to-r from-indigo-600 to-cyan-700 text-white border border-indigo-500/30"
-                  : "bg-neutral-900/70 text-white border border-indigo-500/20 backdrop-blur-sm"
-              }`}
+              className={`max-w-[85%] p-3 rounded-xl shadow-lg ${message.type === "user"
+                ? "bg-gradient-to-r from-indigo-600 to-cyan-700 text-white border border-indigo-500/30"
+                : "bg-neutral-900/70 text-white border border-indigo-500/20 backdrop-blur-sm"
+                }`}
             >
               {message.type === "assistant" &&
-              index === messages.length - 1 &&
-              message.content === "..." ? (
+                index === messages.length - 1 &&
+                message.content === "..." ? (
                 isSearching ? (
                   <SearchingIndicator />
                 ) : (
@@ -146,6 +144,7 @@ const MessageContent: React.FC<{
   // Don't show structured content for simple questions like "who made you"
   const isBasicQuestion =
     message.type === "assistant" &&
+    message.content &&
     message.content.toLowerCase().includes("rushikesh") &&
     (message.content.toLowerCase().includes("created") ||
       message.content.toLowerCase().includes("made") ||
@@ -154,7 +153,7 @@ const MessageContent: React.FC<{
   return (
     <>
       {/* Always show the text response */}
-      {message.content.trim() && (
+      {message.content && message.content.trim() && (
         <div
           className="prose prose-invert prose-xs max-w-none text-sm"
           dangerouslySetInnerHTML={{
@@ -166,7 +165,8 @@ const MessageContent: React.FC<{
       )}
 
       {/* Add a small divider if we have both text and structured content */}
-      {message.content.trim() &&
+      {message.content &&
+        message.content.trim() &&
         message.structuredContent &&
         !isBasicQuestion && (
           <div className="my-2 border-t border-indigo-500/20"></div>
@@ -363,8 +363,8 @@ export const InputArea: React.FC<InputAreaProps> = ({
     activePromptCategory === "all"
       ? predefinedPrompts
       : predefinedPrompts.filter(
-          (prompt) => prompt.category === activePromptCategory
-        );
+        (prompt) => prompt.category === activePromptCategory
+      );
 
   return (
     <div className="border-t border-indigo-500/20 p-4 bg-neutral-900/80 backdrop-blur-md">
@@ -413,9 +413,8 @@ export const InputArea: React.FC<InputAreaProps> = ({
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className={`h-3 w-3 transition-transform duration-300 ${
-              isPromptPanelExpanded ? "rotate-360" : ""
-            }`}
+            className={`h-3 w-3 transition-transform duration-300 ${isPromptPanelExpanded ? "rotate-360" : ""
+              }`}
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -446,41 +445,37 @@ export const InputArea: React.FC<InputAreaProps> = ({
               <div className="inline-flex p-0.5 rounded-lg bg-neutral-800/30 backdrop-blur-sm border border-indigo-500/20">
                 <button
                   onClick={() => setActivePromptCategory("all")}
-                  className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
-                    activePromptCategory === "all"
-                      ? "bg-gradient-to-r from-indigo-500/20 to-cyan-500/20 text-white"
-                      : "text-neutral-400 hover:text-neutral-300"
-                  }`}
+                  className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${activePromptCategory === "all"
+                    ? "bg-gradient-to-r from-indigo-500/20 to-cyan-500/20 text-white"
+                    : "text-neutral-400 hover:text-neutral-300"
+                    }`}
                 >
                   All
                 </button>
                 <button
                   onClick={() => setActivePromptCategory("theme")}
-                  className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
-                    activePromptCategory === "theme"
-                      ? "bg-gradient-to-r from-indigo-500/20 to-cyan-500/20 text-white"
-                      : "text-neutral-400 hover:text-neutral-300"
-                  }`}
+                  className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${activePromptCategory === "theme"
+                    ? "bg-gradient-to-r from-indigo-500/20 to-cyan-500/20 text-white"
+                    : "text-neutral-400 hover:text-neutral-300"
+                    }`}
                 >
                   Themes
                 </button>
                 <button
                   onClick={() => setActivePromptCategory("info")}
-                  className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
-                    activePromptCategory === "info"
-                      ? "bg-gradient-to-r from-indigo-500/20 to-cyan-500/20 text-white"
-                      : "text-neutral-400 hover:text-neutral-300"
-                  }`}
+                  className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${activePromptCategory === "info"
+                    ? "bg-gradient-to-r from-indigo-500/20 to-cyan-500/20 text-white"
+                    : "text-neutral-400 hover:text-neutral-300"
+                    }`}
                 >
                   Info
                 </button>
                 <button
                   onClick={() => setActivePromptCategory("contact")}
-                  className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
-                    activePromptCategory === "contact"
-                      ? "bg-gradient-to-r from-indigo-500/20 to-cyan-500/20 text-white"
-                      : "text-neutral-400 hover:text-neutral-300"
-                  }`}
+                  className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${activePromptCategory === "contact"
+                    ? "bg-gradient-to-r from-indigo-500/20 to-cyan-500/20 text-white"
+                    : "text-neutral-400 hover:text-neutral-300"
+                    }`}
                 >
                   Contact
                 </button>
@@ -526,13 +521,12 @@ export const InputArea: React.FC<InputAreaProps> = ({
                   <button
                     key={index}
                     onClick={() => handlePromptSelect(item.prefix, item.prompt)}
-                    className={`flex-shrink-0 inline-flex items-center px-3 py-1.5 mr-2 rounded-full text-sm border backdrop-blur-sm transition-colors ${
-                      item.category === "theme"
-                        ? "bg-indigo-900/30 text-indigo-200 border-indigo-500/30 hover:bg-indigo-800/30"
-                        : item.category === "info"
+                    className={`flex-shrink-0 inline-flex items-center px-3 py-1.5 mr-2 rounded-full text-sm border backdrop-blur-sm transition-colors ${item.category === "theme"
+                      ? "bg-indigo-900/30 text-indigo-200 border-indigo-500/30 hover:bg-indigo-800/30"
+                      : item.category === "info"
                         ? "bg-cyan-900/30 text-cyan-200 border-cyan-500/30 hover:bg-cyan-800/30"
                         : "bg-blue-900/30 text-blue-200 border-blue-500/30 hover:bg-blue-800/30"
-                    }`}
+                      }`}
                   >
                     <span className="mr-1.5">{item.icon}</span>
                     <span>{item.prompt}</span>
@@ -591,20 +585,18 @@ export const InputArea: React.FC<InputAreaProps> = ({
         <button
           type="submit"
           disabled={isLoading || !input.trim()}
-          className={`relative px-4 py-2 rounded-xl transition-all duration-200 flex items-center justify-center overflow-hidden ${
-            isLoading || !input.trim()
-              ? "bg-neutral-800/50 text-neutral-400 cursor-not-allowed border border-neutral-700/50"
-              : "bg-[#2a2a2a] border border-indigo-500/30 text-white hover:border-indigo-500/60 hover:shadow-lg hover:shadow-indigo-500/20 hover:scale-[1.02] active:scale-[0.98]"
-          }`}
+          className={`relative px-4 py-2 rounded-xl transition-all duration-200 flex items-center justify-center overflow-hidden ${isLoading || !input.trim()
+            ? "bg-neutral-800/50 text-neutral-400 cursor-not-allowed border border-neutral-700/50"
+            : "bg-[#2a2a2a] border border-indigo-500/30 text-white hover:border-indigo-500/60 hover:shadow-lg hover:shadow-indigo-500/20 hover:scale-[1.02] active:scale-[0.98]"
+            }`}
         >
           {!(isLoading || !input.trim()) && (
             <div className="absolute inset-0">
               <div
-                className={`absolute inset-0 ${
-                  isThemeRequest(input)
-                    ? "bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500"
-                    : "bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-500"
-                } opacity-20`}
+                className={`absolute inset-0 ${isThemeRequest(input)
+                  ? "bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500"
+                  : "bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-500"
+                  } opacity-20`}
               />
             </div>
           )}
@@ -659,11 +651,10 @@ export const InputArea: React.FC<InputAreaProps> = ({
               }
             }, 50);
           }}
-          className={`px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1 shadow-sm border ${
-            isThemeRequest(input)
-              ? "bg-gradient-to-r from-indigo-600 to-cyan-600 text-white border-indigo-500/50"
-              : "bg-neutral-800 text-indigo-400 border-indigo-500/20 hover:bg-neutral-700"
-          } transition-all duration-200`}
+          className={`px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1 shadow-sm border ${isThemeRequest(input)
+            ? "bg-gradient-to-r from-indigo-600 to-cyan-600 text-white border-indigo-500/50"
+            : "bg-neutral-800 text-indigo-400 border-indigo-500/20 hover:bg-neutral-700"
+            } transition-all duration-200`}
         >
           <span>🎨</span>
           <span>Theme:</span>
@@ -692,11 +683,10 @@ export const InputArea: React.FC<InputAreaProps> = ({
               }
             }, 50);
           }}
-          className={`px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1 shadow-sm border ${
-            input.trim().toLowerCase().startsWith("search:")
-              ? "bg-gradient-to-r from-cyan-600 to-indigo-600 text-white border-cyan-500/50"
-              : "bg-neutral-800 text-cyan-400 border-cyan-500/20 hover:bg-neutral-700"
-          } transition-all duration-200`}
+          className={`px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1 shadow-sm border ${input.trim().toLowerCase().startsWith("search:")
+            ? "bg-gradient-to-r from-cyan-600 to-indigo-600 text-white border-cyan-500/50"
+            : "bg-neutral-800 text-cyan-400 border-cyan-500/20 hover:bg-neutral-700"
+            } transition-all duration-200`}
         >
           <span>🔍</span>
           <span>Search:</span>

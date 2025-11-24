@@ -191,15 +191,13 @@ export const useThemeHandler = () => {
       case "style":
         return `Changed \`${change.property}\` to \`${change.value}\` for \`${change.selector}\``;
       case "visibility":
-        return `${change.action === "hide" ? "Hidden" : "Showed"} \`${
-          change.selector
-        }\``;
+        return `${change.action === "hide" ? "Hidden" : "Showed"} \`${change.selector
+          }\``;
       case "attribute":
         return `Set attribute \`${change.attribute}=${change.value}\` on \`${change.selector}\``;
       case "class":
-        return `${change.action === "add" ? "Added" : "Removed"} class \`${
-          change.class
-        }\` ${change.action === "add" ? "to" : "from"} \`${change.selector}\``;
+        return `${change.action === "add" ? "Added" : "Removed"} class \`${change.class
+          }\` ${change.action === "add" ? "to" : "from"} \`${change.selector}\``;
       case "move":
         return `Moved \`${change.selector}\` to ${change.position} of \`${change.destination}\``;
       case "reorder":
@@ -256,7 +254,7 @@ export const useMessageHandler = (
     try {
       // Create a new function from the code
       const AsyncFunction = Object.getPrototypeOf(
-        async function () {}
+        async function () { }
       ).constructor;
 
       // Wrap the code in an async function that returns the result
@@ -318,15 +316,12 @@ export const useMessageHandler = (
               case "style":
                 return `Changed ${change.property} to ${change.value} for ${change.selector}`;
               case "visibility":
-                return `${change.action === "hide" ? "Hidden" : "Showed"} ${
-                  change.selector
-                }`;
+                return `${change.action === "hide" ? "Hidden" : "Showed"} ${change.selector
+                  }`;
               case "class":
-                return `${
-                  change.action === "add" ? "Added" : "Removed"
-                } class ${change.class} ${
-                  change.action === "add" ? "to" : "from"
-                } ${change.selector}`;
+                return `${change.action === "add" ? "Added" : "Removed"
+                  } class ${change.class} ${change.action === "add" ? "to" : "from"
+                  } ${change.selector}`;
               default:
                 return `Applied change to ${change.selector}`;
             }
@@ -356,9 +351,8 @@ export const useMessageHandler = (
       } catch (error) {
         console.error("Theme processing error:", error);
         return {
-          content: `**Error applying theme**: ${
-            error instanceof Error ? error.message : "Unknown error"
-          }`,
+          content: `**Error applying theme**: ${error instanceof Error ? error.message : "Unknown error"
+            }`,
           structuredContent: null,
         };
       } finally {
@@ -379,6 +373,7 @@ export const useMessageHandler = (
   const parseStructuredContent = useCallback(
     (content: string): StructuredContent | null => {
       try {
+        if (!content) return null;
         // Check if the content contains JSON structure markers
         if (content.includes("```json") && content.includes("```")) {
           const jsonMatch = content.match(/```json([\s\S]*?)```/);
@@ -441,20 +436,11 @@ export const useMessageHandler = (
           setIsSearching(false);
         }
 
-        // Parse structured content if available
-        const structuredContent = parseStructuredContent(data.response);
-
-        // Remove the JSON code block from the text content
-        let cleanContent = data.response;
-        if (structuredContent) {
-          // Remove the JSON code block from the displayed text
-          cleanContent = data.response
-            .replace(/```json[\s\S]*?```/g, "")
-            .trim();
-        }
+        // Use structured content directly from API response
+        const structuredContent = data.structuredContent || null;
 
         return {
-          content: cleanContent,
+          content: data.response,
           structuredContent,
           hasStructuredData: data.hasStructuredData,
           structuredDataType: data.structuredDataType,

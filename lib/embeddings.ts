@@ -2,12 +2,33 @@ import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
 import { Pinecone } from "@pinecone-database/pinecone";
 import { Document } from "@langchain/core/documents";
 import { PineconeStore } from "@langchain/pinecone";
+import { TaskType } from "@google/generative-ai";
+
+// Custom class to handle Matryoshka slicing for Gemini embeddings
+class GeminiEmbeddings extends GoogleGenerativeAIEmbeddings {
+  constructor(fields: any) {
+    super(fields);
+  }
+
+  async embedDocuments(documents: string[]): Promise<number[][]> {
+    const embeddings = await super.embedDocuments(documents);
+    // Slice to 768 dimensions
+    return embeddings.map((embedding) => embedding.slice(0, 768));
+  }
+
+  async embedQuery(document: string): Promise<number[]> {
+    const embedding = await super.embedQuery(document);
+    // Slice to 768 dimensions
+    return embedding.slice(0, 768);
+  }
+}
 
 // Initialize Google Gemini embeddings
-const getEmbeddings = () => {
-  return new GoogleGenerativeAIEmbeddings({
+export const getEmbeddings = () => {
+  return new GeminiEmbeddings({
     apiKey: process.env.GOOGLE_API_KEY!,
-    modelName: "text-embedding-004", // Gemini's embedding model
+    modelName: "models/gemini-embedding-001",
+    taskType: TaskType.RETRIEVAL_DOCUMENT,
   });
 };
 

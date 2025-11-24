@@ -17,13 +17,7 @@ dotenv.config({ path: resolve(__dirname, "../.env") });
 console.log("PINECONE_API_KEY exists:", !!process.env.PINECONE_API_KEY);
 console.log("GOOGLE_API_KEY exists:", !!process.env.GOOGLE_API_KEY);
 
-// Initialize Google Gemini embeddings
-const getEmbeddings = () => {
-  return new GoogleGenerativeAIEmbeddings({
-    apiKey: process.env.GOOGLE_API_KEY!,
-    modelName: "text-embedding-004", // Gemini's embedding model
-  });
-};
+import { getEmbeddings } from "../lib/embeddings.js";
 
 // Helper function to split text into chunks
 function splitTextIntoChunks(text: string, chunkSize: number): string[] {

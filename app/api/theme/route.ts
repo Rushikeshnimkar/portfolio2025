@@ -63,7 +63,7 @@ function isAllowedOrigin(origin: string | null) {
   const allowedOrigins = [
     "https://rushikeshnimkar.xyz",
     "https://www.rushikeshnimkar.xyz",
-    // "http://localhost:3000",
+    "http://localhost:3000",
   ];
   return origin && allowedOrigins.includes(origin);
 }
@@ -153,10 +153,9 @@ export async function POST(req: Request) {
       isProjectRequest || isPageOrComponentSpecific(cleanUserPrompt);
 
     console.log(
-      `🔍 Request classification: ${
-        isProjectRequest
-          ? "PROJECT-SPECIFIC"
-          : isSpecific
+      `🔍 Request classification: ${isProjectRequest
+        ? "PROJECT-SPECIFIC"
+        : isSpecific
           ? "PAGE/COMPONENT-SPECIFIC"
           : "GENERAL"
       }`
@@ -296,14 +295,13 @@ The modal has ID "project-modal-backdrop" with a content area "project-modal-{id
     // Enhanced system prompt with explicit instructions for reporting changes
     const systemPrompt = `You are a UI/Theme modification assistant that generates JavaScript code to modify a website's appearance based on the user's request.
 
-${
-  contextText
-    ? `Use the following page structure information as context to understand the elements you can modify:
+${contextText
+        ? `Use the following page structure information as context to understand the elements you can modify:
 --- START CONTEXT ---
 ${contextText}
 --- END CONTEXT ---`
-    : "No specific page structure context available."
-}
+        : "No specific page structure context available."
+      }
 
 Your task is to:
 1. Analyze the user's UI customization request
