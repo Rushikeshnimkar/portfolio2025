@@ -341,7 +341,7 @@ IMPORTANT: Respond ONLY with the JavaScript function 'applyThemeChanges' wrapped
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "x-ai/grok-4.1-fast", // Use a consistent model with your existing setup
+          model: "amazon/nova-2-lite-v1:free", // Use a consistent model with your existing setup
           messages: [
             {
               role: "system",

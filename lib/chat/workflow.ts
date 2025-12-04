@@ -66,7 +66,7 @@ class OpenRouterChatModel extends ChatOpenAI {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        model: "x-ai/grok-4.1-fast",
+                        model: "amazon/nova-2-lite-v1:free",
                         messages: formattedMessages,
                     }),
                 }
