@@ -46,7 +46,7 @@ async function handler(req: NextRequest) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "openai/gpt-oss-20b:free",
+          model: "tngtech/tng-r1t-chimera:free",
           messages: messages,
           max_tokens: 10000, // Limit response size
           temperature: 0.2, // Add temperature for more consistent responses
