@@ -25,6 +25,9 @@ export interface StructuredContent {
 export interface AIChatModalProps {
   isOpen: boolean;
   onClose: () => void;
+  messages: Message[];
+  isSearching: boolean;
+  error: string;
 }
 
 /**
@@ -56,7 +59,7 @@ export interface InputAreaProps {
   handleSubmit: (e: React.FormEvent) => void;
   handleKeyDown: (e: React.KeyboardEvent) => void;
   resetThemeChanges: () => void;
-  inputRef: React.RefObject<HTMLTextAreaElement>;
+  inputRef: React.RefObject<HTMLInputElement>;
   isThemeRequest: (message: string) => boolean;
 }
 
