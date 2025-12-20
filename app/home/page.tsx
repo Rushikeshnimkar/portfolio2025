@@ -1,13 +1,9 @@
-"use client";
-import { motion } from "framer-motion";
 import Image from "next/image";
 
-import { useState, useEffect } from "react";
 import { FaGithub, FaLinkedin, FaDiscord } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import Head from "next/head";
 import MagneticButton from "@/components/ui/magnetic-button";
-import { TextReveal } from "@/components/ui/text-reveal";
 import { TiltCard } from "@/components/ui/tilt-card";
 
 // Define image metadata for SEO
@@ -27,16 +23,6 @@ const imageMetadata = {
 };
 
 export default function HomePage() {
-  const [activeImage, setActiveImage] = useState(1); // 1 or 2
-
-  useEffect(() => {
-    // Image transition every 5 seconds
-    const imageInterval = setInterval(() => {
-      setActiveImage((prev) => (prev === 1 ? 2 : 1));
-    }, 5000); // Change image every 5 seconds
-
-    return () => clearInterval(imageInterval);
-  }, []);
 
   return (
     <>
@@ -76,11 +62,8 @@ export default function HomePage() {
             className="flex-1 flex justify-center relative order-1 md:order-2"
           >
             <TiltCard className="relative w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96">
-              <motion.div
+              <div
                 id="home-profile-image-container"
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
                 className="w-full h-full"
               >
                 {/* Background glow */}
@@ -92,17 +75,9 @@ export default function HomePage() {
                   <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-cyan-500/50 rounded-tl-xl z-20" />
                   <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-indigo-500/50 rounded-br-xl z-20" />
 
-                  {/* Image transition container */}
+                  {/* Image container - Static Image */}
                   <div className="relative w-full h-full">
-                    {/* First image */}
-                    <motion.div
-                      className="absolute inset-0"
-                      animate={{
-                        opacity: activeImage === 1 ? 1 : 0,
-                        scale: activeImage === 1 ? 1 : 1.1,
-                      }}
-                      transition={{ duration: 1.5 }}
-                    >
+                    <div className="absolute inset-0">
                       <Image
                         src={imageMetadata.profile1.url}
                         alt={imageMetadata.profile1.alt}
@@ -111,38 +86,15 @@ export default function HomePage() {
                         priority
                         sizes="(max-width: 768px) 100vw, 50vw"
                       />
-                    </motion.div>
-
-                    {/* Second image */}
-                    <motion.div
-                      className="absolute inset-0"
-                      animate={{
-                        opacity: activeImage === 2 ? 1 : 0,
-                        scale: activeImage === 2 ? 1 : 1.1,
-                      }}
-                      transition={{ duration: 1.5 }}
-                    >
-                      <Image
-                        src={imageMetadata.profile2.url}
-                        alt={imageMetadata.profile2.alt}
-                        fill
-                        className="object-cover"
-                        priority
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                      />
-                    </motion.div>
-
+                    </div>
                     {/* Overlay gradient */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                   </div>
                 </div>
 
                 {/* Floating tech badge */}
-                <motion.div
+                <div
                   className="absolute -bottom-4 -right-4 bg-neutral-900/90 border border-cyan-500/30 backdrop-blur-md px-4 py-2 rounded-lg shadow-xl z-30"
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.5 }}
                 >
                   <div className="flex items-center gap-2">
                     <span className="relative flex h-2 w-2">
@@ -151,55 +103,38 @@ export default function HomePage() {
                     </span>
                     <span className="text-xs font-mono text-cyan-400">OPEN TO WORK</span>
                   </div>
-                </motion.div>
-              </motion.div>
+                </div>
+              </div>
             </TiltCard>
           </div>
 
           {/* Text Content Section */}
-          <motion.div
+          <div
             id="home-text-content"
             className="flex-1 text-center md:text-left space-y-4 md:space-y-8 order-2 md:order-1"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3 }}
           >
             <div id="home-title" className="text-2xl sm:text-4xl md:text-6xl lg:text-6xl font-bold">
               <span className="text-white">Hi, I&apos;m</span> <br className="hidden sm:block" />
-              <TextReveal
-                text="Rushikesh Nimkar"
-                className="text-blue-500"
-                delay={0.5}
-              />
+              <span className="text-blue-500">Rushikesh Nimkar</span>
             </div>
 
             <div id="home-subtitle" className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-400">
-              <TextReveal
-                text="Full Stack Developer | Tech Enthusiast"
-                className="text-gray-400"
-                delay={1.5}
-              />
+              <span className="text-gray-400">Full Stack Developer | Tech Enthusiast</span>
             </div>
 
-            <motion.p
+            <p
               id="home-description"
               className="text-sm sm:text-base md:text-lg text-gray-500 max-w-xl mx-auto md:mx-0"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 2.5 }}
             >
               I turn coffee into code and bugs into features. Full-stack
               developer who enjoys building digital puzzles and occasionally
               solving them. Currently exploring blockchain, because why not add
               more blocks to my stacks?
-            </motion.p>
+            </p>
 
-            <motion.div
+            <div
               id="home-action-buttons"
               className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mt-4 md:mt-0"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 2.8 }}
             >
               <div
                 id="home-main-buttons"
@@ -274,12 +209,9 @@ export default function HomePage() {
               </div>
 
               {/* Social Links */}
-              <motion.div
+              <div
                 id="home-social-links"
                 className="flex gap-6 items-center mt-4 sm:mt-0"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 3.0 }}
               >
                 <MagneticButton>
                   <a
@@ -321,9 +253,9 @@ export default function HomePage() {
                     <FaDiscord size={24} />
                   </a>
                 </MagneticButton>
-              </motion.div>
-            </motion.div>
-          </motion.div>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
     </>
