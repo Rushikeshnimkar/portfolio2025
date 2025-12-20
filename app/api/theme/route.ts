@@ -63,7 +63,7 @@ function isAllowedOrigin(origin: string | null) {
   const allowedOrigins = [
     "https://rushikeshnimkar.xyz",
     "https://www.rushikeshnimkar.xyz",
-    "http://localhost:3000",
+    // "http://localhost:3000",
   ];
   return origin && allowedOrigins.includes(origin);
 }

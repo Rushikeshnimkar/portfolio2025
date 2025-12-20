@@ -208,6 +208,8 @@ export default function Home() {
       </section>
 
       {/* Circular AI Button */}
+      {/* Circular AI Button */}
+
       <button
         onClick={handleAIButtonClick}
         className={`fixed bottom-4 right-4 md:bottom-6 md:right-6 w-14 h-14 rounded-full shadow-xl transition-all duration-300 transform z-[60] 

@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { IoSend, IoClose } from "react-icons/io5";
+import { IoSend, IoClose, IoRefresh } from "react-icons/io5";
 import { CgSpinner } from "react-icons/cg";
 import { predefinedPrompts } from "@/data/prompt-data";
 
@@ -75,8 +75,10 @@ export const UnifiedAIInput: React.FC<UnifiedAIInputProps> = ({
     const startX = buttonCenter - screenCenter;
 
     // Determine max width (Responsive: Less padding on mobile)
-    const padding = windowWidth < 768 ? 32 : 200;
-    const maxInputWidth = Math.min(600, Math.max(280, windowWidth - padding));
+    const padding = windowWidth < 768 ? 16 : 200; // Reduced padding on mobile
+    // Subtract extra space for side buttons (approx 120px) when chat is open
+    const sideButtonsWidth = isChatOpen ? 120 : 0;
+    const maxInputWidth = Math.min(600, Math.max(200, windowWidth - padding - sideButtonsWidth));
 
     // Handle closing logic
     const handleClose = () => {
@@ -111,7 +113,7 @@ export const UnifiedAIInput: React.FC<UnifiedAIInputProps> = ({
                         className="fixed z-[60] flex flex-col items-center justify-center pointer-events-none"
                         style={{
                             left: "50%",
-                            bottom: buttonPosition.bottom,
+                            bottom: windowWidth < 768 ? 16 : buttonPosition.bottom,
                             transform: "translateX(-50%)",
                             width: "100%",
                             maxWidth: "100vw",
@@ -119,14 +121,14 @@ export const UnifiedAIInput: React.FC<UnifiedAIInputProps> = ({
                         // Keep wrapper alive while children animate
                         exit={{ transition: { duration: 0.3 } }}
                     >
-                        {/* Slow Loading Message */}
+                        {/* Slow Loading Message (Desktop - Relative to Input) */}
                         <AnimatePresence>
-                            {showSlowLoadingMessage && (
+                            {showSlowLoadingMessage && windowWidth >= 768 && (
                                 <motion.div
                                     initial={{ opacity: 0, y: 5 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: 5 }}
-                                    className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 bg-neutral-900/80 backdrop-blur-md border border-white/10 px-4 py-1.5 rounded-full text-xs font-medium text-white/70 shadow-lg pointer-events-none flex items-center gap-2 whitespace-nowrap"
+                                    className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 bg-neutral-900/80 backdrop-blur-md border border-white/10 px-4 py-1.5 rounded-full text-xs font-medium text-white/70 shadow-lg pointer-events-none flex items-center gap-2 whitespace-nowrap z-[70]"
                                 >
                                     <span className="relative flex h-2 w-2">
                                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
@@ -210,7 +212,7 @@ export const UnifiedAIInput: React.FC<UnifiedAIInputProps> = ({
                                             </svg>
                                         </button>
 
-                                        {/* Theme Toggle */}
+                                        {/* Simplified Theme Toggle button without the sibling Reset button */}
                                         <button
                                             type="button"
                                             onClick={() => {
@@ -254,7 +256,7 @@ export const UnifiedAIInput: React.FC<UnifiedAIInputProps> = ({
                                 }}
                                 animate={{
                                     x: 0,
-                                    width: isChatOpen ? 600 : maxInputWidth,
+                                    width: maxInputWidth,
                                     borderRadius: 28,
                                     opacity: 1
                                 }}
@@ -286,7 +288,7 @@ export const UnifiedAIInput: React.FC<UnifiedAIInputProps> = ({
                                         onKeyDown={handleKeyDown}
                                         placeholder={isThemeRequest(input) ? "Describe UI changes..." : "Ask me anything..."}
                                         disabled={isLoading}
-                                        className="w-full bg-transparent text-white text-lg placeholder-white/40 focus:outline-none h-full px-4"
+                                        className="w-full bg-transparent text-base md:text-lg text-white placeholder-white/40 focus:outline-none h-full px-2 md:px-4"
                                         style={{ caretColor: "rgba(99, 102, 241, 0.8)" }}
                                     />
                                 </motion.div>
@@ -310,6 +312,24 @@ export const UnifiedAIInput: React.FC<UnifiedAIInputProps> = ({
                             </motion.form>
                         </motion.div>
                     </motion.div>
+
+                    {/* Slow Loading Message (Mobile - Bottom near input box) */}
+                    <AnimatePresence>
+                        {showSlowLoadingMessage && windowWidth < 768 && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 10, scale: 0.9, x: "-50%" }}
+                                animate={{ opacity: 1, y: 0, scale: 1, x: "-50%" }}
+                                exit={{ opacity: 0, y: 10, scale: 0.9, x: "-50%" }}
+                                className="fixed bottom-[85px] left-1/2 bg-neutral-900/90 backdrop-blur-md border border-amber-500/30 px-3 py-1.5 rounded-full text-[10px] font-medium text-white/90 shadow-lg pointer-events-none flex items-center gap-2 whitespace-nowrap z-[100]"
+                            >
+                                <span className="relative flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                                </span>
+                                Taking longer than usual...
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </>
             )}
         </AnimatePresence>

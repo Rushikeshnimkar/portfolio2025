@@ -14,34 +14,34 @@ interface ProjectsCardProps {
 }
 
 export const ProjectsCard: React.FC<ProjectsCardProps> = ({ projects }) => (
-  <div className="mt-3 space-y-4">
+  <div className="mt-2 sm:mt-3 space-y-3 sm:space-y-4">
     {projects.map((project, index) => (
       <div
         key={index}
-        className="bg-neutral-800/70 rounded-lg p-4 border border-neutral-700/50"
+        className="bg-neutral-800/70 rounded-lg p-3 sm:p-4 border border-neutral-700/50"
       >
-        <div className="flex justify-between items-start">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1 sm:gap-2">
           <div className="flex items-center gap-2">
-            <BsCardChecklist className="text-purple-400" />
-            <h3 className="font-medium text-white">{project.title}</h3>
+            <BsCardChecklist className="text-purple-400 w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+            <h3 className="font-medium text-white text-sm sm:text-base line-clamp-2">{project.title}</h3>
           </div>
           {project.link && (
             <a
               href={project.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-400 hover:text-blue-300 text-sm"
+              className="text-blue-400 hover:text-blue-300 text-xs sm:text-sm flex-shrink-0 ml-6 sm:ml-0"
             >
-              View Project
+              View →
             </a>
           )}
         </div>
-        <p className="mt-2 text-sm text-neutral-300">{project.description}</p>
-        <div className="mt-3 flex flex-wrap gap-2">
+        <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm text-neutral-300 line-clamp-3">{project.description}</p>
+        <div className="mt-2 sm:mt-3 flex flex-wrap gap-1.5 sm:gap-2">
           {project.technologies.map((tech, idx) => (
             <span
               key={idx}
-              className="px-2 py-1 bg-neutral-700/50 rounded-md text-xs text-neutral-300"
+              className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-neutral-700/50 rounded-md text-[10px] sm:text-xs text-neutral-300"
             >
               {tech}
             </span>

@@ -160,18 +160,18 @@ export const LinkCard: React.FC<LinkCardProps> = ({ links }) => {
   const groupedLinks = groupLinksByCategory();
 
   return (
-    <div className="mt-3 space-y-4">
-      <div className="bg-neutral-800/70 rounded-lg p-4 border border-neutral-700/50">
-        <div className="flex items-center gap-2 mb-3">
-          <FaLink className="text-blue-400" />
-          <h3 className="font-medium text-white">Links & Resources</h3>
+    <div className="mt-2 sm:mt-3 space-y-3 sm:space-y-4">
+      <div className="bg-neutral-800/70 rounded-lg p-3 sm:p-4 border border-neutral-700/50">
+        <div className="flex items-center gap-2 mb-2 sm:mb-3">
+          <FaLink className="text-blue-400 w-4 h-4 sm:w-5 sm:h-5" />
+          <h3 className="font-medium text-white text-sm sm:text-base">Links & Resources</h3>
         </div>
 
-        <div className="space-y-5">
+        <div className="space-y-4 sm:space-y-5">
           {groupedLinks.map(([category, categoryLinks]) => (
-            <div key={category} className="space-y-3">
+            <div key={category} className="space-y-2 sm:space-y-3">
               {groupedLinks.length > 1 && (
-                <h4 className="text-sm font-medium text-neutral-400 border-b border-neutral-700/50 pb-1">
+                <h4 className="text-xs sm:text-sm font-medium text-neutral-400 border-b border-neutral-700/50 pb-1">
                   {category}
                 </h4>
               )}
@@ -184,19 +184,19 @@ export const LinkCard: React.FC<LinkCardProps> = ({ links }) => {
                     rel="noopener noreferrer"
                     className="block"
                   >
-                    <div className="bg-neutral-700/30 hover:bg-neutral-700/50 rounded-lg p-3 transition-all duration-200 transform group-hover:translate-x-1">
-                      <div className="flex justify-between items-center">
-                        <div className="flex items-center gap-2">
-                          {renderIcon(getIconForLink(link))}
-                          <span className="font-medium text-blue-400 group-hover:text-blue-300 transition-colors">
+                    <div className="bg-neutral-700/30 hover:bg-neutral-700/50 rounded-lg p-2 sm:p-3 transition-all duration-200 transform group-hover:translate-x-1">
+                      <div className="flex justify-between items-center gap-2">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span className="flex-shrink-0">{renderIcon(getIconForLink(link))}</span>
+                          <span className="font-medium text-blue-400 group-hover:text-blue-300 transition-colors text-xs sm:text-sm truncate">
                             {link.title}
                           </span>
                         </div>
-                        <FaExternalLinkAlt className="text-neutral-400 group-hover:text-blue-300 transition-colors" />
+                        <FaExternalLinkAlt className="text-neutral-400 group-hover:text-blue-300 transition-colors w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
                       </div>
 
                       {link.description && (
-                        <p className="mt-2 text-sm text-neutral-300">
+                        <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm text-neutral-300 line-clamp-2">
                           {link.description}
                         </p>
                       )}

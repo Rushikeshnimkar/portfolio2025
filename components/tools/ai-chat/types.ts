@@ -45,6 +45,7 @@ export interface MessageDisplayProps {
   isSearching: boolean;
   error: string;
   renderStructuredContent: (content: StructuredContent) => ReactNode;
+  messagesEndRef?: React.RefObject<HTMLDivElement | null>;
 }
 
 /**

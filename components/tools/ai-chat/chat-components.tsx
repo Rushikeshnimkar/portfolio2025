@@ -63,9 +63,10 @@ export const MessageDisplay: React.FC<MessageDisplayProps> = ({
   isSearching,
   error,
   renderStructuredContent,
+  messagesEndRef,
 }) => {
   return (
-    <div className="flex-1 overflow-y-auto p-4 space-y-6 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+    <div className="h-full overflow-y-auto overflow-x-hidden p-3 sm:p-4 pb-28 sm:pb-32 space-y-4 sm:space-y-6 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent touch-pan-y">
       {/* Content Fade In */}
       <AnimatePresence initial={false}>
         {error ? (
@@ -88,12 +89,12 @@ export const MessageDisplay: React.FC<MessageDisplayProps> = ({
                 } group`}
             >
               {message.type === "assistant" && (
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500/20 to-cyan-500/20 border border-indigo-500/20 flex items-center justify-center mr-3 flex-shrink-0 backdrop-blur-sm">
-                  <RiRobot2Line className="w-4 h-4 text-indigo-300" />
+                <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-indigo-500/20 to-cyan-500/20 border border-indigo-500/20 flex items-center justify-center mr-2 sm:mr-3 flex-shrink-0 backdrop-blur-sm">
+                  <RiRobot2Line className="w-3 h-3 sm:w-4 sm:h-4 text-indigo-300" />
                 </div>
               )}
               <div
-                className={`max-w-[85%] p-4 rounded-2xl shadow-sm ${message.type === "user"
+                className={`max-w-[90%] sm:max-w-[85%] p-3 sm:p-4 rounded-xl sm:rounded-2xl shadow-sm ${message.type === "user"
                   ? "bg-indigo-600/20 text-white border border-indigo-500/20 backdrop-blur-md rounded-br-none"
                   : "bg-white/5 text-white/90 border border-white/10 backdrop-blur-md rounded-bl-none"
                   }`}
@@ -119,6 +120,7 @@ export const MessageDisplay: React.FC<MessageDisplayProps> = ({
             </motion.div>
           ))
         )}
+        {messagesEndRef && <div ref={messagesEndRef} />}
       </AnimatePresence>
     </div>
   );
@@ -143,7 +145,7 @@ const MessageContent: React.FC<{
     <>
       {message.content && message.content.trim() && (
         <div
-          className="prose prose-invert prose-sm max-w-none text-white/90 leading-relaxed"
+          className="prose prose-invert prose-xs sm:prose-sm max-w-none text-white/90 leading-relaxed [&_p]:text-xs sm:[&_p]:text-sm [&_li]:text-xs sm:[&_li]:text-sm [&_h1]:text-base sm:[&_h1]:text-lg [&_h2]:text-sm sm:[&_h2]:text-base [&_h3]:text-xs sm:[&_h3]:text-sm"
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize(
               marked.parse(message.content).toString()
@@ -167,29 +169,27 @@ const MessageContent: React.FC<{
 };
 
 /**
- * Animated searching indicator
+ * Animated searching indicator - compact pill style
  */
 const SearchingIndicator: React.FC = () => {
   return (
-    <div className="flex flex-col items-center space-y-3 py-2">
-      <div className="flex items-center space-x-2">
-        <FiSearch className="w-4 h-4 text-cyan-400 animate-pulse" />
-        <span className="text-sm text-cyan-400/80 font-mono">Searching...</span>
-      </div>
-      {/* ... keeping simplified ... */}
+    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-cyan-500/10 border border-cyan-500/20 rounded-full">
+      <FiSearch className="w-3 h-3 sm:w-4 sm:h-4 text-cyan-400 animate-pulse" />
+      <span className="text-xs sm:text-sm text-cyan-400/90">Searching...</span>
     </div>
   );
 };
 
 /**
- * Animated thinking indicator
+ * Animated thinking indicator - compact pill style
  */
 const ThinkingIndicator: React.FC = () => {
   return (
-    <div className="flex items-center space-x-1 py-1">
-      <div className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-      <div className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-      <div className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-500/10 border border-indigo-500/20 rounded-full">
+      <span className="text-xs sm:text-sm text-indigo-300/90 mr-1">Thinking</span>
+      <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+      <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+      <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
     </div>
   );
 };
@@ -265,8 +265,8 @@ export const InputArea: React.FC<InputAreaProps> = ({
             type="button"
             onClick={() => setIsPromptPanelExpanded(!isPromptPanelExpanded)}
             className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200 border shadow-lg backdrop-blur-sm ${isPromptPanelExpanded
-                ? "bg-white/20 text-white border-white/20"
-                : "bg-white/5 text-white/40 border-white/10 hover:bg-white/10 hover:text-white"
+              ? "bg-white/20 text-white border-white/20"
+              : "bg-white/5 text-white/40 border-white/10 hover:bg-white/10 hover:text-white"
               }`}
             title="Suggestions"
           >
@@ -285,8 +285,8 @@ export const InputArea: React.FC<InputAreaProps> = ({
               inputRef.current?.focus();
             }}
             className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200 border shadow-lg backdrop-blur-sm ${isThemeRequest(input)
-                ? "bg-indigo-500/20 text-indigo-400 border-indigo-500/30"
-                : "bg-white/5 text-white/40 border-white/10 hover:bg-white/10 hover:text-white"
+              ? "bg-indigo-500/20 text-indigo-400 border-indigo-500/30"
+              : "bg-white/5 text-white/40 border-white/10 hover:bg-white/10 hover:text-white"
               }`}
             title="Toggle Theme Mode"
           >
@@ -331,8 +331,8 @@ export const InputArea: React.FC<InputAreaProps> = ({
               onClick={(e) => handleSubmit(e as unknown as React.FormEvent)}
               disabled={!input.trim() || isLoading}
               className={`flex items-center justify-center w-10 h-10 rounded-full transition-all duration-200 flex-shrink-0 mr-1 ${input.trim() && !isLoading
-                  ? "bg-white/10 text-white hover:bg-white/20"
-                  : "text-white/20 cursor-not-allowed"
+                ? "bg-white/10 text-white hover:bg-white/20"
+                : "text-white/20 cursor-not-allowed"
                 }`}
             >
               {isLoading ? (
