@@ -66,7 +66,7 @@ class OpenRouterChatModel extends ChatOpenAI {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        model: "tngtech/tng-r1t-chimera:free",
+                        model: "mistralai/devstral-2512:free",
                         messages: formattedMessages,
                     }),
                 }
