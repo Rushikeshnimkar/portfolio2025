@@ -8,7 +8,7 @@ import Contact from "./contact/page";
 import Projects from "./projects/page";
 import { AIChatModal } from "../components/tools/ai-chat-modal";
 import { UnifiedAIInput } from "../components/tools/UnifiedAIInput";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import GitHub from "./github/page";
 import NeuralBackground from "../components/neural-background";
 import { useThemeHandler, useMessageHandler, initializeChat } from "../components/tools/ai-chat/chat-utils";
@@ -134,27 +134,8 @@ export default function Home() {
     }
   };
 
-  // Create grid pattern effect with CSS
-  useEffect(() => {
-    // Create a grid pattern element in the background
-    const gridOverlay = document.createElement("div");
-    gridOverlay.className = "absolute inset-0 z-[-1]";
-    gridOverlay.style.backgroundImage =
-      "linear-gradient(rgba(20, 255, 140, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(20, 255, 140, 0.1) 1px, transparent 1px)";
-    gridOverlay.style.backgroundSize = "40px 40px";
-    gridOverlay.style.opacity = "0.15";
-
-    const bgElement = document.getElementById("gradient-background");
-    if (bgElement) {
-      bgElement.appendChild(gridOverlay);
-    }
-
-    return () => {
-      if (bgElement && bgElement.contains(gridOverlay)) {
-        bgElement.removeChild(gridOverlay);
-      }
-    };
-  }, []);
+  // Grid overlay ref for React-managed DOM
+  const gridOverlayRef = useRef<HTMLDivElement>(null);
 
   return (
     <main
@@ -167,7 +148,19 @@ export default function Home() {
         className="fixed inset-0 bg-black z-[-2]"
         id="page-background-base"
         data-theme-target="page-background-base"
-      ></div>
+      >
+        {/* Grid overlay - rendered as React element instead of DOM manipulation */}
+        <div
+          ref={gridOverlayRef}
+          className="absolute inset-0 z-[-1]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(20, 255, 140, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(20, 255, 140, 0.1) 1px, transparent 1px)",
+            backgroundSize: "40px 40px",
+            opacity: 0.15,
+          }}
+        />
+      </div>
 
       <div className="min-h-screen w-full text-white overflow-x-hidden relative">
         {/* Gradient cyberpunk background */}

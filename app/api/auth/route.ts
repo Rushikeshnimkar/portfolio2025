@@ -8,7 +8,7 @@ function isAllowedOrigin(origin: string | null) {
   const allowedOrigins = [
     "https://rushikeshnimkar.xyz",
     "https://www.rushikeshnimkar.xyz",
-    "http://localhost:3000", // for development
+    // "http://localhost:3000", // for development
   ];
   return origin && allowedOrigins.includes(origin);
 }

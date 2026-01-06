@@ -50,9 +50,6 @@ async function handler(req: NextRequest) {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_APP_PASSWORD,
       },
-      tls: {
-        rejectUnauthorized: false,
-      },
     });
 
     await transporter.verify();

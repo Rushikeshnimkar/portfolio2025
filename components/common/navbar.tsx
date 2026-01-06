@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { HoveredLink, Menu, MenuItem } from "../ui/navbar-menu";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
@@ -44,8 +44,18 @@ export function Navbar() {
   const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
 
+  // Throttle ref to limit scroll handler frequency
+  const lastScrollTime = useRef<number>(0);
+  const THROTTLE_MS = 100;
+
   useEffect(() => {
     const handleScroll = () => {
+      const now = Date.now();
+      if (now - lastScrollTime.current < THROTTLE_MS) {
+        return; // Skip if called too soon
+      }
+      lastScrollTime.current = now;
+
       const sections = document.querySelectorAll("section[id], main[id]");
       const scrollPosition = window.scrollY + 100;
 
