@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { LiquidGlass } from "./LiquidGlass";
 
 // Apple-like spring configurations
 const appleSpring = {
@@ -155,33 +156,40 @@ export const Menu = ({
   children: React.ReactNode;
 }) => {
   return (
-    <motion.nav
-      onMouseLeave={() => setActive(null)}
-      initial={{ scale: 0.95, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={appleWobbleSpring}
-      whileHover={{
-        scale: 1.02,
-        y: -2,
-        transition: appleBounceSpring,
-      }}
-      className="relative z-50 flex justify-evenly space-x-4 px-8 py-3 rounded-full
-               border border-white/20 bg-white/10 backdrop-blur-md
-               transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,2.2)]"
+    <LiquidGlass
+      width={800}
+      height={56}
+      borderRadius={9999}
+      intensity={0.6}
+      className="border border-white/20 bg-white/10"
     >
-      {/* Enhanced background glow - no delay */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={appleSpring}
-        className="absolute inset-0  rounded-full "
-      />
+      <motion.nav
+        onMouseLeave={() => setActive(null)}
+        initial={{ scale: 0.95, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={appleWobbleSpring}
+        whileHover={{
+          scale: 1.02,
+          y: -2,
+          transition: appleBounceSpring,
+        }}
+        className="relative z-50 flex justify-evenly space-x-4 px-8 py-3 rounded-full
+                 transition-all duration-500 ease-[cubic-bezier(0.175,0.885,0.32,2.2)]"
+      >
+        {/* Enhanced background glow - no delay */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={appleSpring}
+          className="absolute inset-0 rounded-full"
+        />
 
-      {/* Content */}
-      <div className="relative z-10 flex justify-evenly space-x-4 w-full">
-        {children}
-      </div>
-    </motion.nav>
+        {/* Content */}
+        <div className="relative z-10 flex justify-evenly space-x-4 w-full">
+          {children}
+        </div>
+      </motion.nav>
+    </LiquidGlass>
   );
 };
 

@@ -12,12 +12,16 @@ async function handler(req: NextRequest) {
     const { prompt } = await req.json();
 
     // System prompt for email generation
-    const systemPrompt = `You are an AI email assistant. Generate a professional email based on the following prompt. 
-    The email should be well-structured, clear, and maintain a professional tone.
+    const systemPrompt = `You are an AI assistant helping a visitor draft an email to Rushikesh Nimkar. 
+    The email should be written from the perspective of the visitor/user, addressed to Rushikesh.
+    Use the user's prompt to determine the intent (e.g., job offer, collaboration, question).
     
-    Format the email with proper greeting, body, and signature.
-    no exlpaination needed, just generate the email.
-    Keep the language natural but professional.`;
+    Requirements:
+    - Address the email to "Rushikesh" or "Mr. Nimkar".
+    - Maintain a professional and polite tone.
+    - If the user provides their name/details in the prompt, include them. Otherwise, use placeholders like "[Your Name]".
+    - Format properly with a clear subject line (if applicable) and body.
+    - Do NOT include any explanations, just the email content.`;
 
     // Format messages for OpenRouter
     const messages = [

@@ -10,39 +10,39 @@ export const emailTemplates: EmailTemplate[] = [
   {
     title: "Professional Introduction",
     icon: "👔",
-    description: "A formal introduction for business inquiries and networking.",
+    description: "Introduce yourself to Rushikesh for networking.",
     prompt:
-      "Generate a professional email introducing myself as a software developer looking to connect with potential clients or employers. Include my expertise in React, Next.js, and TypeScript.",
-    tags: ["Business", "Formal"],
+      "Write a professional email to Rushikesh Nimkar initiating a professional connection. I found his portfolio impressive and want to introduce myself as a fellow developer/professional. Express interest in keeping in touch for potential future opportunities or knowledge sharing.",
+    tags: ["Business", "Networking"],
   },
   {
     title: "Project Proposal",
     icon: "📊",
-    description: "Outline a project idea or proposal to a potential client.",
+    description: "Propose a project for Rushikesh to work on.",
     prompt:
-      "Create a project proposal email for a potential client. The project involves building a modern web application with React and Next.js. Include sections about timeline, approach, and why I'm the right developer for the job.",
+      "Write a project proposal email to Rushikesh Nimkar. I have a new web application project regarding [Project Topic] and I am looking for a skilled Full Stack Developer. Ask for his availability, rates, and if he would be interested in discussing the project requirements further.",
     tags: ["Proposal", "Business"],
   },
   {
     title: "Follow-up Message",
     icon: "🤝",
-    description: "A friendly follow-up after a meeting or interview.",
+    description: "Follow up with Rushikesh after a meeting.",
     prompt:
-      "Write a follow-up email after a job interview for a frontend developer position. Express gratitude for the opportunity, reiterate my interest, and briefly mention a key point from our conversation.",
+      "Write a follow-up email to Rushikesh Nimkar regarding our recent conversation/interview. Thank him for his time, reiterate my strong interest in having him join our team/project, and ask about the next steps in the process.",
     tags: ["Follow-up", "Networking"],
   },
   {
     title: "Collaboration",
     icon: "🤝",
-    description: "Propose collaboration",
+    description: "Propose a collaboration to Rushikesh.",
     prompt:
-      "Write a professional email proposing a collaboration opportunity. I'm interested in working together on innovative web development projects and would like to discuss potential partnership opportunities.",
+      "Write an email to Rushikesh Nimkar proposing a collaboration opportunity. I am working on an innovative open-source project/startup idea and believe his skills in Next.js and frontend development would be invaluable. Ask if he is open to a quick call to hear more about it.",
     tags: ["Collaboration", "Business"],
   },
   {
     title: "Hire Me",
     icon: "💼",
-    description: "Recruitment inquiry",
+    description: "Recruit Rushikesh for a job opportunity.",
     prompt: `Write a professional email as a tech recruiter reaching out to hire Rushikesh Nimkar. Include these details:
   
   My name is [Your Name]
@@ -62,11 +62,11 @@ export const emailTemplates: EmailTemplate[] = [
     tags: ["Recruitment", "Business"],
   },
   {
-    title: "Project",
+    title: "General Inquiry",
     icon: "💡",
-    description: "Discuss a project",
+    description: "Ask Rushikesh a general question.",
     prompt:
-      "Write a professional email to discuss a potential project. I have an exciting web application idea and would like to explore the possibility of working together on its development.",
-    tags: ["Project", "Business"],
+      "Write a friendly email to Rushikesh Nimkar. I came across his work and have a specific question about his tech stack or one of his projects. Keep it concise and respectful of his time.",
+    tags: ["Inquiry", "General"],
   },
 ];
