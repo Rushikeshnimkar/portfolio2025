@@ -123,8 +123,8 @@ function extractSkillsFromText(text: string): string[] {
 
 function isAllowedOrigin(origin: string | null) {
     const allowedOrigins = [
-        "https://rushikeshnimkar.xyz",
-        "https://www.rushikeshnimkar.xyz",
+        "https://www.rushikeshnimkar.com",
+        "https://www.www.rushikeshnimkar.com",
         // "http://localhost:3000",
     ];
     return origin && allowedOrigins.includes(origin);

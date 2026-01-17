@@ -196,5 +196,5 @@ This project is open source under the [MIT License](https://opensource.org/licen
 ## 🙋‍♂️ Author
 
 **Rushikesh Nimkar**  
-🔗 [rushikeshnimkar.xyz](https://rushikeshnimkar.xyz)  
+🔗 [www.rushikeshnimkar.com](https://www.rushikeshnimkar.com)  
 📧 rushikeshnimkar396@gmail.com

@@ -64,7 +64,7 @@ export function generateStructuredResponse(queryType: string): StructuredContent
         resume_link: [
             {
                 title: "Resume",
-                url: "https://rushikeshnimkar.xyz/resume",
+                url: "https://www.rushikeshnimkar.com/resume",
                 description:
                     "View my detailed resume with skills, experience, and education",
             },
@@ -94,7 +94,7 @@ export function generateStructuredResponse(queryType: string): StructuredContent
         portfolio_link: [
             {
                 title: "Portfolio Website",
-                url: "https://rushikeshnimkar.xyz",
+                url: "https://www.rushikeshnimkar.com",
                 description: "My personal portfolio showcasing projects and skills",
             },
         ],
@@ -198,7 +198,7 @@ export function generateStructuredResponse(queryType: string): StructuredContent
             linkedin: "https://www.linkedin.com/in/rushikesh-nimkar-0961361ba/",
             github: "https://github.com/Rushikeshnimkar",
             discord: "https://discord.com/users/748192618659315753",
-            portfolio: "https://rushikeshnimkar.xyz/",
+            portfolio: "https://www.rushikeshnimkar.com/",
         },
         awards: [
             {
@@ -215,12 +215,12 @@ export function generateStructuredResponse(queryType: string): StructuredContent
         links: [
             {
                 title: "Portfolio Website",
-                url: "https://rushikeshnimkar.xyz",
+                url: "https://www.rushikeshnimkar.com",
                 description: "My personal portfolio showcasing projects and skills",
             },
             {
                 title: "Resume",
-                url: "https://rushikeshnimkar.xyz/resume",
+                url: "https://www.rushikeshnimkar.com/resume",
                 description: "View my detailed resume",
             },
             {

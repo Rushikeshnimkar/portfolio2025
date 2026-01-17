@@ -45,8 +45,8 @@ export function generateToken(payload: any): string {
 // Add CORS check middleware
 function isAllowedOrigin(origin: string | null) {
   const allowedOrigins = [
-    "https://rushikeshnimkar.xyz",
-    "https://www.rushikeshnimkar.xyz",
+    "https://www.rushikeshnimkar.com",
+    "https://www.www.rushikeshnimkar.com",
 
     // Include localhost for development(uncomment for development)
     // "http://localhost:3000",

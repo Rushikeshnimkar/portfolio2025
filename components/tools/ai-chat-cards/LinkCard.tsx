@@ -65,7 +65,7 @@ export const LinkCard: React.FC<LinkCardProps> = ({ links }) => {
     // Try to extract domain for domain-specific checks
     try {
       const domain = extractDomain(url);
-      if (domain.includes("rushikeshnimkar.xyz")) return "portfolio";
+      if (domain.includes("www.rushikeshnimkar.com")) return "portfolio";
     } catch (error) {
       // If domain extraction fails, continue with other checks
       console.error("Error extracting domain:", error);
@@ -132,7 +132,7 @@ export const LinkCard: React.FC<LinkCardProps> = ({ links }) => {
         url.includes("github.com") ||
         url.includes("linkedin.com") ||
         url.includes("resume") ||
-        url.includes("rushikeshnimkar.xyz")
+        url.includes("www.rushikeshnimkar.com")
       ) {
         groups["Profile"].push(link);
       } else if (

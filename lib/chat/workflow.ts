@@ -61,7 +61,7 @@ class OpenRouterChatModel extends ChatOpenAI {
                     method: "POST",
                     headers: {
                         Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-                        "HTTP-Referer": "https://rushikeshnimkar.xyz",
+                        "HTTP-Referer": "https://www.rushikeshnimkar.com",
                         "X-Title": "Rushikesh's Portfolio",
                         "Content-Type": "application/json",
                     },

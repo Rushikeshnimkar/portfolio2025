@@ -18,7 +18,7 @@ export const defaultMetadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://rushikeshnimkar.xyz",
+    url: "https://www.rushikeshnimkar.com",
     title: "Rushikesh Nimkar | Full Stack Developer",
     description:
       "Full Stack Developer specializing in Next.js, TypeScript, and Blockchain development.",

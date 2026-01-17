@@ -61,8 +61,8 @@ async function initializeServices() {
 // Add CORS check middleware
 function isAllowedOrigin(origin: string | null) {
   const allowedOrigins = [
-    "https://rushikeshnimkar.xyz",
-    "https://www.rushikeshnimkar.xyz",
+    "https://www.rushikeshnimkar.com",
+    "https://www.www.rushikeshnimkar.com",
     // "http://localhost:3000",
   ];
   return origin && allowedOrigins.includes(origin);
@@ -336,7 +336,7 @@ IMPORTANT: Respond ONLY with the JavaScript function 'applyThemeChanges' wrapped
         method: "POST",
         headers: {
           Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-          "HTTP-Referer": "https://rushikeshnimkar.xyz",
+          "HTTP-Referer": "https://www.rushikeshnimkar.com",
           "X-Title": "Rushikesh's Portfolio",
           "Content-Type": "application/json",
         },

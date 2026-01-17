@@ -6,8 +6,8 @@ import { headers } from "next/headers";
 // Function to check if origin is allowed (same as in your chat route)
 function isAllowedOrigin(origin: string | null) {
   const allowedOrigins = [
-    "https://rushikeshnimkar.xyz",
-    "https://www.rushikeshnimkar.xyz",
+    "https://www.rushikeshnimkar.com",
+    "https://www.www.rushikeshnimkar.com",
     // "http://localhost:3000", // for development
   ];
   return origin && allowedOrigins.includes(origin);

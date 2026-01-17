@@ -5,10 +5,10 @@ Full-Stack Engineer
 Location: Nagpur
 Phone: +919322675715
 Email: rushikeshnimkar396@gmail.com
-Portfolio: https://rushikeshnimkar.xyz/
+Portfolio: https://www.rushikeshnimkar.com/
 GitHub: https://github.com/Rushikeshnimkar
 LinkedIn: https://www.linkedin.com/in/rushikesh-nimkar-0961361ba/
-resume: https://rushikeshnimkar.xyz/resume
+resume: https://www.rushikeshnimkar.com/resume
 discord: https://discord.com/users/748192618659315753
 
 
