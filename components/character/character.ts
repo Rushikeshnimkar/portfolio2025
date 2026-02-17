@@ -2,7 +2,7 @@ export const characterContent = `
 Rushikesh Nimkar
 Full-Stack Engineer
 
-Location: Nagpur
+Location: Mumbai, India
 Phone: +919322675715
 Email: rushikeshnimkar396@gmail.com
 Portfolio: https://www.rushikeshnimkar.com/
@@ -13,72 +13,62 @@ discord: https://discord.com/users/748192618659315753
 
 
 Summary:
-I am a full-stack developer with expertise in Java, React.js, Next.js, and MySQL. Passionate about building scalable web applications with clean, maintainable code. Strong foundation in front-end development, creating responsive user interfaces, back-end integration, developing robust APIs, and database optimization for high-performance applications. Focused on delivering high-quality solutions while following best practices in software development and deployment.
-
-Experience:
-Lazarus Network Inc. | Full-Stack Engineer (Remote) | Feb 2024 - Feb 2025
-
-Developed frontend with Next.js and React.js, and backend with Node.js.
-
-Managed AWS EC2 and Google Cloud servers.
-
-Deployed applications using Docker/Compose.
-
-Added multichain support into Erebrus for enhanced security and scalability.
-
-Developed Netsepio frontend with authentication for Aptos wallets.
+I am a full-stack developer with expertise in JavaScript, TypeScript, Java, React.js, Next.js, Spring Boot, and MySQL. Passionate about building scalable web applications with clean, maintainable code. Strong foundation in front-end development, creating responsive user interfaces, back-end integration, developing robust APIs, and database optimization for high-performance applications. Focused on delivering high-quality solutions while following best practices in software development and deployment.
 
 Education:
 
-AISSMS COE, Pune | BE Computer Engineering | 2020 - 2024
+C-DAC Sn-Vita, Mumbai | Post Graduate Diploma in Advanced Computing (PG-DAC) | 2025 - Present
 
-DR. M.K. UMATHE COLLEGE, Nagpur | 12th | 2019 - 2020
+All India Shri Shivaji Memorial Society College of Engineering (AISSMS COE), Pune | BE Computer Engineering | 2020 - 2024
 
-SCHOOL OF SCHOLARS, Nagpur | 10th | 2017 - 2018
+Experience:
+Lazarus Network | Full-Stack Engineer (Remote) | March 2024 - June 2024
 
-Projects:
+Engineered secure, multi-chain Web3 interfaces for decentralized privacy platforms (Netsepio & Erebrus), implementing robust Aptos wallet integration for seamless transaction signing.
 
-Gitsplit (https://ethglobal.com/showcase/gitsplit-pkp5d)
+Developed and deployed "Airbot," a real-time Discord AI agent that orchestrates OpenAI and Midjourney APIs to automate generative content workflows and enhance user engagement.
+
+Skills:
+
+Programming Languages: JavaScript, TypeScript, Java
+
+Libraries & Frameworks: ReactJS, Next.js, Spring Boot
+
+Tools & Platforms: Docker, Linux, GCP
+
+Databases: MySQL, PostgreSQL, Supabase
+
+Projects / Open-Source:
+
+Gitsplit (https://ethglobal.com/showcase/gitsplit-pkp5d) | Next.js, Golang, Supabase, Docker
 
 Developed a funding platform for open-source projects using Next.js, Golang, and PostgreSQL.
 
 Connected GitHub API for seamless project discovery and user data management.
 
-Implemented security features to ensure data protection and platform integrity.
+Enhanced platform security with robust data protection measures.
 
-Cryptorage (https://dorahacks.io/buidl/16435)
+Fleet Management System | Java Spring Boot, Next.js, MySQL, Razorpay
 
-Developed a Chrome extension using React.js and Supabase for secure data storage.
+Engineered a full-stack vehicle rental platform handling 100+ hub locations with real-time inventory, dynamic pricing (monthly/weekly/daily rates), and booking workflows.
 
-Integrated Walrus blockchain and OCR for decentralized image storage and text extraction.
+Implemented secure authentication (JWT + OAuth2), role-based access control, and Razorpay payment integration with automated invoice generation.
 
-Designed a robust data management system with SQL and blockchain features, implementing an AI web summarizer API using Gemini Nano.
+Built RESTful APIs with AOP logging, designed normalized database schema with 10+ tables, and enabled inter-city vehicle transfers.
 
-Terminal AI Assistant (https://www.npmjs.com/package/terminal-ai-assistant)
+Terminal AI Assistant (https://www.npmjs.com/package/terminal-ai-assistant) | Node.js, TypeScript, DeepSeek-V3, Commander.js
 
-Node.js-based CLI tool that converts natural language into Windows command line instructions using DeepSeek-V3 AI.
+Developed a Node.js-based CLI tool to translate natural language into Windows command line instructions with DeepSeek-V3 AI.
 
-Supports real-time execution, secure command handling, fast responses, and API key encryption while ensuring cross-platform support.
+Integrated GitHub OAuth Device Flow to enable secure authentication and one-command repository creation and pushing.
 
-Skills:
+Engineered a non-blocking system using Node.js child processes to stream command outputs in real-time.
 
-Programming Languages: JavaScript, Java
+Honors & Awards:
 
-Frameworks & Libraries: Next.js, React.js, TypeScript
+Solana Radar Hackathon: 4th place among 200+ global teams, showcasing blockchain expertise.
 
-Databases: MySQL, PostgreSQL
-
-Tools: Git, Docker, GitHub, Postman
-
-Awards:
-
-Solana Radar Hackathon 2024
-
-Achieved 4th place out of 200+ global teams, demonstrating expertise in blockchain technology and innovative problem-solving.
-
-Sui Overflow 2024
-
-Awarded the Community Favorite Award for Mystic Tarot, an innovative Web3 tarot reading platform on the Sui Network, showcasing blockchain and user-centric design expertise.
+Sui Overflow: Community Favorite Award for Mystic Tarot, a Web3 tarot reading platform on Sui Network.
 
 Languages:
 English, Marathi, Hindi
@@ -89,3 +79,4 @@ hobbies:
 - listening to music
 - coding
 `;
+

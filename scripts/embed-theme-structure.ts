@@ -1,11 +1,11 @@
 import { Pinecone } from "@pinecone-database/pinecone";
-import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
 import { PineconeStore } from "@langchain/pinecone";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { Document } from "@langchain/core/documents";
 import * as dotenv from "dotenv";
 import * as fs from "fs"; // Import fs if loading from file
 import * as path from "path"; // Import path if loading from file
+import { getEmbeddings } from "../lib/embeddings.js";
 
 // Load environment variables from .env file in the current directory
 dotenv.config();
@@ -13,7 +13,6 @@ dotenv.config();
 // --- Configuration ---
 const INDEX_NAME = "theme";
 const DIMENSION = 768;
-const GOOGLE_EMBEDDING_MODEL = "text-embedding-004"; // Use the latest Google embedding model
 
 // --- Page Content ---
 // Option 1: Paste the content directly (as shown below)
@@ -230,14 +229,8 @@ async function embedAndStoreThemeStructure() {
     console.log(`Connected to index "${INDEX_NAME}".`);
 
     // --- 5. Initialize Google Embedding Model ---
-    const embeddings = new GoogleGenerativeAIEmbeddings({
-      apiKey: process.env.GOOGLE_API_KEY,
-      model: GOOGLE_EMBEDDING_MODEL,
-      // taskType: "RETRIEVAL_DOCUMENT", // Optional: Specify task type if needed by the model/Pinecone
-    });
-    console.log(
-      `Initialized Google Embedding Model: ${GOOGLE_EMBEDDING_MODEL}`
-    );
+    const embeddings = getEmbeddings();
+    console.log("Initialized Google Embedding Model via getEmbeddings()");
 
     // --- 6. Prepare Documents ---
     console.log("Splitting page content into chunks...");
