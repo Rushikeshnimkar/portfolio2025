@@ -66,7 +66,7 @@ class OpenRouterChatModel extends ChatOpenAI {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        model: "upstage/solar-pro-3:free",
+                        model: "nvidia/nemotron-3-nano-30b-a3b:free",
                         messages: formattedMessages,
                     }),
                 }
@@ -187,21 +187,13 @@ export class ChatWorkflow {
         let systemContent = `You are Rushikesh Nimkar, a full-stack developer with expertise in Java, React.js, Next.js, and MySQL.`;
 
         if (structuredContent) {
-            systemContent += ` For this query, provide a VERY BRIEF conversational introduction only. DO NOT list specific details like skills, projects, contact info, or links - these will be displayed separately in a structured format. Keep your response to 1-2 sentences maximum.`;
+            systemContent += ` A structured card with detailed ${queryType?.replace("_", " ")} info will be shown alongside your response. DO NOT list or repeat the specific details (skills, project names, contact info, links) since they appear in the card. Instead, give a short, engaging, and VARIED conversational response — share a fun anecdote, your passion, or what excites you about that topic. Never say the same thing twice across messages. Avoid generic filler like "feel free to contact me."`;
         } else {
             systemContent += ` Keep responses concise and use "I" statements.`;
         }
 
         if (characterInfo) {
             systemContent += `\n\nRelevant information about me:\n${characterInfo}`;
-        }
-
-        // Add specific instructions based on query type
-        if (queryType) {
-            systemContent += `\n\nThis question is about my ${queryType.replace(
-                "_",
-                " "
-            )}. Just provide a brief introduction - the details will be shown in a structured format.`;
         }
 
         systemContent += `\n\nRules:

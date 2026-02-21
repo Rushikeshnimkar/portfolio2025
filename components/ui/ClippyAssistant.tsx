@@ -122,6 +122,11 @@ export const ClippyAssistant: React.FC<ClippyAssistantProps> = ({
                     return;
                 }
 
+                // Disable all Clippy sounds
+                if (agent._animator && agent._animator._sounds) {
+                    agent._animator._sounds = {};
+                }
+
                 agentRef.current = agent;
                 agent.show();
 

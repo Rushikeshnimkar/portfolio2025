@@ -166,7 +166,7 @@ export function generateStructuredResponse(queryType: string): StructuredContent
             {
                 title: "Full-Stack Engineer",
                 company: "Lazarus Network Inc.",
-                period: "Feb 2024 - Feb 2025",
+                period: "March 2024 - June 2024",
                 description:
                     "Developed frontend with Next.js and React.js, backend with Node.js. Managed AWS EC2 and Google Cloud servers. Added multichain support to Erebrus and developed Netsepio frontend.",
             },

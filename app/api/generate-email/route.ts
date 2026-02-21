@@ -50,7 +50,7 @@ async function handler(req: NextRequest) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "upstage/solar-pro-3:free",
+          model: "nvidia/nemotron-3-nano-30b-a3b:free",
           messages: messages,
           max_tokens: 10000, // Limit response size
           temperature: 0.2, // Add temperature for more consistent responses

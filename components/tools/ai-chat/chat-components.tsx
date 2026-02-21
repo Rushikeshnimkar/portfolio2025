@@ -133,14 +133,6 @@ const MessageContent: React.FC<{
   message: Message;
   renderStructuredContent: (content: StructuredContent) => React.ReactNode;
 }> = ({ message, renderStructuredContent }) => {
-  const isBasicQuestion =
-    message.type === "assistant" &&
-    message.content &&
-    message.content.toLowerCase().includes("rushikesh") &&
-    (message.content.toLowerCase().includes("created") ||
-      message.content.toLowerCase().includes("made") ||
-      message.content.toLowerCase().includes("developer"));
-
   return (
     <>
       {message.content && message.content.trim() && (
@@ -156,13 +148,11 @@ const MessageContent: React.FC<{
 
       {message.content &&
         message.content.trim() &&
-        message.structuredContent &&
-        !isBasicQuestion && (
+        message.structuredContent && (
           <div className="my-3 border-t border-white/10"></div>
         )}
 
       {message.structuredContent &&
-        !isBasicQuestion &&
         renderStructuredContent(message.structuredContent)}
     </>
   );

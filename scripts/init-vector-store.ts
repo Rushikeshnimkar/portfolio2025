@@ -185,8 +185,8 @@ async function initializeVectorStore() {
       // Delete all existing vectors if index exists
       try {
         const index = pinecone.Index(indexName);
-        console.log("Deleting existing vectors...");
-        await index.deleteAll();
+        console.log("Deleting existing vectors in 'character-info' namespace...");
+        await index.namespace("character-info").deleteAll();
         console.log("Existing vectors deleted successfully");
       } catch (error) {
         console.error("Error deleting existing vectors:", error);
