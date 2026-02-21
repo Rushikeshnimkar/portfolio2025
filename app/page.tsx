@@ -12,6 +12,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import GitHub from "./github/page";
 import NeuralBackground from "../components/neural-background";
 import { useThemeHandler, useMessageHandler, initializeChat } from "../components/tools/ai-chat/chat-utils";
+import { ClippyAssistant } from "../components/ui/ClippyAssistant";
 
 export default function Home() {
   // Theme and Message Handlers
@@ -200,46 +201,13 @@ export default function Home() {
         <Contact />
       </section>
 
-      {/* Circular AI Button */}
-      {/* Circular AI Button */}
-
-      <button
+      {/* Clippy AI Assistant */}
+      <ClippyAssistant
         onClick={handleAIButtonClick}
-        className={`fixed bottom-4 right-4 md:bottom-6 md:right-6 w-14 h-14 rounded-full shadow-xl transition-all duration-300 transform z-[60] 
-          ${isChatOpen || isInputVisible
-            ? "bg-neutral-900/80 backdrop-blur-sm border border-indigo-500/50 hover:bg-neutral-800/80 rotate-0 hover:rotate-90"
-            : "bg-gradient-to-r from-indigo-600 to-cyan-600 hover:shadow-[0_0_25px_rgba(99,102,241,0.5)] hover:scale-105"
-          }
-          group flex items-center justify-center`}
-        style={{
-          boxShadow: isChatOpen || isInputVisible
-            ? "0 0 20px rgba(99, 102, 241, 0.3)"
-            : "0 8px 32px rgba(0, 0, 0, 0.3), 0 0 20px rgba(99, 102, 241, 0.2)",
-        }}
-        data-theme-target="chat-button"
-      >
-        <div className="relative">
-          <svg
-            className="w-6 h-6 text-white"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={1.5}
-              d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
-            />
-          </svg>
-          <div className="absolute -top-1 -right-1">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
-            </span>
-          </div>
-        </div>
-      </button>
+        isChatOpen={isChatOpen}
+        isInputVisible={isInputVisible}
+        isLoading={isLoading}
+      />
 
       {/* Unified Input Component - Always on top */}
       <UnifiedAIInput

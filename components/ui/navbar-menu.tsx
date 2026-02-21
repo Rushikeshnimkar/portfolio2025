@@ -54,7 +54,7 @@ export const MenuItem = ({
 }) => {
   return (
     <div onMouseEnter={() => setActive(item)} className="relative">
-      <motion.p
+      <motion.div
         initial={{ scale: 1 }}
         whileHover={{
           scale: 1.05,
@@ -91,7 +91,8 @@ export const MenuItem = ({
         >
           {item}
         </motion.span>
-      </motion.p>
+      </motion.div>
+
 
       {active === item && (
         <motion.div
