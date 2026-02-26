@@ -3,15 +3,8 @@ import { NextResponse } from "next/server";
 import { generateToken } from "../chat/route"; // Import the generateToken function
 import { headers } from "next/headers";
 
-// Function to check if origin is allowed (same as in your chat route)
-function isAllowedOrigin(origin: string | null) {
-  const allowedOrigins = [
-    "https://www.rushikeshnimkar.com",
-    "https://www.www.rushikeshnimkar.com",
-    // "http://localhost:3000", // for development
-  ];
-  return origin && allowedOrigins.includes(origin);
-}
+// CORS check - uses ALLOWED_ORIGINS from env
+import { isAllowedOrigin } from "@/lib/cors";
 
 // POST endpoint to generate JWT token
 export async function POST(req: Request) {

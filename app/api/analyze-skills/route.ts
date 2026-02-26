@@ -121,14 +121,8 @@ function extractSkillsFromText(text: string): string[] {
     return Array.from(extracted);
 }
 
-function isAllowedOrigin(origin: string | null) {
-    const allowedOrigins = [
-        "https://www.rushikeshnimkar.com",
-        "https://www.www.rushikeshnimkar.com",
-        // "http://localhost:3000",
-    ];
-    return origin && allowedOrigins.includes(origin);
-}
+// CORS check - uses ALLOWED_ORIGINS from env
+import { isAllowedOrigin } from "@/lib/cors";
 
 export async function POST(req: Request) {
     const headersList = await headers();

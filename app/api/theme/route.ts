@@ -58,15 +58,8 @@ async function initializeServices() {
   }
 }
 
-// Add CORS check middleware
-function isAllowedOrigin(origin: string | null) {
-  const allowedOrigins = [
-    "https://www.rushikeshnimkar.com",
-    "https://www.www.rushikeshnimkar.com",
-    // "http://localhost:3000",
-  ];
-  return origin && allowedOrigins.includes(origin);
-}
+// CORS check - uses ALLOWED_ORIGINS from env
+import { isAllowedOrigin } from "@/lib/cors";
 
 // Improved page/component detection function
 function isPageOrComponentSpecific(prompt: string): boolean {
@@ -140,7 +133,12 @@ export async function POST(req: Request) {
   }
 
   try {
-    await initializeServices(); // Ensure services are ready
+    // Try to initialize services, but don't fail the entire request if vector store is unavailable
+    try {
+      await initializeServices();
+    } catch (initError) {
+      console.warn("⚠️ Vector store initialization failed, proceeding without context:", initError instanceof Error ? initError.message : String(initError));
+    }
 
     const { prompt: userPrompt } = await req.json();
     const cleanUserPrompt = userPrompt.replace(/^Theme:\s*/i, "");
@@ -341,7 +339,7 @@ IMPORTANT: Respond ONLY with the JavaScript function 'applyThemeChanges' wrapped
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "tngtech/tng-r1t-chimera:free", // Use a consistent model with your existing setup
+          model: "arcee-ai/trinity-large-preview:free", // Use a consistent model with your existing setup
           messages: [
             {
               role: "system",

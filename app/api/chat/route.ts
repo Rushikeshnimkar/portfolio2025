@@ -42,17 +42,8 @@ export function generateToken(payload: any): string {
   return jwt.sign(payload, JWT_SECRET, options);
 }
 
-// Add CORS check middleware
-function isAllowedOrigin(origin: string | null) {
-  const allowedOrigins = [
-    "https://www.rushikeshnimkar.com",
-    "https://www.www.rushikeshnimkar.com",
-
-    // Include localhost for development(uncomment for development)
-    // "http://localhost:3000",
-  ];
-  return origin && allowedOrigins.includes(origin);
-}
+// CORS check - uses ALLOWED_ORIGINS from env
+import { isAllowedOrigin } from "@/lib/cors";
 
 export async function POST(req: Request) {
   // Performance monitoring

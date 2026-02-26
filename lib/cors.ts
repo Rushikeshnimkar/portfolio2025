@@ -1,19 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// Allowed origins
-const allowedOrigins = [
-  "https://www.rushikeshnimkar.com",
-  "https://www.www.rushikeshnimkar.com",
-];
+// Parse allowed origins from env variable, with production defaults
+function getAllowedOrigins(): string[] {
+  if (process.env.ALLOWED_ORIGINS) {
+    return process.env.ALLOWED_ORIGINS.split(",").map((o) => o.trim());
+  }
+  // Fallback defaults (production)
+  return [
+    "https://www.rushikeshnimkar.com",
+    "https://www.www.rushikeshnimkar.com",
+  ];
+}
+
+// Shared origin check — import this in all API routes
+export function isAllowedOrigin(origin: string | null): boolean {
+  const allowedOrigins = getAllowedOrigins();
+  return !!origin && allowedOrigins.includes(origin);
+}
 
 // Development environment check
 const isDevelopment = process.env.NODE_ENV === "development";
 
 export function corsMiddleware(req: NextRequest) {
-  // Get the origin from the request headers
   const origin = req.headers.get("origin") || "";
 
-  // In development, allow localhost
   if (isDevelopment) {
     return NextResponse.json(
       { error: "CORS check passed (development mode)" },
@@ -29,8 +39,7 @@ export function corsMiddleware(req: NextRequest) {
     );
   }
 
-  // Check if the origin is allowed
-  if (!allowedOrigins.includes(origin)) {
+  if (!isAllowedOrigin(origin)) {
     return NextResponse.json(
       { error: "Not allowed by CORS" },
       {
@@ -42,7 +51,6 @@ export function corsMiddleware(req: NextRequest) {
     );
   }
 
-  // Return successful preflight response
   return NextResponse.json(
     { success: true },
     {
@@ -61,27 +69,21 @@ export function applyCors(
   req: NextRequest,
   handler: (req: NextRequest) => Promise<NextResponse>
 ) {
-  // Handle OPTIONS request (preflight)
   if (req.method === "OPTIONS") {
     return corsMiddleware(req);
   }
 
-  // Get the origin from the request headers
   const origin = req.headers.get("origin") || "";
 
-  // In development, allow all origins
   if (isDevelopment) {
     return handler(req);
   }
 
-  // Check if the origin is allowed
-  if (!allowedOrigins.includes(origin)) {
+  if (!isAllowedOrigin(origin)) {
     return NextResponse.json({ error: "Not allowed by CORS" }, { status: 403 });
   }
 
-  // Process the request with the handler
   return handler(req).then((response) => {
-    // Add CORS headers to the response
     response.headers.set("Access-Control-Allow-Origin", origin);
     response.headers.set(
       "Access-Control-Allow-Methods",
