@@ -10,7 +10,7 @@ import { TiltCard } from "@/components/ui/tilt-card";
 // Define image metadata for SEO
 const imageMetadata = {
   profile1: {
-    url: "/rushikesh_nimkar.jpg",
+    url: "/rushikesh_nimkar.png",
     alt: "Rushikesh Nimkar - Full Stack Developer Primary Profile",
     width: 800,
     height: 800,

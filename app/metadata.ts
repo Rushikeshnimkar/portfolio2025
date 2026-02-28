@@ -31,7 +31,7 @@ export const defaultMetadata = {
         alt: "Rushikesh Nimkar - Full Stack Developer",
       },
       {
-        url: "/rushikesh_nimkar.jpg",
+        url: "/rushikesh_nimkar.png",
         width: 800,
         height: 800,
         alt: "Rushikesh Nimkar - Full Stack Developer Primary Profile",
@@ -50,6 +50,6 @@ export const defaultMetadata = {
     description:
       "Full Stack Developer specializing in Next.js, TypeScript, and Blockchain development.",
     creator: "@RushikeshN22296",
-    images: ["/rushikesh_nimkar.jpg", "/profile.jpg", "/og-image.jpg"],
+    images: ["/rushikesh_nimkar.png", "/profile.jpg", "/og-image.jpg"],
   },
 };

@@ -19,7 +19,7 @@ export function ProfileImagesSchema() {
           associatedMedia: [
             {
               "@type": "ImageObject",
-              contentUrl: "https://rushikeshnimkar.com/rushikesh_nimkar.jpg",
+              contentUrl: "https://rushikeshnimkar.com/rushikesh_nimkar.png",
               name: "Rushikesh Nimkar - Full Stack Developer Primary Profile",
               description:
                 "Primary profile photo of Rushikesh Nimkar, Full Stack Developer",
