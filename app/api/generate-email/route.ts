@@ -50,7 +50,7 @@ async function handler(req: NextRequest) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "openrouter/hunter-alpha",
+          model: "nvidia/nemotron-3-super-120b-a12b:free",
           messages: messages,
           max_tokens: 10000, // Limit response size
           temperature: 0.2, // Add temperature for more consistent responses

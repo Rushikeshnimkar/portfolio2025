@@ -339,7 +339,7 @@ IMPORTANT: Respond ONLY with the JavaScript function 'applyThemeChanges' wrapped
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "openrouter/hunter-alpha", // Use a consistent model with your existing setup
+          model: "nvidia/nemotron-3-super-120b-a12b:free", // Use a consistent model with your existing setup
           messages: [
             {
               role: "system",
