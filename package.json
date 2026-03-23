@@ -14,7 +14,7 @@
     "@google/generative-ai": "^0.21.0",
     "@heroicons/react": "^2.2.0",
     "@langchain/community": "^0.3.32",
-    "@langchain/core": "^0.3.40",
+    "@langchain/core": "^0.3.80",
     "@langchain/google-genai": "^0.1.10",
     "@langchain/langgraph": "^0.2.49",
     "@langchain/openai": "^0.4.4",
@@ -25,7 +25,7 @@
     "@vercel/speed-insights": "^1.2.0",
     "animejs": "^4.3.6",
     "aws-sdk": "^2.1692.0",
-    "axios": "^1.8.4",
+    "axios": "^1.9.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dompurify": "^3.2.3",
@@ -37,10 +37,10 @@
     "jsonwebtoken": "^9.0.2",
     "localforage": "^1.10.0",
     "lucide-react": "^0.473.0",
-    "mailparser": "^3.7.2",
+    "mailparser": "^3.7.3",
     "marked": "^15.0.6",
-    "next": "^15.5.9",
-    "nodemailer": "^6.9.16",
+    "next": "^15.5.14",
+    "nodemailer": "^7.0.11",
     "portfolio": "file:",
     "puppeteer": "^24.5.0",
     "react": "^19.2.1",
@@ -70,10 +70,16 @@
     "tsx": "^4.19.3",
     "typescript": "^5"
   },
-  "pnpm": {
-    "overrides": {
-      "minimatch@<3.1.3": "3.1.3"
-    }
-  },
-  "packageManager": "pnpm@9.15.3+sha512.1f79bc245a66eb0b07c5d4d83131240774642caaa86ef7d0434ab47c0d16f66b04e21e0c086eb61e62c77efc4d7f7ec071afad3796af64892fae66509173893a"
+  "overrides": {
+    "minimatch": "^3.1.3",
+    "basic-ftp": "^5.0.5",
+    "fast-xml-parser": "^4.5.2",
+    "flatted": "^3.3.2",
+    "semver": "^7.6.3",
+    "jws": "^4.0.0",
+    "nodemailer": "$nodemailer",
+    "axios": "$axios",
+    "xml2js": "^0.6.2",
+    "langsmith": "^0.5.12"
+  }
 }
