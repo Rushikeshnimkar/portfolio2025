@@ -17,16 +17,12 @@ I am a full-stack developer with expertise in JavaScript, TypeScript, Java, Reac
 
 Education:
 
-C-DAC Sn-Vita, Mumbai | Post Graduate Diploma in Advanced Computing (PG-DAC) | 2025 - Present
+C-DAC Sn-Vita, Mumbai | Post Graduate Diploma in Advanced Computing (PG-DAC) | 2025 - Feb 2026
 
 All India Shri Shivaji Memorial Society College of Engineering (AISSMS COE), Pune | BE Computer Engineering | 2020 - 2024
 
 Experience:
-Lazarus Network | Full-Stack Engineer (Remote) | March 2024 - June 2024
-
-Engineered secure, multi-chain Web3 interfaces for decentralized privacy platforms (Netsepio & Erebrus), implementing robust Aptos wallet integration for seamless transaction signing.
-
-Developed and deployed "Airbot," a real-time Discord AI agent that orchestrates OpenAI and Midjourney APIs to automate generative content workflows and enhance user engagement.
+Mindstix Software Labs, Pune | Software Development Engineer 1 | March 2026 - Present
 
 Skills:
 

@@ -162,15 +162,7 @@ export function generateStructuredResponse(queryType: string): StructuredContent
                 link: "https://www.npmjs.com/package/terminal-ai-assistant",
             },
         ],
-        experience: [
-            {
-                title: "Full-Stack Engineer",
-                company: "Lazarus Network Inc.",
-                period: "March 2024 - June 2024",
-                description:
-                    "Developed frontend with Next.js and React.js, backend with Node.js. Managed AWS EC2 and Google Cloud servers. Added multichain support to Erebrus and developed Netsepio frontend.",
-            },
-        ],
+        experience: [],
         education: [
             {
                 title: "BE Computer Engineering",

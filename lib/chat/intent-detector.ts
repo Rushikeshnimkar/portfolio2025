@@ -41,7 +41,7 @@ const SKILLS_PATTERN =
 const PROJECTS_PATTERN =
     /projects|portfolio|work|applications|apps|websites|developed|built|created|made|showcase|gitsplit|cryptorage|terminal ai|mystic tarot/i;
 const EXPERIENCE_PATTERN =
-    /experience|work history|job|career|background|employment|company|lazarus|position|role/i;
+    /experience|work history|job|career|background|employment|company|position|role/i;
 const EDUCATION_PATTERN =
     /education|degree|university|college|school|academic|study|studied|aissms|engineering|be|computer|pune/i;
 const CONTACT_PATTERN =

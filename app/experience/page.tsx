@@ -5,7 +5,36 @@ import { FiMapPin, FiAward, FiBriefcase, FiBook } from "react-icons/fi";
 export default function ExperiencePage() {
   const data = [
     {
-      title: "Present",
+      title: "March 2026 - Present",
+      content: (
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+          <div className="flex-shrink-0 pt-1">
+            <FiBriefcase className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
+          </div>
+          <div className="space-y-2 min-w-0">
+            <h3 className="text-base sm:text-lg font-semibold text-white leading-tight">
+              Software Development Engineer 1
+            </h3>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-neutral-400 text-xs sm:text-sm">
+              <span className="font-medium">Mindstix Software Labs</span>
+              <span className="hidden sm:inline">•</span>
+              <div className="flex items-center gap-1">
+                <FiMapPin className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+                <span>Pune, IN</span>
+              </div>
+            </div>
+            <div className="space-y-3 text-xs sm:text-sm text-neutral-300">
+              <p className="leading-relaxed">
+                Working on DevOps, focusing on CI/CD pipelines, infrastructure
+                automation, and cloud deployment workflows.
+              </p>
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "2025 - Feb 2026",
       content: (
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           <div className="flex-shrink-0 pt-1">
@@ -20,66 +49,15 @@ export default function ExperiencePage() {
               <span className="truncate">CDAC SMVITA, Mumbai, IN</span>
             </div>
             <p className="text-neutral-300 text-xs sm:text-sm leading-relaxed">
-              Currently pursuing a Postgraduate Diploma in Advanced Computing
-              (PG-DAC) from CDAC SMVITA, Mumbai. Focusing on full-stack
+              Completed Postgraduate Diploma in Advanced Computing
+              (PG-DAC) from CDAC SMVITA, Mumbai. Focused on full-stack
               development, cloud technologies, and hands-on project building.
             </p>
           </div>
         </div>
       ),
     },
-    {
-      title: "March 2024 - June 2024",
-      content: (
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-          <div className="flex-shrink-0 pt-1">
-            <FiBriefcase className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
-          </div>
-          <div className="space-y-2 min-w-0">
-            <h3 className="text-base sm:text-lg font-semibold text-white leading-tight">
-              Fullstack Developer
-            </h3>
-            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-neutral-400 text-xs sm:text-sm">
-              <span className="font-medium">Lazarus Network</span>
-              <span className="hidden sm:inline">•</span>
-              <span>Remote</span>
-            </div>
-            <div className="space-y-3 text-xs sm:text-sm text-neutral-300">
-              <p className="leading-relaxed">
-                Full-stack development role focusing on building scalable web
-                applications and maintaining cloud infrastructure.
-              </p>
-              <ul className="space-y-2">
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-400 mt-1 flex-shrink-0">▹</span>
-                  <span className="leading-relaxed">
-                    Developed backend services using Golang and Node.js
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-400 mt-1 flex-shrink-0">▹</span>
-                  <span className="leading-relaxed">
-                    Built responsive frontends with Next.js and React
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-400 mt-1 flex-shrink-0">▹</span>
-                  <span className="leading-relaxed">
-                    Managed AWS EC2 and Google Cloud infrastructure
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-400 mt-1 flex-shrink-0">▹</span>
-                  <span className="leading-relaxed">
-                    Implemented CI/CD pipelines with GitHub Actions
-                  </span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      ),
-    },
+
     {
       title: "2020-2024",
       content: (
