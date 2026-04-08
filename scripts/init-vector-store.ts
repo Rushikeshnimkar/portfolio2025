@@ -241,7 +241,6 @@ function identifySection(chunk: string): string {
   if (lowerChunk.includes("skills")) return "skills";
   if (lowerChunk.includes("awards")) return "awards";
   if (lowerChunk.includes("languages")) return "languages";
-  if (lowerChunk.includes("personal life") || lowerChunk.includes("girlfriend")) return "personal";
   if (lowerChunk.includes("hobbies")) return "hobbies";
   if (
     lowerChunk.includes("contact") ||
