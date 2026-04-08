@@ -99,6 +99,9 @@ Sui Overflow: Community Favorite Award for Mystic Tarot, a Web3 tarot reading pl
 Languages:
 English, Marathi, Hindi
 
+Personal Life:
+My girlfriend is Mahi Jaiswal. She is the most amazing person in my life — kind, supportive, and truly special. Mahi means the world to me, and she's been an incredible source of happiness and motivation. I'm really lucky to have her by my side. She inspires me every day and makes everything better just by being herself. ❤️
+
 hobbies:
 - photography
 - travelling
