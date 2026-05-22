@@ -163,9 +163,18 @@ const MessageContent: React.FC<{
  */
 const SearchingIndicator: React.FC = () => {
   return (
-    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-cyan-500/10 border border-cyan-500/20 rounded-full">
-      <FiSearch className="w-3 h-3 sm:w-4 sm:h-4 text-cyan-400 animate-pulse" />
-      <span className="text-xs sm:text-sm text-cyan-400/90">Searching...</span>
+    <div 
+      className="inline-flex items-center gap-2 px-3 py-1.5 bg-cyan-500/10 border border-cyan-500/30 rounded-full shadow-lg relative overflow-hidden backdrop-blur-md"
+      style={{
+        boxShadow: "0 0 15px rgba(6, 182, 212, 0.15), inset 0 0 8px rgba(6, 182, 212, 0.05)",
+      }}
+    >
+      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent -translate-x-full animate-[shimmer_1.5s_infinite]" />
+      <div className="relative flex items-center justify-center">
+        <FiSearch className="w-3.5 h-3.5 text-cyan-400 animate-pulse relative z-10" />
+        <span className="absolute w-5 h-5 rounded-full border border-cyan-500/30 animate-ping opacity-60" />
+      </div>
+      <span className="text-xs sm:text-sm font-medium font-mono text-cyan-300 tracking-wide">Searching Vector Index...</span>
     </div>
   );
 };
@@ -175,11 +184,18 @@ const SearchingIndicator: React.FC = () => {
  */
 const ThinkingIndicator: React.FC = () => {
   return (
-    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-500/10 border border-indigo-500/20 rounded-full">
-      <span className="text-xs sm:text-sm text-indigo-300/90 mr-1">Thinking</span>
-      <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-      <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-      <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+    <div 
+      className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-indigo-500/10 border border-indigo-500/30 rounded-full shadow-lg backdrop-blur-md"
+      style={{
+        boxShadow: "0 0 15px rgba(99, 102, 241, 0.15), inset 0 0 8px rgba(99, 102, 241, 0.05)",
+      }}
+    >
+      <span className="text-xs sm:text-sm font-medium font-mono text-indigo-300 tracking-wide">Thinking</span>
+      <div className="flex gap-1 items-center justify-center">
+        <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce" style={{ animationDelay: "0ms", boxShadow: "0 0 6px rgba(129, 140, 248, 0.8)" }} />
+        <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce" style={{ animationDelay: "150ms", boxShadow: "0 0 6px rgba(129, 140, 248, 0.8)" }} />
+        <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce" style={{ animationDelay: "300ms", boxShadow: "0 0 6px rgba(129, 140, 248, 0.8)" }} />
+      </div>
     </div>
   );
 };

@@ -99,6 +99,7 @@ export const EmailComposeCard: React.FC<EmailComposeCardProps> = ({
             }
 
             setIsSuccess(true);
+            window.dispatchEvent(new CustomEvent("clippy-mail-sent"));
             setTimeout(() => {
                 if (onClose) onClose();
             }, 2000);

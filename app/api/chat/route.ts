@@ -1,46 +1,10 @@
 /* eslint-disable */
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
-import jwt from "jsonwebtoken";
 import { ChatMessage } from "@/lib/chat/types";
 import { ChatWorkflow } from "@/lib/chat/workflow";
 import { needsWebSearch } from "@/lib/chat/intent-detector";
-
-// JWT Configuration
-if (!process.env.JWT_SECRET) {
-  throw new Error("JWT_SECRET environment variable is not defined");
-}
-const JWT_SECRET = process.env.JWT_SECRET;
-const JWT_EXPIRY = process.env.JWT_EXPIRY || "1m";
-
-// JWT Token verification function
-function verifyToken(token: string): {
-  valid: boolean;
-  payload?: any;
-  error?: string;
-} {
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    return { valid: true, payload: decoded };
-  } catch (error) {
-    if (error instanceof jwt.TokenExpiredError) {
-      return { valid: false, error: "Token expired" };
-    } else if (error instanceof jwt.JsonWebTokenError) {
-      return { valid: false, error: "Invalid token" };
-    } else {
-      return { valid: false, error: "Token verification failed" };
-    }
-  }
-}
-
-// Function to generate JWT token (you might want to use this in a separate auth endpoint)
-export function generateToken(payload: any): string {
-  const options = {
-    expiresIn: JWT_EXPIRY,
-  } as jwt.SignOptions;
-
-  return jwt.sign(payload, JWT_SECRET, options);
-}
+import { verifyToken } from "@/lib/chat/jwt";
 
 // CORS check - uses ALLOWED_ORIGINS from env
 import { isAllowedOrigin } from "@/lib/cors";

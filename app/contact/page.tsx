@@ -224,6 +224,7 @@ export default function Contact() {
       setIsChatOpen(true);
 
       setStatus("success");
+      window.dispatchEvent(new CustomEvent("clippy-mail-sent"));
       setPrompt("");
       setEmailContent("");
       setSenderName("");

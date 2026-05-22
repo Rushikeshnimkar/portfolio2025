@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { Pinecone } from "@pinecone-database/pinecone";
-import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
+import { getEmbeddings } from "@/lib/embeddings";
 import { PineconeStore } from "@langchain/pinecone";
 import * as dotenv from "dotenv";
 import { Document } from "@langchain/core/documents";
@@ -11,12 +11,12 @@ dotenv.config();
 
 // --- Constants ---
 const THEME_INDEX_NAME = "theme";
-const GOOGLE_EMBEDDING_MODEL = "text-embedding-004";
 const MAX_CONTEXT_RESULTS = 5; // Increased for better context retrieval
 
 // --- Helper: Initialize services (consider moving to a shared lib if used elsewhere) ---
 let pinecone: Pinecone | null = null;
-let embeddings: GoogleGenerativeAIEmbeddings | null = null;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let embeddings: any = null;
 let vectorStore: PineconeStore | null = null;
 
 async function initializeServices() {
@@ -30,10 +30,7 @@ async function initializeServices() {
     pinecone = new Pinecone({ apiKey: process.env.PINECONE_API_KEY });
     const pineconeIndex = pinecone.Index(THEME_INDEX_NAME);
 
-    embeddings = new GoogleGenerativeAIEmbeddings({
-      apiKey: process.env.GOOGLE_API_KEY,
-      model: GOOGLE_EMBEDDING_MODEL,
-    });
+    embeddings = getEmbeddings();
 
     vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
       pineconeIndex,

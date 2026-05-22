@@ -1,6 +1,6 @@
 // Create this file at: app/api/auth/route.ts
 import { NextResponse } from "next/server";
-import { generateToken } from "../chat/route"; // Import the generateToken function
+import { generateToken } from "@/lib/chat/jwt";
 import { headers } from "next/headers";
 
 // CORS check - uses ALLOWED_ORIGINS from env

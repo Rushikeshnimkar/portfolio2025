@@ -39,7 +39,7 @@ export function needsWebSearch(message: string): boolean {
 const SKILLS_PATTERN =
     /skills|technologies|tech stack|programming|languages|frameworks|tools|libraries|proficient|expertise|capable|abilities/i;
 const PROJECTS_PATTERN =
-    /projects|portfolio|work|applications|apps|websites|developed|built|created|made|showcase|gitsplit|cryptorage|terminal ai|mystic tarot/i;
+    /projects|portfolio|work|applications|apps|websites|developed|built|created|made|showcase|gitsplit|cryptorage|terminal ai|mystic tarot|fleeman|fleet/i;
 const EXPERIENCE_PATTERN =
     /experience|work history|job|career|background|employment|company|position|role/i;
 const EDUCATION_PATTERN =
@@ -73,6 +73,8 @@ const CRYPTORAGE_PATTERN =
     /cryptorage|chrome extension|secure storage|dorahacks|walrus blockchain/i;
 const TERMINAL_AI_PATTERN =
     /terminal ai|assistant|cli tool|command line|npm package|terminal-ai-assistant/i;
+const FLEEMAN_PATTERN =
+    /fleeman|fleet|vehicle rental|car rental|rental system|rental platform|spring boot project|java spring|razorpay/i;
 
 // Update the detectQueryType function to handle specific project types
 export function detectQueryType(message: string): string | null {
@@ -82,21 +84,28 @@ export function detectQueryType(message: string): string | null {
     if (
         GITSPLIT_PATTERN.test(lowerMessage) &&
         !CRYPTORAGE_PATTERN.test(lowerMessage) &&
-        !TERMINAL_AI_PATTERN.test(lowerMessage)
+        !TERMINAL_AI_PATTERN.test(lowerMessage) &&
+        !FLEEMAN_PATTERN.test(lowerMessage)
     )
         return "gitsplit_project";
     if (
         CRYPTORAGE_PATTERN.test(lowerMessage) &&
         !GITSPLIT_PATTERN.test(lowerMessage) &&
-        !TERMINAL_AI_PATTERN.test(lowerMessage)
+        !TERMINAL_AI_PATTERN.test(lowerMessage) &&
+        !FLEEMAN_PATTERN.test(lowerMessage)
     )
         return "cryptorage_project";
     if (
         TERMINAL_AI_PATTERN.test(lowerMessage) &&
         !GITSPLIT_PATTERN.test(lowerMessage) &&
-        !CRYPTORAGE_PATTERN.test(lowerMessage)
+        !CRYPTORAGE_PATTERN.test(lowerMessage) &&
+        !FLEEMAN_PATTERN.test(lowerMessage)
     )
         return "terminal_ai_project";
+    if (
+        FLEEMAN_PATTERN.test(lowerMessage)
+    )
+        return "fleeman_project";
 
     // Check for specific contact types
     if (

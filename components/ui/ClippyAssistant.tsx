@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface ClippyAssistantProps {
     onClick: () => void;
@@ -94,15 +95,78 @@ export const ClippyAssistant: React.FC<ClippyAssistantProps> = ({
 }) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const agentRef = useRef<any>(null);
+    const [animationStage, setAnimationStage] = useState<"idle" | "packing" | "throwing" | "done">("idle");
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const onClickRef = useRef(onClick);
     const prevChatOpenRef = useRef(isChatOpen);
     const prevInputVisibleRef = useRef(isInputVisible);
+    const animationTimersRef = useRef<NodeJS.Timeout[]>([]);
 
     // Keep the click ref up to date so the Clippy handler never goes stale
     useEffect(() => {
         onClickRef.current = onClick;
     }, [onClick]);
+
+    // Listen for custom email success events to play packing/throwing animation
+    useEffect(() => {
+        const handleMailSent = () => {
+            if (!agentRef.current) return;
+            const agent = agentRef.current;
+
+            // Clear any active animation timers to prevent collisions
+            animationTimersRef.current.forEach(clearTimeout);
+            animationTimersRef.current = [];
+
+            // Clear any active idle interval
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+                intervalRef.current = null;
+            }
+
+            // Phase A: Packing (starts immediately)
+            agent.stop();
+            agent.play("Explain");
+            agent.speak("Let's pack up this message! ✉️");
+            setAnimationStage("packing");
+
+            // Phase B: Throwing (triggers after 1.5s - letter packed + flap closed)
+            const throwingTimer = setTimeout(() => {
+                setAnimationStage("throwing");
+                agent.stop();
+                agent.play("GestureLeft");
+                agent.speak("Sending! Fly away! 🚀");
+            }, 1500);
+            animationTimersRef.current.push(throwingTimer);
+
+            // Phase C: Celebration (triggers after throwing completes, at 3.3s total)
+            const doneTimer = setTimeout(() => {
+                setAnimationStage("done");
+                agent.stop();
+                agent.play("Congratulate");
+                agent.speak("Message sent successfully! 📧✨");
+
+                // Reset back to idle after celebrating (3 seconds of celebration)
+                const resetTimer = setTimeout(() => {
+                    setAnimationStage("idle");
+                    // Restart standard idle cycle
+                    if (intervalRef.current) clearInterval(intervalRef.current);
+                    intervalRef.current = setInterval(() => {
+                        if (agentRef.current) {
+                            agentRef.current.play(randomPick(IDLE_ANIMATIONS));
+                        }
+                    }, 6000 + Math.random() * 4000);
+                }, 3000);
+                animationTimersRef.current.push(resetTimer);
+            }, 3300);
+            animationTimersRef.current.push(doneTimer);
+        };
+
+        window.addEventListener("clippy-mail-sent", handleMailSent);
+        return () => {
+            window.removeEventListener("clippy-mail-sent", handleMailSent);
+            animationTimersRef.current.forEach(clearTimeout);
+        };
+    }, []);
 
     useEffect(() => {
         let disposed = false;
@@ -246,8 +310,108 @@ export const ClippyAssistant: React.FC<ClippyAssistantProps> = ({
         prevInputVisibleRef.current = isInputVisible;
     }, [isChatOpen, isInputVisible]);
 
-    // Clippy renders itself into the DOM — no JSX needed
-    return null;
+    // Clippy renders itself into the DOM — no JSX needed for clippy, but we render our envelope overlay here
+    return (
+        <AnimatePresence>
+            {animationStage !== "idle" && animationStage !== "done" && (
+                <div className="fixed bottom-[120px] right-[40px] z-[70] pointer-events-none select-none">
+                    <motion.div
+                        style={{ perspective: 1000 }}
+                        initial={
+                            animationStage === "packing"
+                                ? { opacity: 0, scale: 0.5, y: 50, rotate: 0 }
+                                : {}
+                        }
+                        animate={
+                            animationStage === "packing"
+                                ? { opacity: 1, scale: 1, y: 0 }
+                                : {
+                                      // Parabolic gravity flight arc!
+                                      x: [0, "-20vw", "-50vw", "-80vw", "-110vw"],
+                                      y: [0, "-35vh", "-50vh", "-35vh", "10vh"],
+                                      rotate: [0, 180, 360, 540, 720],
+                                      scale: [1, 1.2, 0.8, 0.4, 0.1],
+                                      opacity: [1, 1, 1, 0.8, 0],
+                                  }
+                        }
+                        transition={
+                            animationStage === "packing"
+                                ? { type: "spring", stiffness: 200, damping: 15 }
+                                : { duration: 1.8, ease: "easeOut" }
+                        }
+                        className="relative w-32 h-20"
+                    >
+                        {/* 1. Envelope Back */}
+                        <div 
+                            className="absolute inset-0 bg-[#161925] border border-white/10 rounded-lg shadow-2xl z-[1]"
+                            style={{
+                                boxShadow: "0 8px 32px 0 rgba(99, 102, 241, 0.15)",
+                            }}
+                        />
+
+                        {/* 2. The Letter Sheet */}
+                        <motion.div
+                            initial={{ y: -80, opacity: 0 }}
+                            animate={
+                                animationStage === "packing"
+                                    ? { y: 0, opacity: 1 }
+                                    : { y: 0, opacity: 1 }
+                            }
+                            transition={{
+                                delay: 0.1,
+                                duration: 0.6,
+                                ease: "easeInOut",
+                            }}
+                            className="absolute left-2.5 right-2.5 top-1.5 bottom-1.5 bg-gradient-to-br from-indigo-500/20 to-cyan-500/20 border border-cyan-500/30 rounded z-[2] p-2 flex flex-col gap-1.5 shadow-inner"
+                        >
+                            {/* Decorative simulated written lines */}
+                            <div className="w-full h-1 bg-white/40 rounded animate-pulse" />
+                            <div className="w-5/6 h-1 bg-white/30 rounded" />
+                            <div className="w-2/3 h-1 bg-white/30 rounded" />
+                            <div className="w-4/5 h-1 bg-white/20 rounded" />
+                        </motion.div>
+
+                        {/* 3. Envelope Front Pocket */}
+                        <div
+                            className="absolute inset-0 z-[3] rounded-lg border-t border-white/5"
+                            style={{
+                                clipPath: "polygon(0 40%, 50% 100%, 100% 40%, 100% 100%, 0 100%)",
+                                background: "linear-gradient(135deg, rgba(22, 25, 37, 0.95) 0%, rgba(13, 14, 21, 0.98) 100%)",
+                                border: "1px solid rgba(255, 255, 255, 0.05)",
+                            }}
+                        />
+
+                        {/* 4. Folding Flap */}
+                        <motion.div
+                            style={{
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                height: "35px",
+                                transformOrigin: "top",
+                                zIndex: 4,
+                                clipPath: "polygon(0 0, 50% 100%, 100% 0)", // Triangle pointing down
+                                background: "rgba(27, 31, 51, 0.95)",
+                                borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+                            }}
+                            initial={{ rotateX: 180 }} // Flapped back open
+                            animate={
+                                animationStage === "packing"
+                                    ? { rotateX: [180, 180, 0] } // Folds forward to close envelope
+                                    : { rotateX: 0 }
+                            }
+                            transition={{
+                                duration: 1.2,
+                                times: [0, 0.6, 1],
+                                ease: "easeInOut",
+                            }}
+                        />
+                    </motion.div>
+                </div>
+            )}
+        </AnimatePresence>
+    );
 };
 
 export default ClippyAssistant;

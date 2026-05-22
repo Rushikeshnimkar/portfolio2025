@@ -14,7 +14,7 @@ export interface Message {
  * Structured content interface for formatted display elements
  */
 export interface StructuredContent {
-  type: "skills" | "projects" | "experience" | "contact" | "links" | "general";
+  type: "skills" | "projects" | "experience" | "contact" | "links" | "general" | "fleeman_project";
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
 }

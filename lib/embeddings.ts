@@ -116,7 +116,7 @@ export async function initializeVectorStore() {
 }
 
 // Function to query the vector store
-export async function queryVectorStore(query: string, k: number = 5) {
+export async function queryVectorStore(query: string, k: number = 5, filter?: object) {
   try {
     // Initialize Pinecone client
     const pinecone = new Pinecone({
@@ -135,8 +135,8 @@ export async function queryVectorStore(query: string, k: number = 5) {
     });
 
     // Perform similarity search
-    console.log(`Searching for: "${query}" with k=${k}`);
-    const results = await vectorStore.similaritySearch(query, k);
+    console.log(`Searching for: "${query}" with k=${k} and filter:`, filter);
+    const results = await vectorStore.similaritySearch(query, k, filter);
     console.log(`Found ${results.length} results`);
 
     return results;

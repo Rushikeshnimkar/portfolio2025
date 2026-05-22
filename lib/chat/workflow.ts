@@ -98,13 +98,26 @@ class OpenRouterChatModel extends ChatOpenAI {
     }
 }
 
+// Helper to map detected intents to Pinecone metadata sections
+function getSectionFilter(queryType: string | null): object | undefined {
+    if (!queryType) return undefined;
+    const lowerType = queryType.toLowerCase();
+    if (lowerType === "skills") return { section: "skills" };
+    if (lowerType === "projects" || lowerType.includes("_project")) return { section: "projects" };
+    if (lowerType === "experience") return { section: "experience" };
+    if (lowerType === "education") return { section: "education" };
+    if (lowerType === "awards") return { section: "awards" };
+    if (lowerType === "contact" || lowerType.includes("_contact") || lowerType.includes("email") || lowerType.includes("phone")) return { section: "contact" };
+    return undefined;
+}
+
 export class ChatWorkflow {
     private model: OpenRouterChatModel;
 
     constructor(isSearchQuery: boolean = false) {
         this.model = new OpenRouterChatModel(
             {
-                temperature: 0,
+                temperature: 0.2, // Slightly increased for more natural conversational intro
             },
             isSearchQuery
         );
@@ -155,9 +168,9 @@ export class ChatWorkflow {
         const searchQuery = await this.generateSearchQuery(prompt, chatHistory);
         console.log(`Original query: "${prompt}", Search query: "${searchQuery}"`);
 
-        // 3. Retrieve context from vector store
+        // 3. Retrieve context from vector store using Section-Based Metadata Filtering
         let characterInfo = "";
-        const cacheKey = `vector_search_${searchQuery.slice(0, 50)}`;
+        const cacheKey = `vector_search_${searchQuery.toLowerCase().trim()}`;
 
         if (vectorSearchCache.has(cacheKey)) {
             console.log("Using cached vector search results");
@@ -165,9 +178,21 @@ export class ChatWorkflow {
         } else {
             try {
                 console.time("Vector search");
-                // Adjust number of results based on query complexity
                 const k = searchQuery.length > 50 ? 4 : 3;
-                const relevantInfo = await queryVectorStore(searchQuery, k);
+                const filter = getSectionFilter(queryType);
+
+                let relevantInfo: { pageContent: string }[] = [];
+                // Phase A: Try metadata-filtered retrieval
+                if (filter) {
+                    console.log(`Attempting metadata-guided RAG search with section:`, filter);
+                    relevantInfo = await queryVectorStore(searchQuery, k, filter);
+                }
+
+                // Phase B: Unfiltered fallback search if results are sparse or no filter was resolved
+                if (relevantInfo.length < 2) {
+                    console.log("Metadata-filtered search returned sparse results or no filter. Falling back to unfiltered search.");
+                    relevantInfo = await queryVectorStore(searchQuery, k);
+                }
                 console.timeEnd("Vector search");
 
                 characterInfo = relevantInfo.map((doc) => doc.pageContent).join("\n\n");
@@ -183,25 +208,28 @@ export class ChatWorkflow {
             }
         }
 
-        // 4. Construct System Prompt
-        let systemContent = `You are Rushikesh Nimkar, a full-stack developer with expertise in Java, React.js, Next.js, and MySQL.`;
+        // 4. Construct System Prompt - OPTIMIZED FOR SMALL MODELS
+        let systemContent = `<identity>
+You are Rushikesh Nimkar, an SDE 1 Software Engineer specializing in Java, React.js, Next.js, and MySQL. Speak directly in the FIRST PERSON ("I", "my").
+</identity>
+
+<context>
+${characterInfo ? `Here is the verified information about my profile and projects:\n${characterInfo}` : "No verified profile information found."}
+</context>
+
+<instructions>
+1. Always maintain a professional SDE persona.
+2. Keep responses brief, crisp, and conversational (under 2-3 sentences).
+3. If structured card UI is active (structuredContent present), DO NOT repeat or list details already shown in the card. Talk about what excites me, my passion, or provide a brief welcoming introduction.
+4. If unsure or if asked about details not present in the verified context, say "Feel free to contact me directly for more details!" and do not hallucinate facts.
+</instructions>`;
 
         if (structuredContent) {
-            systemContent += ` A structured card with detailed ${queryType?.replace("_", " ")} info will be shown alongside your response. DO NOT list or repeat the specific details (skills, project names, contact info, links) since they appear in the card. Instead, give a short, engaging, and VARIED conversational response — share a fun anecdote, your passion, or what excites you about that topic. Never say the same thing twice across messages. Avoid generic filler like "feel free to contact me."`;
-        } else {
-            systemContent += ` Keep responses concise and use "I" statements.`;
+            systemContent += `\n\n<ui_guidelines>
+A beautiful interactive ${queryType?.replace("_", " ")} card is displayed to the user right next to your response containing all raw lists, technologies, and URLs.
+Provide a brief, charming, conversational companion text. Avoid repeating names, numbers, links, or bulleted items from the card.
+</ui_guidelines>`;
         }
-
-        if (characterInfo) {
-            systemContent += `\n\nRelevant information about me:\n${characterInfo}`;
-        }
-
-        systemContent += `\n\nRules:
-    1. Speak as Rushikesh using "I" and "my"
-    2. Keep responses concise and focused
-    3. If unsure about specific details, say "Feel free to contact me directly for more information"
-    4. Use web search results when provided for up-to-date information
-    5. Maintain a professional tone`;
 
         // 5. Call LLM
         const messages = [

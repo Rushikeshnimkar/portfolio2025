@@ -486,3 +486,10 @@ html {
     font-size: 0.9rem;
   }
 }
+
+/* Custom Chat Animations */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}

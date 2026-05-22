@@ -10,6 +10,7 @@ import {
   ExperienceCard,
   ContactCard,
   LinkCard,
+  FleetManagementCard,
 } from "./ai-chat-cards";
 import {
   MessageDisplay,
@@ -17,7 +18,7 @@ import {
 import { AIChatModalProps } from "./ai-chat/types";
 
 interface StructuredContent {
-  type: "skills" | "projects" | "experience" | "contact" | "links" | "general";
+  type: "skills" | "projects" | "experience" | "contact" | "links" | "general" | "fleeman_project";
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
 }
@@ -63,6 +64,7 @@ export function AIChatModal({
       case "experience": return <ExperienceCard experiences={content.data} />;
       case "contact": return <ContactCard contact={content.data} />;
       case "links": return <LinkCard links={content.data} />;
+      case "fleeman_project": return <FleetManagementCard data={content.data} />;
       default: return null;
     }
   };

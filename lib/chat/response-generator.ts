@@ -3,7 +3,7 @@ import { StructuredContent } from "./types";
 // Update the generateStructuredResponse function to handle specific project types
 export function generateStructuredResponse(queryType: string): StructuredContent | null {
     // Define individual project templates
-    const projectTemplates: Record<string, { title: string; description: string; technologies: string[]; link: string }[]> = {
+    const projectTemplates: Record<string, unknown[]> = {
         gitsplit_project: [
             {
                 title: "Gitsplit",
@@ -36,6 +36,35 @@ export function generateStructuredResponse(queryType: string): StructuredContent
                 technologies: ["Node.js", "DeepSeek-V3 AI", "CLI"],
                 link: "https://www.npmjs.com/package/terminal-ai-assistant",
             },
+        ],
+        fleeman_project: [
+            {
+                title: "Fleet Management System (Fleeman)",
+                description:
+                    "A robust full-stack vehicle rental platform managing 100+ hubs, featuring dynamic pricing, role-based workflows, and Razorpay integration.",
+                technologies: ["Java Spring Boot", "Next.js 14", "MySQL", "Razorpay", "JWT & OAuth2", "Docker"],
+                link: "https://github.com/orgs/fleet-management-cdac/repositories",
+                hubs: "100+ Locations",
+                overview: "Engineered a full-stack vehicle rental platform handling 100+ hub locations with real-time inventory, dynamic pricing (monthly/weekly/daily rates), and booking workflows.",
+                bookingFlow: [
+                    { step: 1, title: "Search & Filter", desc: "Select pickup/return locations & dates. System queries available vehicles, filtering out blocked or maintained items." },
+                    { step: 2, title: "Dynamic Pricing", desc: "Calculate pricing based on daily, weekly, or monthly durations dynamically." },
+                    { step: 3, title: "Checkout", desc: "Secure profile auto-fill and dynamic billing." },
+                    { step: 4, title: "Razorpay Payment", desc: "Integrated payment gateway. Success status confirms bookings." },
+                    { step: 5, title: "Invoicing", desc: "Automatic PDF invoice generation, updating My Bookings section." }
+                ],
+                staffWorkflow: [
+                    { step: 1, title: "Verification", desc: "Match customer license and identification details." },
+                    { step: 2, title: "Inspection & Handover", desc: "Verify odometer reading, inspect damages, sign off. Set booking to ACTIVE." },
+                    { step: 3, title: "Return Logistics", desc: "Check for late return or damages. Compute extra costs and close booking as COMPLETED." }
+                ],
+                adminWorkflow: [
+                    { step: 1, title: "Fleet Allocation", desc: "Hub-level vehicle management, maintenance scheduling." },
+                    { step: 2, title: "Staff Control", desc: "Create staff, assign hub permissions." },
+                    { step: 3, title: "Analytics", desc: "Visual dashboard for bookings, revenue, and utilization stats." },
+                    { step: 4, title: "Inter-City Transfers", desc: "Enable coordinate vehicle transfers between hubs." }
+                ]
+            }
         ],
     };
 
@@ -246,7 +275,7 @@ export function generateStructuredResponse(queryType: string): StructuredContent
     // Check if it's a specific project type
     if (queryType.includes("_project")) {
         return {
-            type: "projects",
+            type: queryType === "fleeman_project" ? "fleeman_project" : "projects",
             data: projectTemplates[queryType],
         };
     }
