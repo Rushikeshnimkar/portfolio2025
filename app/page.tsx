@@ -41,6 +41,17 @@ export default function Home() {
   const [isInputVisible, setIsInputVisible] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [input, setInput] = useState("");
+  const [isUserTyping, setIsUserTyping] = useState(false);
+
+  useEffect(() => {
+    if (!input.trim()) {
+      setIsUserTyping(false);
+      return;
+    }
+    setIsUserTyping(true);
+    const t = setTimeout(() => setIsUserTyping(false), 900);
+    return () => clearTimeout(t);
+  }, [input]);
 
   // Initialize chat when opened
   useEffect(() => {
@@ -193,6 +204,8 @@ export default function Home() {
         isChatOpen={isChatOpen}
         isInputVisible={isInputVisible}
         isLoading={isLoading}
+        isUserTyping={isUserTyping}
+        isSearching={isSearching}
       />
 
       {/* Unified Input Component - Always on top */}

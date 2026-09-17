@@ -8,12 +8,10 @@ interface ClippyAssistantProps {
     isChatOpen: boolean;
     isInputVisible: boolean;
     isLoading: boolean;
+    isUserTyping?: boolean;
+    isSearching?: boolean;
 }
 
-/**
- * Loads an ES module from a URL using `new Function` to completely
- * bypass webpack's static analysis of `import()` expressions.
- */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function dynamicImportFromCDN(url: string): Promise<any> {
     const importFn = new Function("url", "return import(url)");
@@ -22,7 +20,6 @@ function dynamicImportFromCDN(url: string): Promise<any> {
 
 const CDN_BASE = "https://cdn.jsdelivr.net/npm/clippyjs/dist";
 
-// Animations Clippy plays when clicked (randomly picked)
 const CLICK_ANIMATIONS = [
     "Wave",
     "GetAttention",
@@ -30,10 +27,13 @@ const CLICK_ANIMATIONS = [
     "Explain",
     "GestureUp",
     "GetTechy",
+    "GetWizardy",
+    "GetArtsy",
+    "Hearing_1",
     "LookRight",
+    "GestureRight",
 ];
 
-// Phrases Clippy says when opening the chat
 const OPEN_CHAT_PHRASES = [
     "Let's chat! Ask me anything about Rushikesh! 💬",
     "I'm here to help! What would you like to know? 🤔",
@@ -42,14 +42,12 @@ const OPEN_CHAT_PHRASES = [
     "At your service! What's on your mind? 📎",
 ];
 
-// Phrases Clippy says when closing the chat
 const CLOSE_CHAT_PHRASES = [
     "See you later! Click me anytime! 👋",
     "Come back soon! I'll be waiting right here 📎",
     "Bye for now! I'll keep animating while you scroll 😄",
 ];
 
-// Phrases for idle clicks (when chat is neither opening nor closing)
 const IDLE_CLICK_PHRASES = [
     "Click me to open the AI chat! 💬",
     "Want to know something? Let's chat! 🧠",
@@ -58,33 +56,71 @@ const IDLE_CLICK_PHRASES = [
     "Need help? That's literally what I'm here for! 🎯",
 ];
 
-// Idle animations that play periodically
-const IDLE_ANIMATIONS = [
-    "IdleRopePile",
-    "IdleAtom",
-    "Idle1_1",
-    "IdleEyeBrowRaise",
-    "IdleFingerTap",
-    "IdleHeadScratch",
-    "IdleSideToSide",
-    "IdleSnooze",
-    "Thinking",
-    "LookRight",
-    "LookLeft",
-    "LookUp",
-    "LookDown",
-    "Explain",
-    "Writing",
-    "CheckingSomething",
-    "GetArtsy",
-    "GetWizardy",
-    "Hearing_1",
-    "Wave",
-    "GestureRight",
+const TYPING_PHRASES = [
+    "Taking notes… ✍️",
+    "Got it, keep going!",
+    "Hmm, interesting…",
+];
+
+const WRITING_PHRASES = [
+    "Drafting a reply… 📝",
+    "One sec, typing this out!",
+    "Putting it into words…",
+];
+
+/** Real Clippy frames chained into little skits. */
+const IDLE_SKITS: string[][] = [
+    ["Writing"],
+    ["Writing", "Explain"],
+    ["LookLeft", "LookRight", "LookUp"],
+    ["LookDownLeft", "LookDownRight", "Writing"],
+    ["IdleFingerTap"],
+    ["IdleHeadScratch", "Thinking"],
+    ["IdleEyeBrowRaise", "Explain"],
+    ["IdleSideToSide"],
+    ["IdleRopePile"],
+    ["IdleAtom"],
+    ["IdleSnooze"],
+    ["Idle1_1"],
+    ["GetTechy"],
+    ["GetWizardy"],
+    ["GetArtsy"],
+    ["CheckingSomething", "GestureUp"],
+    ["Print"],
+    ["Save"],
+    ["EmptyTrash"],
+    ["SendMail"],
+    ["Hearing_1", "LookLeft"],
+    ["Processing", "Thinking"],
+    ["Searching"],
+    ["Wave"],
+    ["Congratulate"],
+    ["GestureDown", "GestureUp"],
+    ["LookUpLeft", "LookUpRight", "Wave"],
+    ["Alert", "GetAttention"],
+];
+
+const LOADING_SKITS: string[][] = [
+    ["Writing"],
+    ["Writing", "Thinking"],
+    ["Processing", "Writing"],
+    ["Searching", "Writing"],
+    ["GetTechy", "Writing"],
+    ["CheckingSomething", "Writing"],
 ];
 
 function randomPick<T>(arr: T[]): T {
     return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function playSafe(agent: { play: (name: string) => unknown; hasAnimation?: (name: string) => boolean }, name: string) {
+    try {
+        if (agent.hasAnimation && !agent.hasAnimation(name)) return false;
+        agent.play(name);
+        return true;
+    } catch {
+        return false;
+    }
 }
 
 export const ClippyAssistant: React.FC<ClippyAssistantProps> = ({
@@ -92,69 +128,95 @@ export const ClippyAssistant: React.FC<ClippyAssistantProps> = ({
     isChatOpen,
     isInputVisible,
     isLoading,
+    isUserTyping = false,
+    isSearching = false,
 }) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const agentRef = useRef<any>(null);
     const [animationStage, setAnimationStage] = useState<"idle" | "packing" | "throwing" | "done">("idle");
-    const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const skitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const onClickRef = useRef(onClick);
     const prevChatOpenRef = useRef(isChatOpen);
     const prevInputVisibleRef = useRef(isInputVisible);
-    const animationTimersRef = useRef<NodeJS.Timeout[]>([]);
+    const animationTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+    const busyRef = useRef(false);
+    const lastTypingSpeak = useRef(0);
+    const wasWorkingRef = useRef(false);
 
-    // Keep the click ref up to date so the Clippy handler never goes stale
     useEffect(() => {
         onClickRef.current = onClick;
     }, [onClick]);
 
-    // Listen for custom email success events to play packing/throwing animation
+    const clearIdleLoop = () => {
+        if (idleTimerRef.current) {
+            clearTimeout(idleTimerRef.current);
+            idleTimerRef.current = null;
+        }
+        if (skitTimerRef.current) {
+            clearTimeout(skitTimerRef.current);
+            skitTimerRef.current = null;
+        }
+    };
+
+    const playSkit = (skit: string[]) => {
+        const agent = agentRef.current;
+        if (!agent) return;
+        agent.stop();
+        let i = 0;
+        const step = () => {
+            if (!agentRef.current) return;
+            playSafe(agentRef.current, skit[i]);
+            i += 1;
+            if (i < skit.length) {
+                skitTimerRef.current = setTimeout(step, 2200);
+            }
+        };
+        step();
+    };
+
+    const scheduleIdle = () => {
+        clearIdleLoop();
+        if (busyRef.current) return;
+        idleTimerRef.current = setTimeout(() => {
+            if (!agentRef.current || busyRef.current) return;
+            playSkit(randomPick(IDLE_SKITS));
+            scheduleIdle();
+        }, 3800 + Math.random() * 3200);
+    };
+
     useEffect(() => {
         const handleMailSent = () => {
             if (!agentRef.current) return;
             const agent = agentRef.current;
-
-            // Clear any active animation timers to prevent collisions
+            busyRef.current = true;
             animationTimersRef.current.forEach(clearTimeout);
             animationTimersRef.current = [];
+            clearIdleLoop();
 
-            // Clear any active idle interval
-            if (intervalRef.current) {
-                clearInterval(intervalRef.current);
-                intervalRef.current = null;
-            }
-
-            // Phase A: Packing (starts immediately)
             agent.stop();
-            agent.play("Explain");
+            playSafe(agent, "SendMail");
             agent.speak("Let's pack up this message! ✉️");
             setAnimationStage("packing");
 
-            // Phase B: Throwing (triggers after 1.5s - letter packed + flap closed)
             const throwingTimer = setTimeout(() => {
                 setAnimationStage("throwing");
                 agent.stop();
-                agent.play("GestureLeft");
+                playSafe(agent, "GestureLeft");
                 agent.speak("Sending! Fly away! 🚀");
             }, 1500);
             animationTimersRef.current.push(throwingTimer);
 
-            // Phase C: Celebration (triggers after throwing completes, at 3.3s total)
             const doneTimer = setTimeout(() => {
                 setAnimationStage("done");
                 agent.stop();
-                agent.play("Congratulate");
+                playSafe(agent, "Congratulate");
                 agent.speak("Message sent successfully! 📧✨");
 
-                // Reset back to idle after celebrating (3 seconds of celebration)
                 const resetTimer = setTimeout(() => {
                     setAnimationStage("idle");
-                    // Restart standard idle cycle
-                    if (intervalRef.current) clearInterval(intervalRef.current);
-                    intervalRef.current = setInterval(() => {
-                        if (agentRef.current) {
-                            agentRef.current.play(randomPick(IDLE_ANIMATIONS));
-                        }
-                    }, 6000 + Math.random() * 4000);
+                    busyRef.current = false;
+                    scheduleIdle();
                 }, 3000);
                 animationTimersRef.current.push(resetTimer);
             }, 3300);
@@ -166,6 +228,7 @@ export const ClippyAssistant: React.FC<ClippyAssistantProps> = ({
             window.removeEventListener("clippy-mail-sent", handleMailSent);
             animationTimersRef.current.forEach(clearTimeout);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -186,7 +249,6 @@ export const ClippyAssistant: React.FC<ClippyAssistantProps> = ({
                     return;
                 }
 
-                // Disable all Clippy sounds
                 if (agent._animator && agent._animator._sounds) {
                     agent._animator._sounds = {};
                 }
@@ -194,7 +256,6 @@ export const ClippyAssistant: React.FC<ClippyAssistantProps> = ({
                 agentRef.current = agent;
                 agent.show();
 
-                // Position Clippy at bottom-right
                 const el = agent._el as HTMLElement;
                 if (el) {
                     el.style.position = "fixed";
@@ -205,30 +266,22 @@ export const ClippyAssistant: React.FC<ClippyAssistantProps> = ({
                     el.style.zIndex = "60";
                     el.style.cursor = "pointer";
 
-                    // Click Clippy → play a random animation + trigger the chat toggle
                     el.addEventListener("click", (e: MouseEvent) => {
                         e.stopPropagation();
-
-                        // Play a random click animation
                         agent.stop();
-                        const anim = randomPick(CLICK_ANIMATIONS);
-                        agent.play(anim);
-
-                        // Trigger the actual chat toggle
+                        playSafe(agent, randomPick(CLICK_ANIMATIONS));
                         onClickRef.current();
+                    });
+
+                    el.addEventListener("mouseenter", () => {
+                        if (busyRef.current) return;
+                        playSafe(agent, randomPick(["GetAttention", "Wave", "LookUp", "Hearing_1"]));
                     });
                 }
 
-                // Varied idle animations every 6-10 seconds
-                intervalRef.current = setInterval(() => {
-                    if (agentRef.current) {
-                        agentRef.current.play(randomPick(IDLE_ANIMATIONS));
-                    }
-                }, 6000 + Math.random() * 4000);
-
-                // Grand entrance!
-                agent.play("Wave");
+                playSafe(agent, "Greeting") || playSafe(agent, "Wave");
                 agent.speak("Hey! I'm Clippy! Click me to chat with Rushikesh's AI assistant! 📎");
+                scheduleIdle();
             } catch (err) {
                 console.error("Failed to load Clippy:", err);
             }
@@ -238,43 +291,75 @@ export const ClippyAssistant: React.FC<ClippyAssistantProps> = ({
 
         return () => {
             disposed = true;
-            if (intervalRef.current) {
-                clearInterval(intervalRef.current);
-            }
+            clearIdleLoop();
             if (agentRef.current) {
                 agentRef.current.dispose();
                 agentRef.current = null;
             }
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // Show reading/processing animation while AI is loading
+    // User is typing in the chat box → Clippy takes notes
+    useEffect(() => {
+        if (!agentRef.current) return;
+        if (busyRef.current || isLoading) return;
+        if (!isUserTyping) return;
+
+        clearIdleLoop();
+        const agent = agentRef.current;
+        agent.stop();
+        playSafe(agent, "Writing");
+        const now = Date.now();
+        if (now - lastTypingSpeak.current > 8000) {
+            lastTypingSpeak.current = now;
+            agent.speak(randomPick(TYPING_PHRASES));
+        }
+    }, [isUserTyping, isLoading]);
+
+    // Resume idle after typing stops
+    useEffect(() => {
+        if (isUserTyping || isLoading || isSearching || busyRef.current) return;
+        scheduleIdle();
+        return () => clearIdleLoop();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isUserTyping, isLoading, isSearching]);
+
+    // AI is working → Clippy types / searches / thinks
     useEffect(() => {
         if (!agentRef.current) return;
         const agent = agentRef.current;
 
-        if (isLoading) {
+        if (isLoading || isSearching) {
+            wasWorkingRef.current = true;
+            busyRef.current = true;
+            clearIdleLoop();
             agent.stop();
-            agent.play("Processing");
-            agent.speak("Let me think about that... 🤔");
+            playSkit(isSearching ? ["Searching"] : randomPick(LOADING_SKITS));
+            agent.speak(isSearching ? "Digging through the archives…" : randomPick(WRITING_PHRASES));
 
-            // Loop thinking animations while loading
-            const thinkingAnims = ["Processing", "Thinking", "Searching", "GetTechy"];
             const loadingInterval = setInterval(() => {
                 if (agentRef.current) {
-                    agentRef.current.play(randomPick(thinkingAnims));
+                    playSkit(randomPick(LOADING_SKITS));
                 }
-            }, 3000);
+            }, 3200);
 
-            return () => clearInterval(loadingInterval);
-        } else {
-            // Loading just finished — celebrate!
-            agent.stop();
-            agent.play("Congratulate");
+            return () => {
+                clearInterval(loadingInterval);
+                busyRef.current = false;
+            };
         }
-    }, [isLoading]);
 
-    // React to chat state changes with contextual animations + speech
+        if (wasWorkingRef.current) {
+            wasWorkingRef.current = false;
+            agent.stop();
+            playSafe(agent, "Congratulate");
+            busyRef.current = false;
+            if (!isUserTyping) scheduleIdle();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isLoading, isSearching]);
+
     useEffect(() => {
         if (!agentRef.current) return;
         const agent = agentRef.current;
@@ -282,35 +367,50 @@ export const ClippyAssistant: React.FC<ClippyAssistantProps> = ({
         const wasChatOpen = prevChatOpenRef.current;
         const wasInputVisible = prevInputVisibleRef.current;
 
-        // Chat just opened
         if (isChatOpen && !wasChatOpen) {
             agent.stop();
-            agent.play("Searching");
+            playSafe(agent, "Searching");
             agent.speak(randomPick(OPEN_CHAT_PHRASES));
-        }
-        // Chat just closed
-        else if (!isChatOpen && wasChatOpen) {
+        } else if (!isChatOpen && wasChatOpen) {
             agent.stop();
-            agent.play("Wave");
+            playSafe(agent, "GoodBye") || playSafe(agent, "Wave");
             agent.speak(randomPick(CLOSE_CHAT_PHRASES));
-        }
-        // Input bar just appeared (but chat not yet open)
-        else if (isInputVisible && !wasInputVisible && !isChatOpen) {
+        } else if (isInputVisible && !wasInputVisible && !isChatOpen) {
             agent.stop();
-            agent.play("GetAttention");
+            playSafe(agent, "GetAttention");
             agent.speak(randomPick(IDLE_CLICK_PHRASES));
-        }
-        // Input bar just closed (no chat open)
-        else if (!isInputVisible && wasInputVisible && !isChatOpen) {
+        } else if (!isInputVisible && wasInputVisible && !isChatOpen) {
             agent.stop();
-            agent.play("Congratulate");
+            playSafe(agent, "Congratulate");
         }
 
         prevChatOpenRef.current = isChatOpen;
         prevInputVisibleRef.current = isInputVisible;
     }, [isChatOpen, isInputVisible]);
 
-    // Clippy renders itself into the DOM — no JSX needed for clippy, but we render our envelope overlay here
+    // Look toward the cursor now and then
+    useEffect(() => {
+        const onMove = (e: MouseEvent) => {
+            if (!agentRef.current || busyRef.current || isUserTyping || isLoading) return;
+            if (Math.random() > 0.015) return;
+            const cx = window.innerWidth - 80;
+            const cy = window.innerHeight - 80;
+            const dx = e.clientX - cx;
+            const dy = e.clientY - cy;
+            const name =
+                Math.abs(dx) > Math.abs(dy)
+                    ? dx < 0
+                        ? "LookLeft"
+                        : "LookRight"
+                    : dy < 0
+                      ? "LookUp"
+                      : "LookDown";
+            playSafe(agentRef.current, name);
+        };
+        window.addEventListener("mousemove", onMove, { passive: true });
+        return () => window.removeEventListener("mousemove", onMove);
+    }, [isUserTyping, isLoading]);
+
     return (
         <AnimatePresence>
             {animationStage !== "idle" && animationStage !== "done" && (
@@ -326,7 +426,6 @@ export const ClippyAssistant: React.FC<ClippyAssistantProps> = ({
                             animationStage === "packing"
                                 ? { opacity: 1, scale: 1, y: 0 }
                                 : {
-                                      // Parabolic gravity flight arc!
                                       x: [0, "-20vw", "-50vw", "-80vw", "-110vw"],
                                       y: [0, "-35vh", "-50vh", "-35vh", "10vh"],
                                       rotate: [0, 180, 360, 540, 720],
@@ -341,22 +440,16 @@ export const ClippyAssistant: React.FC<ClippyAssistantProps> = ({
                         }
                         className="relative w-32 h-20"
                     >
-                        {/* 1. Envelope Back */}
-                        <div 
+                        <div
                             className="absolute inset-0 bg-[#161925] border border-white/10 rounded-lg shadow-2xl z-[1]"
                             style={{
                                 boxShadow: "0 8px 32px 0 rgba(99, 102, 241, 0.15)",
                             }}
                         />
 
-                        {/* 2. The Letter Sheet */}
                         <motion.div
                             initial={{ y: -80, opacity: 0 }}
-                            animate={
-                                animationStage === "packing"
-                                    ? { y: 0, opacity: 1 }
-                                    : { y: 0, opacity: 1 }
-                            }
+                            animate={{ y: 0, opacity: 1 }}
                             transition={{
                                 delay: 0.1,
                                 duration: 0.6,
@@ -364,24 +457,22 @@ export const ClippyAssistant: React.FC<ClippyAssistantProps> = ({
                             }}
                             className="absolute left-2.5 right-2.5 top-1.5 bottom-1.5 bg-gradient-to-br from-indigo-500/20 to-cyan-500/20 border border-cyan-500/30 rounded z-[2] p-2 flex flex-col gap-1.5 shadow-inner"
                         >
-                            {/* Decorative simulated written lines */}
                             <div className="w-full h-1 bg-white/40 rounded animate-pulse" />
                             <div className="w-5/6 h-1 bg-white/30 rounded" />
                             <div className="w-2/3 h-1 bg-white/30 rounded" />
                             <div className="w-4/5 h-1 bg-white/20 rounded" />
                         </motion.div>
 
-                        {/* 3. Envelope Front Pocket */}
                         <div
                             className="absolute inset-0 z-[3] rounded-lg border-t border-white/5"
                             style={{
                                 clipPath: "polygon(0 40%, 50% 100%, 100% 40%, 100% 100%, 0 100%)",
-                                background: "linear-gradient(135deg, rgba(22, 25, 37, 0.95) 0%, rgba(13, 14, 21, 0.98) 100%)",
+                                background:
+                                    "linear-gradient(135deg, rgba(22, 25, 37, 0.95) 0%, rgba(13, 14, 21, 0.98) 100%)",
                                 border: "1px solid rgba(255, 255, 255, 0.05)",
                             }}
                         />
 
-                        {/* 4. Folding Flap */}
                         <motion.div
                             style={{
                                 position: "absolute",
@@ -391,14 +482,14 @@ export const ClippyAssistant: React.FC<ClippyAssistantProps> = ({
                                 height: "35px",
                                 transformOrigin: "top",
                                 zIndex: 4,
-                                clipPath: "polygon(0 0, 50% 100%, 100% 0)", // Triangle pointing down
+                                clipPath: "polygon(0 0, 50% 100%, 100% 0)",
                                 background: "rgba(27, 31, 51, 0.95)",
                                 borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
                             }}
-                            initial={{ rotateX: 180 }} // Flapped back open
+                            initial={{ rotateX: 180 }}
                             animate={
                                 animationStage === "packing"
-                                    ? { rotateX: [180, 180, 0] } // Folds forward to close envelope
+                                    ? { rotateX: [180, 180, 0] }
                                     : { rotateX: 0 }
                             }
                             transition={{
