@@ -23,7 +23,7 @@ import { TbBrain } from "react-icons/tb";
 const skills = {
   "Frontend Development": [
     { name: "React", icon: <SiReact className="text-[#61DAFB]" /> },
-    { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
+    { name: "Next.js", icon: <SiNextdotjs className="text-ocean-ice" /> },
     { name: "TypeScript", icon: <SiTypescript className="text-[#3178C6]" /> },
     {
       name: "Tailwind CSS",
@@ -67,8 +67,8 @@ export default function Skills() {
   if (!mounted) return null;
 
   return (
-    <div id="skills-page" className="min-h-screen w-full text-white">
-      <div id="skills-container" className="container mx-auto px-4 py-16">
+    <div id="skills-page" className="min-h-screen w-full text-ocean-ice">
+      <div id="skills-container" className="container mx-auto px-4 py-20">
         <motion.div
           id="skills-header"
           initial={{ opacity: 0, y: -20 }}
@@ -76,14 +76,15 @@ export default function Skills() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
+          <span className="chip mb-4">My Stack</span>
           <h1 id="skills-title" className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="text-4xl sm:text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-neutral-200 to-neutral-500">
-              Skills & Technologies
+            <span className="text-4xl sm:text-5xl md:text-6xl font-bold font-display text-gradient-ocean text-glow">
+              Skills &amp; Technologies
             </span>
           </h1>
           <p
             id="skills-subtitle"
-            className="text-neutral-400 text-base max-w-2xl mx-auto"
+            className="text-ocean-mist text-base max-w-2xl mx-auto"
           >
             My technical toolkit for building modern applications
           </p>
@@ -102,20 +103,20 @@ export default function Skills() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-neutral-700/30 backdrop-blur-lg rounded-2xl border border-neutral-800 overflow-hidden"
+              className="glass rounded-2xl overflow-hidden hover:neon-border transition-all duration-300"
             >
               <div
                 id={`category-header-${category
                   .toLowerCase()
                   .replace(/\s+/g, "-")}`}
-                className=" p-6 border-b border-neutral-800"
+                className=" p-6 border-b border-ocean-aqua/15"
               >
                 <div className="flex items-center gap-3">
                   <div
                     id={`category-icon-${category
                       .toLowerCase()
                       .replace(/\s+/g, "-")}`}
-                    className="p-3 rounded-lg bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
+                    className="p-3 rounded-lg bg-gradient-to-r from-ocean-aqua/20 to-ocean-cyan/20 border border-ocean-aqua/30 text-ocean-aqua"
                   >
                     {categoryIcons[category as keyof typeof categoryIcons]}
                   </div>
@@ -123,7 +124,7 @@ export default function Skills() {
                     id={`category-title-${category
                       .toLowerCase()
                       .replace(/\s+/g, "-")}`}
-                    className="text-2xl font-bold text-white"
+                    className="text-xl font-bold text-ocean-ice font-display"
                   >
                     {category}
                   </h2>
@@ -151,7 +152,7 @@ export default function Skills() {
                           delay: 0.2 + skillIndex * 0.05,
                         }}
                         whileHover={{ y: -5 }}
-                        className="flex items-center gap-2 px-4 py-3 bg-neutral-800/50 rounded-lg border border-neutral-700/50"
+                        className="flex items-center gap-2 px-4 py-3 bg-ocean-surface/40 rounded-lg border border-ocean-aqua/15 hover:border-ocean-aqua/40 transition-colors"
                       >
                         <div
                           id={`skill-icon-${skill.name
@@ -191,13 +192,13 @@ export default function Skills() {
           >
             <div
               id="skills-footer-glow"
-              className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl opacity-20 blur-sm"
+              className="absolute -inset-1 bg-gradient-to-r from-ocean-aqua to-ocean-cyan rounded-xl opacity-25 blur-md"
             />
             <div
               id="skills-footer-content"
-              className="relative px-6 py-4 bg-neutral-900/80 backdrop-blur-sm rounded-xl border border-neutral-700/50"
+              className="relative px-6 py-4 glass-strong rounded-xl"
             >
-              <p className="text-sm md:text-base text-neutral-300 font-light">
+              <p className="text-sm md:text-base text-ocean-mist font-light">
                 Always exploring new technologies to expand my toolkit and solve
                 complex problems more effectively.
               </p>

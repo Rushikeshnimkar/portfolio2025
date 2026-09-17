@@ -264,9 +264,9 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen w-full text-white relative">
+    <div className="min-h-screen w-full text-ocean-ice relative py-10">
       {/* Background subtle glow similar to home page */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/5 to-cyan-500/5 filter blur-[80px] -z-10" />
+      <div className="absolute inset-0 bg-gradient-to-tr from-ocean-cyan/8 to-ocean-aqua/8 filter blur-[80px] -z-10" />
 
       <AnimatePresence>
         {(status === "success" || status === "error") && (
@@ -391,7 +391,7 @@ export default function Contact() {
             >
               Let&apos;s{" "}
               <motion.span
-                className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-indigo-500"
+                className="text-transparent bg-clip-text bg-gradient-to-r from-ocean-aqua via-ocean-cyan to-ocean-teal text-glow"
                 animate={glitchAnimation}
                 transition={{
                   duration: 0.2,
@@ -409,7 +409,7 @@ export default function Contact() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="text-xl text-center text-gray-400"
+                className="text-xl text-center text-ocean-mist"
               >
                 Choose between AI-powered email generation or write your message
                 manually
@@ -424,7 +424,7 @@ export default function Contact() {
               transition={{ delay: 0.7 }}
             >
               <motion.div
-                className="h-4 w-[200px] bg-gradient-to-r from-transparent via-indigo-500/40 to-cyan-500/40"
+                className="h-4 w-[200px] bg-gradient-to-r from-transparent via-ocean-aqua/40 to-ocean-cyan/40"
                 animate={{
                   x: [0, 10, 0],
                   opacity: [0.4, 0.7, 0.4],
@@ -448,7 +448,7 @@ export default function Contact() {
             transition={{ delay: 0.3 }}
             className="flex justify-center mb-8 items-center gap-4"
           >
-            <div className="inline-flex p-1 space-x-1 bg-neutral-900/50 backdrop-blur-lg rounded-xl border border-indigo-500/20">
+            <div className="inline-flex p-1 space-x-1 bg-ocean-deep/50 backdrop-blur-lg rounded-xl border border-ocean-aqua/20">
               {["ai", "manual"].map((m) => (
                 <motion.button
                   key={m}
@@ -461,8 +461,8 @@ export default function Contact() {
                   }}
                   className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
                     mode === m
-                      ? "bg-gradient-to-r from-blue-500 via-indigo-600 to-cyan-500 text-white shadow-lg shadow-indigo-500/25"
-                      : "text-gray-400 hover:text-white hover:bg-white/5"
+                      ? "bg-gradient-to-r from-ocean-aqua via-ocean-cyan to-ocean-teal text-ocean-midnight font-semibold shadow-lg shadow-ocean-aqua/25"
+                      : "text-ocean-mist hover:text-ocean-ice hover:bg-white/5"
                   }`}
                 >
                   {m === "ai" ? (
@@ -490,15 +490,15 @@ export default function Contact() {
               className="space-y-4"
             >
               {mode === "ai" ? (
-                <div className="p-4 rounded-2xl bg-neutral-900/50 backdrop-blur-lg border border-indigo-500/20 relative">
+                <div className="p-4 rounded-2xl bg-ocean-deep/50 backdrop-blur-lg border border-ocean-aqua/20 relative">
                   <div className="flex justify-between items-center mb-3">
-                    <h2 className="text-lg font-semibold text-gray-200 flex items-center gap-2">
+                    <h2 className="text-lg font-semibold text-ocean-ice/90 flex items-center gap-2">
                       <span className="text-cyan-400">💭</span> Customize Prompt
                     </h2>
                     <div className="flex gap-2">
                       <button
                         onClick={() => setShowTemplates(!showTemplates)}
-                        className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 bg-neutral-800/70 text-gray-300 border border-indigo-500/20 hover:border-indigo-500/40 hover:text-white"
+                        className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 bg-ocean-surface/70 text-ocean-mist border border-ocean-aqua/20 hover:border-ocean-aqua/40 hover:text-ocean-ice"
                       >
                         <LayoutTemplate className="w-3.5 h-3.5" />
                         Templates
@@ -510,14 +510,14 @@ export default function Contact() {
                         disabled={isGenerating || !prompt.trim()}
                         className={`relative px-4 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 overflow-hidden ${
                           isGenerating || !prompt.trim()
-                            ? "bg-gray-700/50 text-gray-400 cursor-not-allowed"
-                            : "bg-[#2a2a2a] text-white border border-indigo-500/30 hover:border-indigo-500/60 hover:shadow-lg hover:shadow-indigo-500/20 hover:scale-[1.02] active:scale-[0.98]"
+                            ? "bg-ocean-surface/40 text-ocean-mist cursor-not-allowed"
+                            : "bg-ocean-surface text-ocean-ice border border-ocean-aqua/30 hover:border-ocean-aqua/60 hover:shadow-lg hover:shadow-ocean-aqua/20 hover:scale-[1.02] active:scale-[0.98]"
                         }`}
                       >
                         {/* Background gradient for active button similar to home page */}
                         {!(isGenerating || !prompt.trim()) && (
                           <div className="absolute inset-0">
-                            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-500 opacity-20" />
+                            <div className="absolute inset-0 bg-gradient-to-r from-ocean-aqua via-ocean-cyan to-ocean-teal opacity-20" />
                           </div>
                         )}
 
@@ -543,12 +543,12 @@ export default function Contact() {
                     <textarea
                       value={prompt}
                       onChange={(e) => setPrompt(e.target.value)}
-                      className="w-full h-[350px] bg-neutral-800/40 border border-indigo-500/20 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20 transition-all resize-none"
+                      className="w-full h-[350px] bg-ocean-surface/40 border border-ocean-aqua/20 rounded-lg px-3 py-2 text-sm text-ocean-ice placeholder-ocean-mist/50 focus:border-ocean-aqua/50 focus:ring-2 focus:ring-ocean-aqua/20 transition-all resize-none"
                       placeholder="Customize your email prompt..."
                     />
 
                     {selectedTemplate !== null && (
-                      <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between text-xs text-gray-400 bg-gray-800/80 backdrop-blur-sm px-2 py-1 rounded-md">
+                      <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between text-xs text-ocean-mist bg-ocean-deep/80 backdrop-blur-sm px-2 py-1 rounded-md">
                         <span>
                           Using: {emailTemplates[selectedTemplate].title}
                         </span>
@@ -557,7 +557,7 @@ export default function Contact() {
                             setSelectedTemplate(null);
                             setPrompt("");
                           }}
-                          className="text-gray-500 hover:text-gray-300"
+                          className="text-ocean-mist/60 hover:text-ocean-mist"
                         >
                           Clear
                         </button>
@@ -573,15 +573,15 @@ export default function Contact() {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute inset-0 z-10 bg-neutral-950/95 backdrop-blur-sm rounded-2xl p-6 overflow-auto flex flex-col border border-indigo-500/20"
+                        className="absolute inset-0 z-10 bg-ocean-midnight/95 backdrop-blur-sm rounded-2xl p-6 overflow-auto flex flex-col border border-ocean-aqua/20"
                       >
                         <div className="flex justify-between items-center mb-6">
-                          <h2 className="text-lg font-semibold text-white">
+                          <h2 className="text-lg font-semibold text-ocean-ice">
                             Select a Template
                           </h2>
                           <button
                             onClick={() => setShowTemplates(false)}
-                            className="text-gray-400 hover:text-white"
+                            className="text-ocean-mist hover:text-ocean-ice"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -607,20 +607,20 @@ export default function Contact() {
                               whileTap={{ scale: 0.98 }}
                               className={`flex flex-col items-center justify-center p-6 rounded-xl text-center h-full ${
                                 selectedTemplate === index
-                                  ? "bg-indigo-500/20 border-2 border-indigo-500"
-                                  : "bg-neutral-800/60 border border-indigo-500/20 hover:border-indigo-500/40"
+                                  ? "bg-ocean-aqua/20 border-2 border-ocean-aqua"
+                                  : "bg-ocean-surface/60 border border-ocean-aqua/20 hover:border-ocean-aqua/40"
                               } transition-all duration-200`}
                             >
                               <div className="text-3xl mb-3">
                                 {template.icon}
                               </div>
-                              <h3 className="font-medium text-white mb-2">
+                              <h3 className="font-medium text-ocean-ice mb-2">
                                 {template.title}
                               </h3>
-                              <p className="text-xs text-gray-400 mb-3">
+                              <p className="text-xs text-ocean-mist mb-3">
                                 {template.description}
                               </p>
-                              <span className="px-3 py-1 bg-neutral-700/50 rounded-full text-xs text-cyan-300 border border-indigo-500/20">
+                              <span className="px-3 py-1 bg-ocean-surface/60 rounded-full text-xs text-ocean-aqua border border-ocean-aqua/20">
                                 {template.tags[0]}
                               </span>
                             </motion.button>
@@ -631,8 +631,8 @@ export default function Contact() {
                   </AnimatePresence>
                 </div>
               ) : (
-                <div className="p-4 rounded-2xl bg-neutral-900/50 backdrop-blur-lg border border-indigo-500/20">
-                  <h2 className="text-lg font-semibold text-gray-200 flex items-center gap-2 mb-3">
+                <div className="p-4 rounded-2xl bg-ocean-deep/50 backdrop-blur-lg border border-ocean-aqua/20">
+                  <h2 className="text-lg font-semibold text-ocean-ice/90 flex items-center gap-2 mb-3">
                     <User className="w-5 h-5 text-cyan-400" />
                     Your Details
                   </h2>
@@ -640,9 +640,9 @@ export default function Contact() {
                     <div>
                       <label
                         htmlFor="name"
-                        className="text-sm font-medium text-gray-300 mb-1 flex items-center gap-1.5"
+                        className="text-sm font-medium text-ocean-mist mb-1 flex items-center gap-1.5"
                       >
-                        <User className="w-3.5 h-3.5 text-gray-400" />
+                        <User className="w-3.5 h-3.5 text-ocean-mist" />
                         Your Name *
                       </label>
                       <input
@@ -650,16 +650,16 @@ export default function Contact() {
                         id="name"
                         value={senderName}
                         onChange={(e) => setSenderName(e.target.value)}
-                        className="w-full bg-neutral-800/40 border border-indigo-500/20 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20 transition-all"
+                        className="w-full bg-ocean-surface/40 border border-ocean-aqua/20 rounded-lg px-3 py-2 text-sm text-ocean-ice placeholder-ocean-mist/50 focus:border-ocean-aqua/50 focus:ring-2 focus:ring-ocean-aqua/20 transition-all"
                         placeholder="Rushikesh Nimkar"
                       />
                     </div>
                     <div>
                       <label
                         htmlFor="email"
-                        className="text-sm font-medium text-gray-300 mb-1 flex items-center gap-1.5"
+                        className="text-sm font-medium text-ocean-mist mb-1 flex items-center gap-1.5"
                       >
-                        <Mail className="w-3.5 h-3.5 text-gray-400" />
+                        <Mail className="w-3.5 h-3.5 text-ocean-mist" />
                         Your Email *
                       </label>
                       <input
@@ -667,16 +667,16 @@ export default function Contact() {
                         id="email"
                         value={senderEmail}
                         onChange={(e) => setSenderEmail(e.target.value)}
-                        className="w-full bg-neutral-800/40 border border-indigo-500/20 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20 transition-all"
+                        className="w-full bg-ocean-surface/40 border border-ocean-aqua/20 rounded-lg px-3 py-2 text-sm text-ocean-ice placeholder-ocean-mist/50 focus:border-ocean-aqua/50 focus:ring-2 focus:ring-ocean-aqua/20 transition-all"
                         placeholder="your@email.com"
                       />
                     </div>
                     <div>
                       <label
                         htmlFor="subject"
-                        className="block text-sm font-medium text-gray-300 mb-1 flex items-center gap-1.5"
+                        className="block text-sm font-medium text-ocean-mist mb-1 flex items-center gap-1.5"
                       >
-                        <MessageSquare className="w-3.5 h-3.5 text-gray-400" />
+                        <MessageSquare className="w-3.5 h-3.5 text-ocean-mist" />
                         Subject *
                       </label>
                       <input
@@ -684,7 +684,7 @@ export default function Contact() {
                         id="subject"
                         value={subject}
                         onChange={(e) => setSubject(e.target.value)}
-                        className="w-full bg-neutral-800/40 border border-indigo-500/20 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20 transition-all"
+                        className="w-full bg-ocean-surface/40 border border-ocean-aqua/20 rounded-lg px-3 py-2 text-sm text-ocean-ice placeholder-ocean-mist/50 focus:border-ocean-aqua/50 focus:ring-2 focus:ring-ocean-aqua/20 transition-all"
                         placeholder="Email Subject"
                       />
                     </div>
@@ -700,9 +700,9 @@ export default function Contact() {
               transition={{ delay: 0.5 }}
               className="space-y-4"
             >
-              <div className="p-4 rounded-2xl bg-neutral-900/50 backdrop-blur-lg border border-indigo-500/20">
+              <div className="p-4 rounded-2xl bg-ocean-deep/50 backdrop-blur-lg border border-ocean-aqua/20">
                 <div className="flex justify-between items-center mb-3">
-                  <h2 className="text-lg font-semibold text-gray-200 flex items-center gap-2">
+                  <h2 className="text-lg font-semibold text-ocean-ice/90 flex items-center gap-2">
                     <span className="text-cyan-400">📧</span>
                     {mode === "ai" ? "Generated Email" : "Your Message"}
                   </h2>
@@ -718,13 +718,13 @@ export default function Contact() {
                           className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-2
                             ${
                               isChatOpen
-                                ? "bg-neutral-800 text-white border border-indigo-500/40"
-                                : "bg-neutral-800/50 border border-indigo-500/20 hover:border-indigo-500/40"
+                                ? "bg-ocean-surface text-ocean-ice border border-ocean-aqua/40"
+                                : "bg-ocean-surface/50 border border-ocean-aqua/20 hover:border-ocean-aqua/40"
                             }`}
                         >
                           <div className="relative">
-                            <MessageSquare className="w-3.5 h-3.5 text-gray-400" />
-                            <div className="absolute -top-1.5 -right-1.5 bg-indigo-500 rounded-full w-3.5 h-3.5 flex items-center justify-center text-[10px] font-medium">
+                            <MessageSquare className="w-3.5 h-3.5 text-ocean-mist" />
+                            <div className="absolute -top-1.5 -right-1.5 bg-ocean-aqua text-ocean-midnight rounded-full w-3.5 h-3.5 flex items-center justify-center text-[10px] font-medium">
                               {messageCount}
                             </div>
                           </div>
@@ -739,14 +739,14 @@ export default function Contact() {
                         disabled={isSending}
                         className={`relative px-4 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 overflow-hidden ${
                           isSending
-                            ? "bg-gray-700/50 text-gray-400 cursor-not-allowed"
-                            : "bg-[#2a2a2a] text-white border border-indigo-500/30 hover:border-indigo-500/60"
+                            ? "bg-ocean-surface/40 text-ocean-mist cursor-not-allowed"
+                            : "bg-ocean-surface text-ocean-ice border border-ocean-aqua/30 hover:border-ocean-aqua/60"
                         }`}
                       >
                         {/* Background gradient for send button */}
                         {!isSending && (
                           <div className="absolute inset-0">
-                            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 via-cyan-500 to-indigo-500 opacity-20" />
+                            <div className="absolute inset-0 bg-gradient-to-r from-ocean-aqua via-ocean-cyan to-ocean-teal opacity-20" />
                           </div>
                         )}
 
@@ -769,9 +769,9 @@ export default function Contact() {
                   </div>
                 </div>
 
-                <div className="relative h-[350px] rounded-xl overflow-hidden border border-indigo-500/20">
+                <div className="relative h-[350px] rounded-xl overflow-hidden border border-ocean-aqua/20">
                   {mode === "ai" ? (
-                    <div className="absolute inset-0 w-full h-full bg-neutral-800/40 px-3 py-2 text-white overflow-auto">
+                    <div className="absolute inset-0 w-full h-full bg-ocean-surface/40 px-3 py-2 text-ocean-ice overflow-auto">
                       {emailContent ? (
                         isTextAnimating ? (
                           <TextGenerationEffect
@@ -784,11 +784,11 @@ export default function Contact() {
                           <textarea
                             value={emailContent}
                             onChange={(e) => setEmailContent(e.target.value)}
-                            className="absolute inset-0 w-full h-full bg-transparent px-1 py-1 text-sm text-white border-none focus:ring-0 resize-none"
+                            className="absolute inset-0 w-full h-full bg-transparent px-1 py-1 text-sm text-ocean-ice border-none focus:ring-0 resize-none"
                           />
                         )
                       ) : (
-                        <div className="flex items-center justify-center h-full text-gray-500 text-sm italic">
+                        <div className="flex items-center justify-center h-full text-ocean-mist/60 text-sm italic">
                           <div className="text-center">
                             <Sparkles className="w-5 h-5 mx-auto mb-2 text-cyan-400/50" />
                             <p>
@@ -803,7 +803,7 @@ export default function Contact() {
                     <textarea
                       value={emailContent}
                       onChange={(e) => setEmailContent(e.target.value)}
-                      className="absolute inset-0 w-full h-full bg-neutral-800/40 px-1 py-1 text-sm text-white border-none focus:ring-0 resize-none"
+                      className="absolute inset-0 w-full h-full bg-ocean-surface/40 px-1 py-1 text-sm text-ocean-ice border-none focus:ring-0 resize-none"
                       placeholder="Write your message..."
                     />
                   )}
@@ -812,7 +812,7 @@ export default function Contact() {
                 {/* deephermes-3-llama-3 Attribution */}
                 {mode === "ai" && (
                   <div className="mt-2 flex items-center justify-end">
-                    <div className="text-xs text-gray-500 flex items-center gap-1.5">
+                    <div className="text-xs text-ocean-mist/60 flex items-center gap-1.5">
                       <Sparkles className="w-3 h-3 text-cyan-400" />
                       <span>Powered by llama-3.2</span>
                     </div>

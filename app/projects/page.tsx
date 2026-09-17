@@ -1,10 +1,8 @@
 "use client";
-import { motion } from "framer-motion";
 import { FiGithub, FiExternalLink } from "react-icons/fi";
 import { useEffect, useRef, useCallback } from "react";
 import Head from "next/head";
 
-// SEO keywords and descriptions
 const SEO = {
   title: "Rushikesh Nimkar | Projects Portfolio",
   description:
@@ -96,49 +94,27 @@ const projects: Project[] = [
   },
 ];
 
-// Animation variants
-const gridContainerVariants = {
-  hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.2 } },
-};
-
-const projectCardVariants = {
-  hidden: { y: 20, opacity: 0 },
-  show: {
-    y: 0,
-    opacity: 1,
-    transition: { type: "spring", stiffness: 100, damping: 10 },
-  },
-};
-
 export default function Projects() {
   const dialogRef = useRef<HTMLDialogElement | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const layoutRef = useRef<any>(null);
+  const layoutReady = useRef<Promise<void> | null>(null);
 
-  // Dynamically import animejs/layout
-  useEffect(() => {
-    let disposed = false;
-    async function initLayout() {
-      try {
+  const ensureLayout = useCallback(async () => {
+    if (layoutRef.current) return;
+    if (!layoutReady.current) {
+      layoutReady.current = (async () => {
         const { createLayout } = await import("animejs/layout");
-        if (disposed || !dialogRef.current) return;
+        if (!dialogRef.current) return;
         layoutRef.current = createLayout(dialogRef.current, {
           children: [".item", "h2", ".item-tags", ".item-media"],
           properties: ["--overlay-alpha"],
         });
-      } catch (err) {
-        console.warn("Failed to init animejs layout:", err);
-      }
+      })();
     }
-    initLayout();
-    return () => {
-      disposed = true;
-      if (layoutRef.current?.revert) layoutRef.current.revert();
-    };
+    await layoutReady.current;
   }, []);
 
-  // SEO structured data
   useEffect(() => {
     const structuredData = {
       "@context": "https://schema.org",
@@ -157,6 +133,7 @@ export default function Projects() {
     document.head.appendChild(script);
     return () => {
       document.head.removeChild(script);
+      if (layoutRef.current?.revert) layoutRef.current.revert();
     };
   }, []);
 
@@ -185,11 +162,10 @@ export default function Projects() {
   }, []);
 
   const openModal = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
+    async (e: React.MouseEvent<HTMLButtonElement>) => {
       const dialog = dialogRef.current;
       if (!dialog) return;
 
-      // Don't open modal if clicking a link
       const target = e.target as HTMLElement;
       if (target.closest("a")) return;
 
@@ -198,19 +174,16 @@ export default function Projects() {
       ) as HTMLElement;
       if (!item) return;
 
-      // Clone the card and put it in the dialog
       const clone = item.cloneNode(true) as HTMLElement;
       dialog.innerHTML = "";
       dialog.appendChild(clone);
 
-      // After cloning, replace YouTube thumbnails with actual iframes
       const youtubeMedia = clone.querySelector(
         ".item-media[data-youtube-id]"
       ) as HTMLElement | null;
       if (youtubeMedia) {
         const ytId = youtubeMedia.getAttribute("data-youtube-id");
         if (ytId) {
-          // Replace thumbnail with iframe
           youtubeMedia.innerHTML = `
             <iframe
               src="https://www.youtube.com/embed/${ytId}?autoplay=1&mute=0&loop=1&playlist=${ytId}"
@@ -224,7 +197,7 @@ export default function Projects() {
         }
       }
 
-      const duration = 600;
+      await ensureLayout();
 
       if (layoutRef.current) {
         layoutRef.current.update(
@@ -232,7 +205,7 @@ export default function Projects() {
             dialog.showModal();
             item.classList.add("is-open");
           },
-          { duration }
+          { duration: 450 }
         );
       } else {
         dialog.showModal();
@@ -241,10 +214,9 @@ export default function Projects() {
 
       document.body.style.overflow = "hidden";
     },
-    [closeModal]
+    [ensureLayout]
   );
 
-  // Dialog event listeners
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
@@ -280,25 +252,19 @@ export default function Projects() {
 
       <div
         id="projects-page"
-        className="min-h-screen w-full text-white mt-10 relative z-10"
+        className="min-h-screen w-full text-ocean-ice mt-10 relative z-10"
       >
         <div id="projects-container" className="max-w-7xl mx-auto px-4 py-8">
-          <motion.h1
+          <h1
             id="projects-title"
-            initial={{ y: -50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, type: "spring", bounce: 0.3 }}
-            className="text-4xl mb-10 text-center sm:text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-neutral-200 to-neutral-500"
+            className="text-4xl mb-10 text-center sm:text-5xl md:text-6xl font-bold font-display text-gradient-ocean text-glow"
           >
             Projects
-          </motion.h1>
+          </h1>
 
-          <motion.div
+          <div
             id="projects-grid"
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
-            variants={gridContainerVariants}
-            initial="hidden"
-            animate="show"
           >
             {projects.map((project) => {
               const ytId =
@@ -307,123 +273,117 @@ export default function Projects() {
                   : undefined;
 
               return (
-                <motion.div key={project.id} variants={projectCardVariants}>
-                  <button
-                    type="button"
-                    className="item"
-                    data-layout-id={`project-${project.id}`}
-                    onClick={openModal}
-                  >
-                    {/* Close button - only visible in dialog */}
-                    <span className="dialog-close-btn" aria-label="Close">
-                      <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <line x1="18" y1="6" x2="6" y2="18" />
-                        <line x1="6" y1="6" x2="18" y2="18" />
-                      </svg>
-                    </span>
-
-                    {/* Media */}
-                    <div
-                      className="item-media"
-                      data-layout-id={`media-${project.id}`}
-                      {...(ytId ? { "data-youtube-id": ytId } : {})}
+                <button
+                  key={project.id}
+                  type="button"
+                  className="item"
+                  data-layout-id={`project-${project.id}`}
+                  onClick={openModal}
+                >
+                  <span className="dialog-close-btn" aria-label="Close">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     >
-                      <img
-                        src={
-                          project.media.type === "youtube"
-                            ? project.media.thumbnail
-                            : project.media.src
-                        }
-                        alt={project.title}
-                        className="item-media-img"
-                        loading="lazy"
-                      />
-                      {project.media.type === "youtube" && (
-                        <div className="item-play-overlay">
-                          <svg
-                            width="48"
-                            height="48"
-                            viewBox="0 0 64 64"
-                            fill="none"
-                          >
-                            <circle
-                              cx="32"
-                              cy="32"
-                              r="32"
-                              fill="rgba(0,0,0,0.5)"
-                            />
-                            <polygon points="26,20 48,32 26,44" fill="#fff" />
-                          </svg>
-                        </div>
-                      )}
+                      <line x1="18" y1="6" x2="6" y2="18" />
+                      <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                  </span>
+
+                  <div
+                    className="item-media"
+                    data-layout-id={`media-${project.id}`}
+                    {...(ytId ? { "data-youtube-id": ytId } : {})}
+                  >
+                    <img
+                      src={
+                        project.media.type === "youtube"
+                          ? project.media.thumbnail
+                          : project.media.src
+                      }
+                      alt={project.title}
+                      className="item-media-img"
+                      width={640}
+                      height={360}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    {project.media.type === "youtube" && (
+                      <div className="item-play-overlay">
+                        <svg
+                          width="48"
+                          height="48"
+                          viewBox="0 0 64 64"
+                          fill="none"
+                        >
+                          <circle
+                            cx="32"
+                            cy="32"
+                            r="32"
+                            fill="rgba(0,0,0,0.5)"
+                          />
+                          <polygon points="26,20 48,32 26,44" fill="#fff" />
+                        </svg>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="item-content">
+                    <h2 data-layout-id={`title-${project.id}`}>
+                      {project.title}
+                    </h2>
+
+                    <div
+                      className="item-tags"
+                      data-layout-id={`tags-${project.id}`}
+                    >
+                      {project.tags.map((tag) => (
+                        <span key={tag} className="item-tag">
+                          {tag}
+                        </span>
+                      ))}
                     </div>
 
-                    {/* Content wrapper - becomes the right column in dialog */}
-                    <div className="item-content">
-                      {/* Title */}
-                      <h2 data-layout-id={`title-${project.id}`}>
-                        {project.title}
-                      </h2>
+                    <p className="item-description">{project.description}</p>
 
-                      {/* Tags */}
-                      <div
-                        className="item-tags"
-                        data-layout-id={`tags-${project.id}`}
+                    <div className="item-links">
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="item-link item-link-github"
+                        onClick={(e) => e.stopPropagation()}
                       >
-                        {project.tags.map((tag) => (
-                          <span key={tag} className="item-tag">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* Description - hidden in grid, visible in dialog */}
-                      <p className="item-description">{project.description}</p>
-
-                      {/* Links - hidden in grid, visible in dialog */}
-                      <div className="item-links">
+                        <FiGithub className="w-5 h-5" />
+                        View Source
+                      </a>
+                      {project.link && (
                         <a
-                          href={project.github}
+                          href={project.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="item-link item-link-github"
+                          className="item-link item-link-live"
                           onClick={(e) => e.stopPropagation()}
                         >
-                          <FiGithub className="w-5 h-5" />
-                          View Source
+                          <FiExternalLink className="w-5 h-5" />
+                          Live Demo
                         </a>
-                        {project.link && (
-                          <a
-                            href={project.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="item-link item-link-live"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <FiExternalLink className="w-5 h-5" />
-                            Live Demo
-                          </a>
-                        )}
-                      </div>
+                      )}
                     </div>
-                  </button>
-                </motion.div>
+                  </div>
+                </button>
               );
             })}
-          </motion.div>
+          </div>
         </div>
       </div>
 
-      {/* Anime.js Layout Dialog */}
       <dialog ref={dialogRef} id="layout-dialog" />
     </>
   );

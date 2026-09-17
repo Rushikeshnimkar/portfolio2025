@@ -65,7 +65,7 @@ export const MenuItem = ({
           transition: { duration: 0.1 },
         }}
         animate={{
-          color: isCurrentSection ? "#3b82f6" : "#e5e5e5",
+          color: isCurrentSection ? "#d4a656" : "#e8edf4",
           fontWeight: isCurrentSection ? 700 : 400,
         }}
         transition={appleSpring}
@@ -77,7 +77,7 @@ export const MenuItem = ({
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 0.3, scale: 1 }}
             transition={appleWobbleSpring}
-            className="absolute inset-0 bg-blue-500 rounded-lg blur-sm -z-10"
+            className="absolute inset-0 bg-ocean-aqua rounded-lg blur-sm -z-10"
           />
         )}
 
@@ -121,7 +121,7 @@ export const MenuItem = ({
             {/* Backdrop with enhanced blur - no animation delay */}
             <motion.div
               layoutId="active"
-              className="bg-neutral-900/95 rounded-2xl overflow-hidden border border-neutral-700/50 shadow-2xl relative"
+              className="bg-ocean-deep/95 rounded-2xl overflow-hidden border border-ocean-aqua/20 shadow-2xl relative"
             >
               {/* Subtle inner glow - no delay */}
               <motion.div
@@ -160,9 +160,9 @@ export const Menu = ({
     <LiquidGlass
       width={800}
       height={56}
-      borderRadius={9999}
-      intensity={0.6}
-      className="border border-white/20 bg-white/10"
+      borderRadius={12}
+      intensity={0.45}
+      className="border border-ocean-aqua/20 bg-ocean-deep/55"
     >
       <motion.nav
         onMouseLeave={() => setActive(null)}
@@ -226,9 +226,9 @@ export const HoveredLink = ({
         {/* Hover underline effect - only show for non-active items */}
         <motion.span className="relative">
           {children}
-          {!className?.includes("text-blue-500") && (
+          {!className?.includes("text-ocean-aqua") && (
             <motion.div
-              className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
+              className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-ocean-aqua to-ocean-cyan rounded-full"
               initial={{ width: 0, opacity: 0 }}
               whileHover={{
                 width: "100%",
@@ -271,9 +271,9 @@ export const MobileLink = ({
       )}
     >
       {/* Subtle background animation on hover - only for non-active items */}
-      {!className?.includes("text-blue-500") && (
+      {!className?.includes("text-ocean-aqua") && (
         <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg"
+          className="absolute inset-0 bg-gradient-to-r from-ocean-aqua/10 to-ocean-cyan/10 rounded-lg"
           initial={{ opacity: 0, scale: 0.8 }}
           whileHover={{
             opacity: 1,
@@ -312,8 +312,8 @@ export const MobileMenuItem = ({
       className={cn(
         "w-full text-left p-2 rounded-lg text-sm font-medium transition-all duration-300 relative",
         isActive
-          ? "text-blue-500 bg-blue-500/10"
-          : "text-neutral-200 hover:bg-neutral-800/50"
+          ? "text-ocean-aqua bg-ocean-aqua/10"
+          : "text-ocean-ice/85 hover:bg-ocean-surface/50"
       )}
     >
       {/* Enhanced background for active state */}
@@ -322,7 +322,7 @@ export const MobileMenuItem = ({
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={appleWobbleSpring}
-          className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg"
+          className="absolute inset-0 bg-gradient-to-r from-ocean-aqua/20 to-ocean-cyan/20 rounded-lg"
         />
       )}
       <span className="relative z-10">{title}</span>
@@ -392,7 +392,7 @@ export const ProductItem = ({
               opacity: 1,
               transition: appleSpring,
             }}
-            className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg"
+            className="absolute inset-0 bg-gradient-to-br from-ocean-aqua/20 to-ocean-cyan/20 rounded-lg"
           />
         </motion.div>
 

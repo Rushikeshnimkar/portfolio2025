@@ -8,11 +8,17 @@ import Contact from "./contact/page";
 import Projects from "./projects/page";
 import { AIChatModal } from "../components/tools/ai-chat-modal";
 import { UnifiedAIInput } from "../components/tools/UnifiedAIInput";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import GitHub from "./github/page";
-import NeuralBackground from "../components/neural-background";
+import dynamic from "next/dynamic";
+import SmoothScroll from "../components/providers/SmoothScroll";
 import { useThemeHandler, useMessageHandler, initializeChat } from "../components/tools/ai-chat/chat-utils";
 import { ClippyAssistant } from "../components/ui/ClippyAssistant";
+
+const SceneBackground = dynamic(
+  () => import("../components/atmosphere/SceneBackground"),
+  { ssr: false }
+);
 
 export default function Home() {
   // Theme and Message Handlers
@@ -135,38 +141,18 @@ export default function Home() {
     }
   };
 
-  // Grid overlay ref for React-managed DOM
-  const gridOverlayRef = useRef<HTMLDivElement>(null);
-
   return (
+    <SmoothScroll>
     <main
-      className="main-content"
+      className="main-content relative"
       id="main-content"
       data-theme-target="main-content"
     >
-      {/* Dark tech background */}
-      <div
-        className="fixed inset-0 bg-black z-[-2]"
-        id="page-background-base"
-        data-theme-target="page-background-base"
-      >
-        {/* Grid overlay - rendered as React element instead of DOM manipulation */}
-        <div
-          ref={gridOverlayRef}
-          className="absolute inset-0 z-[-1]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(20, 255, 140, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(20, 255, 140, 0.1) 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
-            opacity: 0.15,
-          }}
-        />
+      <div id="page-background-base" data-theme-target="page-background-base">
+        <SceneBackground />
       </div>
 
-      <div className="min-h-screen w-full text-white overflow-x-hidden relative">
-        {/* Gradient cyberpunk background */}
-        <NeuralBackground />
-
+      <div className="min-h-screen w-full text-white overflow-x-hidden relative z-10">
         <section
           id="home"
           className="relative z-10"
@@ -177,27 +163,27 @@ export default function Home() {
       </div>
 
       {/* Main Sections with clear data attributes */}
-      <section id="about" className="scroll-mt-20" data-theme-target="about-section">
+      <section id="about" className="scroll-mt-20 relative z-10" data-theme-target="about-section">
         <About />
       </section>
 
-      <section id="experience" className="scroll-mt-20" data-theme-target="experience-section">
+      <section id="experience" className="scroll-mt-20 relative z-10" data-theme-target="experience-section">
         <ExperiencePage />
       </section>
 
-      <section id="skills" className="scroll-mt-20" data-theme-target="skills-section">
+      <section id="skills" className="scroll-mt-20 relative z-10" data-theme-target="skills-section">
         <Skills />
       </section>
 
-      <section id="projects" className="scroll-mt-20" data-theme-target="projects-section">
+      <section id="projects" className="scroll-mt-20 relative z-10" data-theme-target="projects-section">
         <Projects />
       </section>
 
-      <section id="github" className="scroll-mt-20" data-theme-target="github-section">
+      <section id="github" className="scroll-mt-20 relative z-10" data-theme-target="github-section">
         <GitHub />
       </section>
 
-      <section id="contact" className="scroll-mt-20" data-theme-target="contact-section">
+      <section id="contact" className="scroll-mt-20 relative z-10" data-theme-target="contact-section">
         <Contact />
       </section>
 
@@ -232,30 +218,7 @@ export default function Home() {
         error={error}
       />
 
-      <style jsx global>{`
-        /* Scanlines effect */
-        .bg-scanlines {
-          background: linear-gradient(
-            to bottom,
-            transparent 0%,
-            rgba(32, 255, 177, 0.05) 50%,
-            transparent 51%,
-            rgba(32, 255, 177, 0.05) 100%
-          );
-          background-size: 100% 4px;
-          height: 100%;
-        }
-        /* ... existing styles ... */
-        @keyframes blob {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          25% { transform: translate(-30px, 30px) scale(1.05); }
-          50% { transform: translate(20px, -20px) scale(0.95); }
-          75% { transform: translate(-20px, -20px) scale(1.05); }
-        }
-        .animate-blob { animation: blob 15s infinite alternate; }
-        .animation-delay-2000 { animation-delay: 2s; }
-        .animation-delay-4000 { animation-delay: 4s; }
-      `}</style>
     </main>
+    </SmoothScroll>
   );
 }

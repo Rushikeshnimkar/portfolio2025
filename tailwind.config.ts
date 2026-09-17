@@ -26,6 +26,16 @@ const config = {
   theme: {
     extend: {
       colors: {
+        ocean: {
+          midnight: "#05060a",
+          deep: "#0c0e14",
+          surface: "#161a24",
+          aqua: "#d4a656",
+          cyan: "#e8c98a",
+          teal: "#6eb4c8",
+          ice: "#e8edf4",
+          mist: "#8a92a3",
+        },
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
@@ -92,6 +102,15 @@ const config = {
         bounce: "bounce 0.6s infinite",
         "spin-slow": "spin 4s linear infinite",
         "gradient-xy": "gradient-xy 3s ease infinite",
+      },
+      fontFamily: {
+        display: ["var(--font-display)", "Space Grotesk", "sans-serif"],
+        chalk: ["var(--font-body)", "IBM Plex Sans", "sans-serif"],
+        mono: ["var(--font-mono)", "IBM Plex Mono", "monospace"],
+      },
+      boxShadow: {
+        glow: "0 0 24px rgba(212,166,86,0.28)",
+        "glow-lg": "0 0 48px rgba(212,166,86,0.2)",
       },
     },
   },

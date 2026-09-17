@@ -45,9 +45,9 @@ export default function Contributions() {
         <meta name="keywords" content={SEO.keywords} />
       </Head>
 
-      <div className="min-h-auto w-full text-white mt-10">
+      <div className="min-h-auto w-full text-ocean-ice mt-10">
         <div className="max-w-7xl mx-auto px-4 py-8">
-          <h1 className="text-4xl mb-10 text-center sm:text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-neutral-200 to-neutral-500">
+          <h1 className="text-4xl mb-10 text-center sm:text-5xl md:text-6xl font-bold font-display text-gradient-ocean text-glow">
             GitHub Contributions
           </h1>
 
@@ -61,7 +61,7 @@ export default function Contributions() {
           >
             <motion.div
               variants={itemVariants}
-              className="p-6 rounded-2xl shadow-xl overflow-hidden relative"
+              className="p-6 rounded-2xl glass shadow-xl overflow-hidden relative"
             >
               {/* Background pattern */}
               <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
@@ -72,7 +72,7 @@ export default function Contributions() {
                 className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4"
               >
                 <div>
-                  <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+                  <h2 className="text-2xl font-bold font-display text-gradient-ocean">
                     Contribution Activity
                   </h2>
                 </div>
@@ -81,11 +81,11 @@ export default function Contributions() {
                   href="https://github.com/Rushikeshnimkar"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg z-10 bg-neutral-800/80 hover:bg-neutral-700/80 transition-all duration-300 text-sm border border-neutral-700/50 hover:border-blue-500/30 group"
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg z-10 bg-ocean-surface/60 hover:bg-ocean-surface/90 transition-all duration-300 text-sm border border-ocean-aqua/20 hover:border-ocean-aqua/50 text-ocean-ice group"
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <FiGithub className="w-4 h-4 group-hover:text-blue-400 transition-colors" />
+                  <FiGithub className="w-4 h-4 group-hover:text-ocean-aqua transition-colors" />
                   <span>View GitHub Profile</span>
                 </motion.a>
               </motion.div>

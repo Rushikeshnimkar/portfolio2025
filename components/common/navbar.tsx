@@ -159,8 +159,8 @@ export function Navbar() {
                 className={cn(
                   "transition-all duration-300 relative",
                   isActive("#home")
-                    ? "text-blue-500 font-bold"
-                    : "text-neutral-200"
+                    ? "text-ocean-aqua font-bold"
+                    : "text-ocean-ice/85"
                 )}
               >
                 Home
@@ -171,8 +171,8 @@ export function Navbar() {
                 className={cn(
                   "transition-all duration-300 relative",
                   isActive("#projects")
-                    ? "text-blue-500 font-bold"
-                    : "text-neutral-200"
+                    ? "text-ocean-aqua font-bold"
+                    : "text-ocean-ice/85"
                 )}
               >
                 Projects
@@ -214,8 +214,8 @@ export function Navbar() {
                         className={cn(
                           "transition-all duration-300 block",
                           currentSection === item.section
-                            ? "text-blue-500 font-bold"
-                            : "text-neutral-200"
+                            ? "text-ocean-aqua font-bold"
+                            : "text-ocean-ice/85"
                         )}
                       >
                         {item.label}
@@ -230,8 +230,8 @@ export function Navbar() {
                 className={cn(
                   "transition-all duration-300 relative",
                   isActive("#contact")
-                    ? "text-blue-500 font-bold"
-                    : "text-neutral-200"
+                    ? "text-ocean-aqua font-bold"
+                    : "text-ocean-ice/85"
                 )}
               >
                 Contact
@@ -258,7 +258,7 @@ export function Navbar() {
           >
             <div className="flex items-center justify-between px-2">
               <motion.button
-                className="p-3 rounded-xl bg-neutral-900/90 backdrop-blur-xl text-neutral-200 border border-neutral-700/50 relative overflow-hidden"
+                className="p-3 rounded-xl bg-ocean-deep/90 backdrop-blur-xl text-ocean-ice/85 border border-ocean-aqua/20 relative overflow-hidden"
                 onClick={toggleMobileMenu}
                 whileHover={{
                   scale: 1.05,
@@ -277,7 +277,7 @@ export function Navbar() {
                     scale: 1,
                     transition: appleSpring,
                   }}
-                  className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl"
+                  className="absolute inset-0 bg-gradient-to-br from-ocean-aqua/20 to-ocean-cyan/20 rounded-xl"
                 />
 
                 {/* Icon with rotation animation */}
@@ -295,7 +295,7 @@ export function Navbar() {
 
               {/* Enhanced current section indicator */}
               <motion.div
-                className="text-sm font-medium bg-neutral-900/90 backdrop-blur-xl text-blue-500 py-2 px-4 rounded-xl border border-neutral-700/50 relative overflow-hidden"
+                className="text-sm font-medium bg-ocean-deep/90 backdrop-blur-xl text-ocean-aqua py-2 px-4 rounded-xl border border-ocean-aqua/20 relative overflow-hidden"
                 whileHover={{
                   scale: 1.02,
                   transition: appleBounceSpring,
@@ -306,7 +306,7 @@ export function Navbar() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={appleSpring}
-                  className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl"
+                  className="absolute inset-0 bg-gradient-to-r from-ocean-aqua/10 to-ocean-cyan/10 rounded-xl"
                 />
 
                 {/* Text with subtle animation */}
@@ -376,7 +376,7 @@ export function Navbar() {
                   }}
                   transition={appleWobbleSpring}
                   style={{ transformPerspective: 1000 }}
-                  className=" top-6 left-0 right-0 mx-2 rounded-2xl bg-neutral-900/40 backdrop-blur-md p-3 shadow-2xl border border-neutral-700/50 relative overflow-hidden"
+                  className=" top-6 left-0 right-0 mx-2 rounded-2xl bg-ocean-deep/40 backdrop-blur-md p-3 shadow-2xl border border-ocean-aqua/20 relative overflow-hidden"
                 >
                   {/* Enhanced background effects - no delays */}
                   <motion.div
@@ -390,7 +390,7 @@ export function Navbar() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={appleSpring}
-                    className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-blue-500/5 rounded-2xl"
+                    className="absolute inset-0 bg-gradient-to-r from-ocean-aqua/5 via-ocean-cyan/5 to-ocean-aqua/5 rounded-2xl"
                   />
 
                   <div className="flex flex-col space-y-2 relative z-10">
@@ -420,8 +420,8 @@ export function Navbar() {
                           onClick={() => setIsMobileMenuOpen(false)}
                           className={cn(
                             item.active
-                              ? "text-blue-500 font-medium bg-blue-500/10 shadow-inner"
-                              : "text-neutral-200 hover:bg-neutral-800/50"
+                              ? "text-ocean-aqua font-medium bg-ocean-aqua/10 shadow-inner"
+                              : "text-ocean-ice/85 hover:bg-ocean-surface/50"
                           )}
                         >
                           {item.label}
@@ -487,8 +487,8 @@ export function Navbar() {
                                   }}
                                   className={cn(
                                     currentSection === item.section
-                                      ? "text-blue-500 font-medium bg-blue-500/10 shadow-inner"
-                                      : "text-neutral-300 hover:bg-neutral-800/50"
+                                      ? "text-ocean-aqua font-medium bg-ocean-aqua/10 shadow-inner"
+                                      : "text-ocean-mist hover:bg-ocean-surface/50"
                                   )}
                                 >
                                   {item.label}
@@ -514,8 +514,8 @@ export function Navbar() {
                         onClick={() => setIsMobileMenuOpen(false)}
                         className={cn(
                           isActive("#contact")
-                            ? "text-blue-500 font-medium bg-blue-500/10 shadow-inner"
-                            : "text-neutral-200 hover:bg-neutral-800/50"
+                            ? "text-ocean-aqua font-medium bg-ocean-aqua/10 shadow-inner"
+                            : "text-ocean-ice/85 hover:bg-ocean-surface/50"
                         )}
                       >
                         Contact
@@ -559,8 +559,8 @@ const MobileMenuItem = ({
       className={cn(
         "w-full text-left p-3 rounded-xl text-sm font-medium transition-all duration-300 relative overflow-hidden",
         isActive
-          ? "text-blue-500 bg-blue-500/10 shadow-inner"
-          : "text-neutral-200 hover:bg-neutral-800/50"
+          ? "text-ocean-aqua bg-ocean-aqua/10 shadow-inner"
+          : "text-ocean-ice/85 hover:bg-ocean-surface/50"
       )}
     >
       {/* Enhanced background for active state */}
@@ -569,7 +569,7 @@ const MobileMenuItem = ({
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={appleWobbleSpring}
-          className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl"
+          className="absolute inset-0 bg-gradient-to-r from-ocean-aqua/20 to-ocean-cyan/20 rounded-xl"
         />
       )}
 
@@ -633,9 +633,9 @@ const MobileLink = ({
       )}
     >
       {/* Subtle background animation on hover - only for non-active items */}
-      {!className?.includes("text-blue-500") && (
+      {!className?.includes("text-ocean-aqua") && (
         <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl"
+          className="absolute inset-0 bg-gradient-to-r from-ocean-aqua/10 to-ocean-cyan/10 rounded-xl"
           initial={{ opacity: 0, scale: 0.8 }}
           whileHover={{
             opacity: 1,

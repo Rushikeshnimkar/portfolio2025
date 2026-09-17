@@ -37,7 +37,7 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-2xl md:text-4xl font-bold mb-4 text-white"
+          className="text-3xl md:text-5xl font-bold mb-4 font-display text-gradient-ocean text-glow"
         >
           Journey Through Time
         </motion.h2>
@@ -45,7 +45,7 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-neutral-400 text-sm md:text-base max-w-xl"
+          className="text-ocean-mist text-sm md:text-base max-w-xl"
         >
           A chronicle of my professional evolution and key milestones.
         </motion.p>
@@ -60,14 +60,14 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
           style={{
             height: height + "px",
           }}
-          className="absolute md:left-8 left-8 top-0 w-[2px] bg-gradient-to-b from-transparent via-neutral-700 to-transparent"
+          className="absolute md:left-8 left-8 top-0 w-[2px] bg-gradient-to-b from-transparent via-ocean-surface to-transparent"
         >
           <motion.div
             style={{
               height: heightTransform,
               opacity: opacityTransform,
             }}
-            className="absolute inset-x-0 top-0 w-full bg-gradient-to-b from-blue-500/30 via-blue-500 to-blue-500/30"
+            className="absolute inset-x-0 top-0 w-full bg-gradient-to-b from-ocean-aqua/30 via-ocean-aqua to-ocean-cyan/40"
           />
         </div>
       </div>
@@ -84,8 +84,8 @@ const TimelineItem = ({
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, {
-    once: false,
-    margin: "-30% 0px -70% 0px",
+    once: true,
+    margin: "-20% 0px -20% 0px",
   });
 
   return (
@@ -103,39 +103,37 @@ const TimelineItem = ({
     >
       <div className="sticky flex flex-col md:flex-row z-40 items-center top-20 self-start max-w-xs lg:max-w-sm md:w-full">
         <div className="relative h-10 w-10">
-          <div className="h-10 absolute left-3 md:left-3 w-10 rounded-full bg-neutral-900 flex items-center justify-center border border-neutral-700">
+          <div className="h-10 absolute left-3 md:left-3 w-10 rounded-full bg-ocean-deep flex items-center justify-center border border-ocean-aqua/30">
             <motion.div
-              className="h-3 w-3 rounded-full bg-blue-500"
+              className="h-3 w-3 rounded-full bg-ocean-aqua"
               animate={{
                 scale: isInView ? 1.5 : 1,
-                backgroundColor: isInView ? "#3b82f6" : "#60a5fa",
+                backgroundColor: isInView ? "#d4a656" : "#6eb4c8",
               }}
               transition={{ duration: 0.3 }}
             />
           </div>
         </div>
-        <h3 className="hidden md:block text-lg md:pl-6 md:text-2xl font-semibold text-white">
+        <h3 className="hidden md:block text-lg md:pl-6 md:text-2xl font-semibold text-ocean-ice font-display">
           {item.title}
         </h3>
       </div>
 
       <div className="relative pl-20 pr-4 md:pl-6 w-full">
-        <h3 className="md:hidden block text-xl mb-4 text-left font-semibold text-white">
+        <h3 className="md:hidden block text-xl mb-4 text-left font-semibold text-ocean-ice font-display">
           {item.title}
         </h3>
         <motion.div
-          className="backdrop-blur-sm bg-gradient-to-br from-white/5 to-white/10 border border-white/10 rounded-xl p-6 shadow-sm"
+          className="glass rounded-xl p-6"
+          initial={false}
           animate={{
-            boxShadow: isInView
-              ? "0 0 20px rgba(200, 255, 255, 0.3), 0 0 30px rgba(25, 5, 55, 0.2)"
-              : "none",
             borderColor: isInView
-              ? "rgba(255, 255, 255, 0.3)"
-              : "rgba(255, 255, 255, 0.1)",
+              ? "rgba(255, 255, 255, 0.35)"
+              : "rgba(255, 255, 255, 0.18)",
           }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.25 }}
         >
-          <div className="text-neutral-300 text-base leading-relaxed">
+          <div className="text-ocean-mist text-base leading-relaxed">
             {item.content}
           </div>
         </motion.div>

@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { defaultMetadata } from "./metadata";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { Footer } from "../components/common/footer";
 import { Navbar } from "../components/common/navbar";
 import { Analytics } from "@vercel/analytics/react";
@@ -9,14 +9,22 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-display",
   subsets: ["latin"],
+  weight: ["500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const plexSans = IBM_Plex_Sans({
+  variable: "--font-body",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
+});
+
+const plexMono = IBM_Plex_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = defaultMetadata;
@@ -33,7 +41,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="canonical" href="https://rushikeshnimkar.com" />
         <link rel="icon" href="/favicon.ico" />
-        <meta name="theme-color" content="#000000" />
+        <meta name="theme-color" content="#05060a" />
         <meta name="robots" content="index, follow" />
         <link
           rel="icon"
@@ -52,11 +60,11 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
+        className={`${spaceGrotesk.variable} ${plexSans.variable} ${plexMono.variable} antialiased min-h-screen flex flex-col`}
       >
         <ConsoleMessage />
         <Navbar />
-        <div className="relative z-10 bg-black flex-grow flex flex-col">
+        <div className="relative z-10 flex-grow flex flex-col">
           {children}
           <SpeedInsights />
           <Footer />

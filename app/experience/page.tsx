@@ -9,13 +9,13 @@ export default function ExperiencePage() {
       content: (
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           <div className="flex-shrink-0 pt-1">
-            <FiBriefcase className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
+            <FiBriefcase className="w-4 h-4 sm:w-5 sm:h-5 text-ocean-aqua" />
           </div>
           <div className="space-y-2 min-w-0">
-            <h3 className="text-base sm:text-lg font-semibold text-white leading-tight">
+            <h3 className="text-base sm:text-lg font-semibold text-ocean-ice leading-tight">
               Software Development Engineer 1
             </h3>
-            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-neutral-400 text-xs sm:text-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-ocean-mist text-xs sm:text-sm">
               <span className="font-medium">Mindstix Software Labs</span>
               <span className="hidden sm:inline">•</span>
               <div className="flex items-center gap-1">
@@ -23,7 +23,7 @@ export default function ExperiencePage() {
                 <span>Pune, IN</span>
               </div>
             </div>
-            <div className="space-y-3 text-xs sm:text-sm text-neutral-300">
+            <div className="space-y-3 text-xs sm:text-sm text-ocean-mist">
               <p className="leading-relaxed">
                 Working on DevOps, focusing on CI/CD pipelines, infrastructure
                 automation, and cloud deployment workflows.
@@ -38,17 +38,17 @@ export default function ExperiencePage() {
       content: (
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           <div className="flex-shrink-0 pt-1">
-            <FiBook className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
+            <FiBook className="w-4 h-4 sm:w-5 sm:h-5 text-ocean-aqua" />
           </div>
           <div className="space-y-2 min-w-0">
-            <h3 className="text-base sm:text-lg font-semibold text-white leading-tight">
+            <h3 className="text-base sm:text-lg font-semibold text-ocean-ice leading-tight">
               Postgraduate Diploma in Advanced Computing
             </h3>
-            <div className="flex items-center gap-2 text-neutral-400 text-xs sm:text-sm">
+            <div className="flex items-center gap-2 text-ocean-mist text-xs sm:text-sm">
               <FiMapPin className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
               <span className="truncate">CDAC SMVITA, Mumbai, IN</span>
             </div>
-            <p className="text-neutral-300 text-xs sm:text-sm leading-relaxed">
+            <p className="text-ocean-mist text-xs sm:text-sm leading-relaxed">
               Completed Postgraduate Diploma in Advanced Computing
               (PG-DAC) from CDAC SMVITA, Mumbai. Focused on full-stack
               development, cloud technologies, and hands-on project building.
@@ -63,17 +63,17 @@ export default function ExperiencePage() {
       content: (
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           <div className="flex-shrink-0 pt-1">
-            <FiBook className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
+            <FiBook className="w-4 h-4 sm:w-5 sm:h-5 text-ocean-aqua" />
           </div>
           <div className="space-y-2 min-w-0">
-            <h3 className="text-base sm:text-lg font-semibold text-white leading-tight">
+            <h3 className="text-base sm:text-lg font-semibold text-ocean-ice leading-tight">
               Bachelor of Engineering
             </h3>
-            <div className="flex items-center gap-2 text-neutral-400 text-xs sm:text-sm">
+            <div className="flex items-center gap-2 text-ocean-mist text-xs sm:text-sm">
               <FiMapPin className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
               <span>Pune, IN</span>
             </div>
-            <p className="text-neutral-300 text-xs sm:text-sm leading-relaxed">
+            <p className="text-ocean-mist text-xs sm:text-sm leading-relaxed">
               Graduated with BE in Computer Engineering, focusing on software
               development and computer science fundamentals. Developed strong
               problem-solving skills and technical expertise through
@@ -88,24 +88,24 @@ export default function ExperiencePage() {
       content: (
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           <div className="flex-shrink-0 pt-1">
-            <FiAward className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
+            <FiAward className="w-4 h-4 sm:w-5 sm:h-5 text-ocean-aqua" />
           </div>
           <div className="space-y-4 min-w-0">
-            <h3 className="text-base sm:text-lg font-semibold text-white leading-tight">
+            <h3 className="text-base sm:text-lg font-semibold text-ocean-ice leading-tight">
               Hackathon Achievements
             </h3>
 
             {/* Solana Radar Hackathon */}
             <div className="space-y-2">
               <div className="flex items-start sm:items-center gap-3">
-                <span className="flex-shrink-0 w-2 h-2 rounded-full bg-blue-400 mt-2 sm:mt-0" />
+                <span className="flex-shrink-0 w-2 h-2 rounded-full bg-ocean-aqua shadow-glow mt-2 sm:mt-0" />
                 <a
                   href="https://arena.colosseum.org/projects/explore/netsepio?previous=L3Byb2plY3RzL2V4cGxvcmU_c2VlZD1iNGI0ZTYwYzViNGE0NzkwJnNlYXJjaD1uZXRzZXA&ref=blog.colosseum.org"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group min-w-0"
                 >
-                  <h4 className="text-white font-medium hover:text-blue-400 transition-colors duration-200 inline-flex items-start sm:items-center gap-1 text-sm sm:text-base leading-tight">
+                  <h4 className="text-ocean-ice font-medium hover:text-ocean-aqua transition-colors duration-200 hover:text-glow inline-flex items-start sm:items-center gap-1 text-sm sm:text-base leading-tight">
                     <span className="break-words">
                       Solana Radar Hackathon 2024
                     </span>
@@ -126,17 +126,17 @@ export default function ExperiencePage() {
                 </a>
               </div>
               <div className="pl-3 sm:pl-5">
-                <p className="text-neutral-300 text-xs sm:text-sm leading-relaxed">
+                <p className="text-ocean-mist text-xs sm:text-sm leading-relaxed">
                   Achieved{" "}
-                  <span className="text-blue-400 font-medium">4th place</span>{" "}
+                  <span className="text-ocean-aqua font-medium">4th place</span>{" "}
                   out of 200+ global teams, demonstrating expertise in
                   blockchain technology and innovative problem-solving.
                 </p>
                 <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-2">
-                  <span className="px-2 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full whitespace-nowrap">
+                  <span className="chip text-xs whitespace-nowrap">
                     Global Competition
                   </span>
-                  <span className="px-2 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full whitespace-nowrap">
+                  <span className="chip text-xs whitespace-nowrap">
                     200+ Teams
                   </span>
                 </div>
@@ -146,15 +146,15 @@ export default function ExperiencePage() {
             {/* Sui Overflow */}
             <div className="space-y-2">
               <div className="flex items-start sm:items-center gap-3">
-                <span className="flex-shrink-0 w-2 h-2 rounded-full bg-blue-400 mt-2 sm:mt-0" />
-                <h4 className="text-white font-medium text-sm sm:text-base leading-tight">
+                <span className="flex-shrink-0 w-2 h-2 rounded-full bg-ocean-aqua shadow-glow mt-2 sm:mt-0" />
+                <h4 className="text-ocean-ice font-medium text-sm sm:text-base leading-tight">
                   Sui Overflow 2024
                 </h4>
               </div>
               <div className="pl-3 sm:pl-5">
-                <p className="text-neutral-300 text-xs sm:text-sm leading-relaxed">
+                <p className="text-ocean-mist text-xs sm:text-sm leading-relaxed">
                   Awarded the{" "}
-                  <span className="text-blue-400 font-medium">
+                  <span className="text-ocean-aqua font-medium">
                     Community Favorite Award
                   </span>{" "}
                   for Mystic Tarot - an innovative Web3 tarot reading platform
@@ -162,13 +162,13 @@ export default function ExperiencePage() {
                   user-centric design.
                 </p>
                 <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-2">
-                  <span className="px-2 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full whitespace-nowrap">
+                  <span className="chip text-xs whitespace-nowrap">
                     Community Favorite
                   </span>
-                  <span className="px-2 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full whitespace-nowrap">
+                  <span className="chip text-xs whitespace-nowrap">
                     Web3
                   </span>
-                  <span className="px-2 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full whitespace-nowrap">
+                  <span className="chip text-xs whitespace-nowrap">
                     Sui Network
                   </span>
                 </div>
