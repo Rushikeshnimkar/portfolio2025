@@ -1,9 +1,8 @@
 "use client";
 
 /**
- * SmoothScroll — wraps the app in a Lenis smooth-scroll instance.
- * Lenis updates window.scrollY, which OceanWorld's CameraRig reads each frame,
- * so the 3D camera and the scrolled HTML stay in lockstep.
+ * Lenis smooth-scroll. Stops while the AI chat is open so wheel/touch
+ * stay inside the message list instead of moving the page.
  */
 
 import { useEffect } from "react";
@@ -15,7 +14,6 @@ export default function SmoothScroll({
   children: React.ReactNode;
 }) {
   useEffect(() => {
-    // Respect users who prefer reduced motion — skip smooth scroll for them.
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
@@ -27,6 +25,11 @@ export default function SmoothScroll({
       syncTouch: false,
     });
 
+    const stop = () => lenis.stop();
+    const start = () => lenis.start();
+    window.addEventListener("lenis:stop", stop);
+    window.addEventListener("lenis:start", start);
+
     let rafId = 0;
     const raf = (time: number) => {
       lenis.raf(time);
@@ -35,6 +38,8 @@ export default function SmoothScroll({
     rafId = requestAnimationFrame(raf);
 
     return () => {
+      window.removeEventListener("lenis:stop", stop);
+      window.removeEventListener("lenis:start", start);
       cancelAnimationFrame(rafId);
       lenis.destroy();
     };

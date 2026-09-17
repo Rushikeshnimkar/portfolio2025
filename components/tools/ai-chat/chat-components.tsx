@@ -63,65 +63,76 @@ export const MessageDisplay: React.FC<MessageDisplayProps> = ({
   isSearching,
   error,
   renderStructuredContent,
-  messagesEndRef,
 }) => {
   return (
-    <div className="h-full overflow-y-auto overflow-x-hidden p-3 sm:p-4 pb-28 sm:pb-32 space-y-4 sm:space-y-6 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent touch-pan-y">
-      {/* Content Fade In */}
-      <AnimatePresence initial={false}>
-        {error ? (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-red-900/20 text-red-200 border border-red-500/20 rounded-2xl p-4 text-sm backdrop-blur-sm"
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(error),
-            }}
-          />
-        ) : (
-          messages.map((message, index) => (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              key={index}
-              className={`flex ${message.type === "user" ? "justify-end" : "justify-start"
-                } group`}
+    <div className="px-4 sm:px-5 pt-4 pb-28 sm:pb-32 space-y-4">
+      {messages.length === 0 && !error && (
+        <div className="flex flex-col items-center justify-center text-center pt-16 pb-8 px-6">
+          <div className="grid place-items-center w-12 h-12 rounded-2xl bg-ocean-aqua/10 border border-ocean-aqua/25 mb-4">
+            <RiRobot2Line className="w-6 h-6 text-ocean-aqua" />
+          </div>
+          <p className="font-display text-lg text-ocean-ice">Ask anything</p>
+          <p className="text-sm text-ocean-mist mt-1 max-w-sm">
+            Skills, projects, experience — or how to get in touch.
+          </p>
+        </div>
+      )}
+
+      {error ? (
+        <div
+          className="bg-red-950/40 text-red-200 border border-red-500/25 rounded-2xl p-4 text-sm"
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(error),
+          }}
+        />
+      ) : (
+        messages.map((message, index) => (
+          <div
+            key={`${message.type}-${index}-${message.timestamp.getTime()}`}
+            className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}
+          >
+            {message.type === "assistant" && (
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-ocean-surface border border-ocean-aqua/25 flex items-center justify-center mr-2.5 flex-shrink-0 mt-0.5">
+                <RiRobot2Line className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-ocean-aqua" />
+              </div>
+            )}
+            <div
+              className={`max-w-[85%] sm:max-w-[78%] px-3.5 py-2.5 text-[13px] sm:text-sm leading-relaxed ${
+                message.type === "user"
+                  ? "bg-ocean-aqua text-ocean-midnight rounded-2xl rounded-br-md"
+                  : "bg-ocean-surface text-ocean-ice border border-white/8 rounded-2xl rounded-bl-md"
+              }`}
             >
-              {message.type === "assistant" && (
-                <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-indigo-500/20 to-cyan-500/20 border border-indigo-500/20 flex items-center justify-center mr-2 sm:mr-3 flex-shrink-0 backdrop-blur-sm">
-                  <RiRobot2Line className="w-3 h-3 sm:w-4 sm:h-4 text-indigo-300" />
-                </div>
+              {message.type === "assistant" &&
+              index === messages.length - 1 &&
+              message.content === "..." ? (
+                isSearching ? (
+                  <SearchingIndicator />
+                ) : (
+                  <ThinkingIndicator />
+                )
+              ) : (
+                <MessageContent
+                  message={message}
+                  renderStructuredContent={renderStructuredContent}
+                />
               )}
               <div
-                className={`max-w-[90%] sm:max-w-[85%] p-3 sm:p-4 rounded-xl sm:rounded-2xl shadow-sm ${message.type === "user"
-                  ? "bg-indigo-600/20 text-white border border-indigo-500/20 backdrop-blur-md rounded-br-none"
-                  : "bg-white/5 text-white/90 border border-white/10 backdrop-blur-md rounded-bl-none"
-                  }`}
+                className={`mt-1.5 text-[10px] ${
+                  message.type === "user"
+                    ? "text-ocean-midnight/50 text-right"
+                    : "text-ocean-mist/60"
+                }`}
               >
-                {message.type === "assistant" &&
-                  index === messages.length - 1 &&
-                  message.content === "..." ? (
-                  isSearching ? (
-                    <SearchingIndicator />
-                  ) : (
-                    <ThinkingIndicator />
-                  )
-                ) : (
-                  <MessageContent
-                    message={message}
-                    renderStructuredContent={renderStructuredContent}
-                  />
-                )}
-                <div className="mt-1 text-[10px] text-white/20 opacity-0 group-hover:opacity-100 transition-opacity text-right">
-                  {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </div>
+                {message.timestamp.toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
               </div>
-            </motion.div>
-          ))
-        )}
-        {messagesEndRef && <div ref={messagesEndRef} />}
-      </AnimatePresence>
+            </div>
+          </div>
+        ))
+      )}
     </div>
   );
 };
@@ -137,7 +148,7 @@ const MessageContent: React.FC<{
     <>
       {message.content && message.content.trim() && (
         <div
-          className="prose prose-invert prose-xs sm:prose-sm max-w-none text-white/90 leading-relaxed [&_p]:text-xs sm:[&_p]:text-sm [&_li]:text-xs sm:[&_li]:text-sm [&_h1]:text-base sm:[&_h1]:text-lg [&_h2]:text-sm sm:[&_h2]:text-base [&_h3]:text-xs sm:[&_h3]:text-sm"
+          className="prose prose-invert prose-sm max-w-none text-ocean-ice/90 leading-relaxed [&_p]:text-[13px] sm:[&_p]:text-sm [&_a]:text-ocean-aqua [&_code]:text-ocean-cyan [&_code]:bg-black/30 [&_code]:px-1 [&_code]:rounded"
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize(
               marked.parse(message.content).toString()
@@ -163,38 +174,34 @@ const MessageContent: React.FC<{
  */
 const SearchingIndicator: React.FC = () => {
   return (
-    <div 
-      className="inline-flex items-center gap-2 px-3 py-1.5 bg-cyan-500/10 border border-cyan-500/30 rounded-full shadow-lg relative overflow-hidden backdrop-blur-md"
-      style={{
-        boxShadow: "0 0 15px rgba(6, 182, 212, 0.15), inset 0 0 8px rgba(6, 182, 212, 0.05)",
-      }}
-    >
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent -translate-x-full animate-[shimmer_1.5s_infinite]" />
-      <div className="relative flex items-center justify-center">
-        <FiSearch className="w-3.5 h-3.5 text-cyan-400 animate-pulse relative z-10" />
-        <span className="absolute w-5 h-5 rounded-full border border-cyan-500/30 animate-ping opacity-60" />
-      </div>
-      <span className="text-xs sm:text-sm font-medium font-mono text-cyan-300 tracking-wide">Searching Vector Index...</span>
+    <div className="inline-flex items-center gap-2 py-0.5">
+      <FiSearch className="w-3.5 h-3.5 text-ocean-teal animate-pulse" />
+      <span className="text-xs font-mono text-ocean-teal tracking-wide">
+        Searching…
+      </span>
     </div>
   );
 };
 
-/**
- * Animated thinking indicator - compact pill style
- */
 const ThinkingIndicator: React.FC = () => {
   return (
-    <div 
-      className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-indigo-500/10 border border-indigo-500/30 rounded-full shadow-lg backdrop-blur-md"
-      style={{
-        boxShadow: "0 0 15px rgba(99, 102, 241, 0.15), inset 0 0 8px rgba(99, 102, 241, 0.05)",
-      }}
-    >
-      <span className="text-xs sm:text-sm font-medium font-mono text-indigo-300 tracking-wide">Thinking</span>
-      <div className="flex gap-1 items-center justify-center">
-        <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce" style={{ animationDelay: "0ms", boxShadow: "0 0 6px rgba(129, 140, 248, 0.8)" }} />
-        <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce" style={{ animationDelay: "150ms", boxShadow: "0 0 6px rgba(129, 140, 248, 0.8)" }} />
-        <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce" style={{ animationDelay: "300ms", boxShadow: "0 0 6px rgba(129, 140, 248, 0.8)" }} />
+    <div className="inline-flex items-center gap-2 py-0.5">
+      <span className="text-xs font-mono text-ocean-mist tracking-wide">
+        Thinking
+      </span>
+      <div className="flex gap-1 items-center">
+        <span
+          className="w-1.5 h-1.5 rounded-full bg-ocean-aqua animate-bounce"
+          style={{ animationDelay: "0ms" }}
+        />
+        <span
+          className="w-1.5 h-1.5 rounded-full bg-ocean-aqua animate-bounce"
+          style={{ animationDelay: "150ms" }}
+        />
+        <span
+          className="w-1.5 h-1.5 rounded-full bg-ocean-aqua animate-bounce"
+          style={{ animationDelay: "300ms" }}
+        />
       </div>
     </div>
   );

@@ -113,12 +113,12 @@ export const UnifiedAIInput: React.FC<UnifiedAIInputProps> = ({
                         className="fixed z-[60] flex flex-col items-center justify-center pointer-events-none"
                         style={{
                             left: "50%",
-                            bottom: windowWidth < 768 ? 16 : buttonPosition.bottom,
+                            bottom: windowWidth < 768 ? 16 : isChatOpen ? 28 : buttonPosition.bottom,
                             transform: "translateX(-50%)",
                             width: "100%",
                             maxWidth: "100vw",
                         }}
-                        // Keep wrapper alive while children animate
+                        onWheel={(e) => e.stopPropagation()}
                         exit={{ transition: { duration: 0.3 } }}
                     >
                         {/* Slow Loading Message (Desktop - Relative to Input) */}
@@ -171,7 +171,7 @@ export const UnifiedAIInput: React.FC<UnifiedAIInputProps> = ({
                                                     setIsPromptPanelExpanded(false);
                                                     inputRef.current?.focus();
                                                 }}
-                                                className="px-4 py-2 bg-[#0f1115]/80 backdrop-blur-xl border border-white/10 hover:border-white/20 hover:bg-[#1a1d24]/90 rounded-full text-xs text-white/80 whitespace-nowrap transition-all shadow-lg hover:shadow-indigo-500/10"
+                                                className="px-4 py-2 bg-[#0c0e14]/90 border border-ocean-aqua/20 hover:border-ocean-aqua/40 hover:bg-ocean-surface rounded-full text-xs text-ocean-ice/90 whitespace-nowrap transition-all shadow-lg"
                                             >
                                                 <span className="opacity-50 mr-1">{p.icon}</span>
                                                 {p.prompt}
@@ -200,9 +200,9 @@ export const UnifiedAIInput: React.FC<UnifiedAIInputProps> = ({
                                         <button
                                             type="button"
                                             onClick={() => setIsPromptPanelExpanded(!isPromptPanelExpanded)}
-                                            className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200 border shadow-lg backdrop-blur-sm ${isPromptPanelExpanded
-                                                ? "bg-white/20 text-white border-white/20"
-                                                : "bg-white/5 text-white/40 border-white/10 hover:bg-white/10 hover:text-white"
+                                            className={`w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 border ${isPromptPanelExpanded
+                                                ? "bg-ocean-aqua/20 text-ocean-aqua border-ocean-aqua/30"
+                                                : "bg-ocean-surface text-ocean-mist border-white/10 hover:text-ocean-ice"
                                                 }`}
                                             title="Suggestions"
                                         >
@@ -220,9 +220,9 @@ export const UnifiedAIInput: React.FC<UnifiedAIInputProps> = ({
                                                 setInput(isTheme ? input.replace(/^(theme:|search:)\s*/i, "").trim() : `Theme: ${input.replace(/^(theme:|search:)\s*/i, "").trim()}`);
                                                 inputRef.current?.focus();
                                             }}
-                                            className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200 border shadow-lg backdrop-blur-sm ${isThemeRequest(input)
-                                                ? "bg-indigo-500/20 text-indigo-400 border-indigo-500/30"
-                                                : "bg-white/5 text-white/40 border-white/10 hover:bg-white/10 hover:text-white"
+                                            className={`w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 border ${isThemeRequest(input)
+                                                ? "bg-ocean-teal/20 text-ocean-teal border-ocean-teal/30"
+                                                : "bg-ocean-surface text-ocean-mist border-white/10 hover:text-ocean-ice"
                                                 }`}
                                             title="Toggle Theme Mode"
                                         >
@@ -237,16 +237,10 @@ export const UnifiedAIInput: React.FC<UnifiedAIInputProps> = ({
                                 onSubmit={onSubmit}
                                 className="flex items-center overflow-hidden"
                                 style={{
-                                    background: "rgba(255, 255, 255, 0.05)",
-                                    backdropFilter: "blur(20px)",
-                                    WebkitBackdropFilter: "blur(20px)",
-                                    border: "1px solid rgba(255, 255, 255, 0.1)",
-                                    boxShadow: `
-                                        0 8px 32px rgba(0, 0, 0, 0.4),
-                                        0 0 0 1px rgba(255, 255, 255, 0.05) inset,
-                                        0 0 40px rgba(99, 102, 241, 0.15)
-                                    `,
-                                    height: 56,
+                                    background: "#161a24",
+                                    border: "1px solid rgba(212, 166, 86, 0.28)",
+                                    boxShadow: "0 12px 40px rgba(0, 0, 0, 0.45)",
+                                    height: 52,
                                 }}
                                 initial={{
                                     x: startX,
@@ -288,8 +282,8 @@ export const UnifiedAIInput: React.FC<UnifiedAIInputProps> = ({
                                         onKeyDown={handleKeyDown}
                                         placeholder={isThemeRequest(input) ? "Describe UI changes..." : "Ask me anything..."}
                                         disabled={isLoading}
-                                        className="w-full bg-transparent text-base md:text-lg text-white placeholder-white/40 focus:outline-none h-full px-2 md:px-4"
-                                        style={{ caretColor: "rgba(99, 102, 241, 0.8)" }}
+                                        className="w-full bg-transparent text-sm md:text-base text-ocean-ice placeholder-ocean-mist/70 focus:outline-none h-full px-2 md:px-4"
+                                        style={{ caretColor: "#d4a656" }}
                                     />
                                 </motion.div>
 
@@ -297,8 +291,8 @@ export const UnifiedAIInput: React.FC<UnifiedAIInputProps> = ({
                                     type="submit"
                                     disabled={!input.trim() || isLoading}
                                     className={`flex items-center justify-center w-10 h-10 rounded-full transition-all duration-200 flex-shrink-0 mr-1 ${input.trim() && !isLoading
-                                        ? "bg-white/10 text-white hover:bg-white/20"
-                                        : "text-white/20 cursor-not-allowed"
+                                        ? "bg-ocean-aqua text-ocean-midnight hover:bg-ocean-cyan"
+                                        : "text-ocean-mist/40 cursor-not-allowed"
                                         }`}
                                     whileHover={input.trim() && !isLoading ? { scale: 1.1 } : {}}
                                     whileTap={input.trim() && !isLoading ? { scale: 0.95 } : {}}
