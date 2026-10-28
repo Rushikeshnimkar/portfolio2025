@@ -158,9 +158,18 @@ export function generateStructuredResponse(queryType: string): StructuredContent
             { name: "MySQL", category: "Database" },
             { name: "PostgreSQL", category: "Database" },
             { name: "Docker", category: "DevOps" },
+            { name: "Terraform", category: "DevOps" },
+            { name: "CDK", category: "Cloud & DevOps" },
+            { name: "Jenkins", category: "CI/CD & DevOps" },
             { name: "Git", category: "Version Control" },
+            { name: "AWS", category: "Cloud" },
             { name: "AWS EC2", category: "Cloud" },
             { name: "Google Cloud", category: "Cloud" },
+            { name: "Claude Code", category: "AI & ML" },
+            { name: "Codex", category: "AI & ML" },
+            { name: "RAG", category: "AI & ML" },
+            { name: "LangChain", category: "AI & ML" },
+            { name: "LangGraph", category: "AI & ML" },
         ],
         projects: [
             {

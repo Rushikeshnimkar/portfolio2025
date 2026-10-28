@@ -15,10 +15,15 @@ import {
   SiLinux,
   SiMongodb,
   SiNodedotjs,
+  SiTerraform,
+  SiJenkins,
+  SiAnthropic,
+  SiOpenai,
 } from "react-icons/si";
+import { FaAws } from "react-icons/fa6";
 import { RiJavaLine } from "react-icons/ri";
 import { FiCode, FiDatabase, FiTool } from "react-icons/fi";
-import { TbBrain } from "react-icons/tb";
+import { TbBrain, TbDatabaseSearch } from "react-icons/tb";
 
 const skills = {
   "Frontend Development": [
@@ -42,10 +47,17 @@ const skills = {
   "AI & ML Technologies": [
     { name: "LangChain", icon: <TbBrain className="text-[#00A3A3]" /> },
     { name: "LangGraph", icon: <TbBrain className="text-[#FF6B6B]" /> },
+    { name: "Claude Code", icon: <SiAnthropic className="text-[#D97757]" /> },
+    { name: "Codex", icon: <SiOpenai className="text-[#10A37F]" /> },
+    { name: "RAG", icon: <TbDatabaseSearch className="text-[#38BDF8]" /> },
   ],
   "Tools & Technologies": [
+    { name: "AWS", icon: <FaAws className="text-[#FF9900]" /> },
     { name: "Git", icon: <SiGit className="text-[#F05032]" /> },
     { name: "Docker", icon: <SiDocker className="text-[#2496ED]" /> },
+    { name: "Terraform", icon: <SiTerraform className="text-[#844FBA]" /> },
+    { name: "CDK", icon: <FaAws className="text-[#FF9900]" /> },
+    { name: "Jenkins", icon: <SiJenkins className="text-[#D24939]" /> },
     { name: "Linux", icon: <SiLinux className="text-[#FCC624]" /> },
   ],
 };

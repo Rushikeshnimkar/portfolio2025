@@ -1,31 +1,27 @@
-// components/GitHubCalendar.tsx
+// components/tools/githubcontribution.tsx
 "use client";
+
 import React from "react";
+import GitHubCalendar from "react-github-calendar";
 
 interface GitHubContributionsProps {
-  username: string;
+  username?: string;
 }
 
 export const GitHubContributions: React.FC<GitHubContributionsProps> = ({
-  username,
+  username = "Rushikeshnimkar",
 }) => {
-  const snakeUrl = `https://raw.githubusercontent.com/${username}/${username}/output/github-contribution-grid-snake-dark.svg`;
-  const fallbackSnakeUrl = `https://raw.githubusercontent.com/Platane/snk/output/github-contribution-grid-snake-dark.svg`;
-
   return (
     <div className="flex justify-center w-full">
-      <div className="w-full max-w-full lg:max-w-6xl xl:max-w-7xl overflow-hidden">
-        <img
-          src={snakeUrl}
-          alt="GitHub Contributions"
-          className="w-full"
-          style={{
-            maxHeight: '400px',
-            objectFit: 'cover',
-            objectPosition: 'top'
-          }}
-          onError={(e) => {
-            e.currentTarget.src = fallbackSnakeUrl;
+      <div className="w-full max-w-full lg:max-w-6xl xl:max-w-7xl overflow-x-auto flex justify-center py-2">
+        <GitHubCalendar
+          username={username}
+          colorScheme="dark"
+          blockSize={13}
+          blockMargin={4}
+          fontSize={13}
+          theme={{
+            dark: ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"],
           }}
         />
       </div>

@@ -30,7 +30,9 @@ Programming Languages: JavaScript, TypeScript, Java
 
 Libraries & Frameworks: ReactJS, Next.js, Spring Boot
 
-Tools & Platforms: Docker, Linux, GCP
+AI & ML: Claude Code, OpenAI Codex, RAG (Retrieval-Augmented Generation), LangChain, LangGraph
+
+Tools & Platforms: AWS, Docker, Terraform, AWS CDK, Jenkins, Linux, GCP
 
 Databases: MySQL, PostgreSQL, Supabase
 
