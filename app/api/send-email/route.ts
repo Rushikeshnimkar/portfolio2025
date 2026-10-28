@@ -18,27 +18,34 @@ async function handler(req: NextRequest) {
         );
       }
 
-      // Verify with Abstract API
-      const response = await fetch(
-        `https://emailvalidation.abstractapi.com/v1/?api_key=${process.env.ABSTRACT_API_KEY}&email=${senderEmail}`,
-        { cache: "no-store" }
-      );
+      // Verify with Abstract API if key exists and is configured
+      if (
+        process.env.ABSTRACT_API_KEY &&
+        process.env.ABSTRACT_API_KEY !== "your abstract api key"
+      ) {
+        try {
+          const response = await fetch(
+            `https://emailvalidation.abstractapi.com/v1/?api_key=${process.env.ABSTRACT_API_KEY}&email=${senderEmail}`,
+            { cache: "no-store" }
+          );
 
-      if (!response.ok) {
-        throw new Error("Failed to verify email");
-      }
+          if (response.ok) {
+            const data = await response.json();
+            const isValid =
+              data.is_valid_format?.value !== false &&
+              data.deliverability !== "UNDELIVERABLE" &&
+              !data.is_disposable_email?.value;
 
-      const data = await response.json();
-      const isValid =
-        data.is_valid_format.value &&
-        data.deliverability === "DELIVERABLE" &&
-        !data.is_disposable_email.value;
-
-      if (!isValid) {
-        return NextResponse.json(
-          { error: "Invalid email address" },
-          { status: 400 }
-        );
+            if (!isValid) {
+              return NextResponse.json(
+                { error: "Invalid or undeliverable email address" },
+                { status: 400 }
+              );
+            }
+          }
+        } catch (verifyError) {
+          console.warn("Email verification service skipped:", verifyError);
+        }
       }
     }
 
@@ -67,6 +74,7 @@ async function handler(req: NextRequest) {
     const mailOptions = {
       from: fromAddress,
       to: process.env.EMAIL_USER,
+      replyTo: senderEmail || undefined,
       subject: emailSubject,
       text: content,
       html: `

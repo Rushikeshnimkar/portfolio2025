@@ -78,15 +78,16 @@ export const MessageDisplay: React.FC<MessageDisplayProps> = ({
         </div>
       )}
 
-      {error ? (
+      {error && (
         <div
-          className="bg-red-950/40 text-red-200 border border-red-500/25 rounded-2xl p-4 text-sm"
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(error),
-          }}
-        />
-      ) : (
-        messages.map((message, index) => (
+          role="alert"
+          className="bg-red-950/50 text-red-200 border border-red-500/30 rounded-2xl px-4 py-3 text-sm leading-snug break-words"
+        >
+          {error.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim()}
+        </div>
+      )}
+
+      {messages.map((message, index) => (
           <div
             key={`${message.type}-${index}-${message.timestamp.getTime()}`}
             className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}
@@ -131,8 +132,7 @@ export const MessageDisplay: React.FC<MessageDisplayProps> = ({
               </div>
             </div>
           </div>
-        ))
-      )}
+      ))}
     </div>
   );
 };

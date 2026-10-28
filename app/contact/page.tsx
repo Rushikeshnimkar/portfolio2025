@@ -10,9 +10,8 @@ import {
   LayoutTemplate,
   User,
   MessageSquare,
-  CheckCircle,
-  XCircle,
 } from "lucide-react";
+import { notify } from "@/lib/notify";
 import ReactMarkdown from "react-markdown";
 import { emailTemplates } from "@/components/tools/emailTemplates";
 import { TextGenerationEffect } from "@/components/ui/TextGenerationEffect";
@@ -55,41 +54,26 @@ export default function Contact() {
   const [showTemplates, setShowTemplates] = useState(false);
   const [isTextAnimating, setIsTextAnimating] = useState(false);
   const [isTrustedClick, setIsTrustedClick] = useState(true);
-  const [islandExpanded, setIslandExpanded] = useState(false);
-  const [shouldHideNavbar, setShouldHideNavbar] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [newEmail, setNewEmail] = useState<EmailMessage | undefined>(undefined);
   const [messageCount, setMessageCount] = useState(0);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
-
-    if (status === "error" || status === "success") {
-      setShouldHideNavbar(true);
-      setIslandExpanded(true);
-
-      timer = setTimeout(() => {
-        setIslandExpanded(false);
-
-        setTimeout(() => {
-          setStatus("idle");
-          setErrorMessage("");
-          setShouldHideNavbar(false);
-        }, 500);
-      }, 3000);
+    if (status === "success") {
+      notify("success", "Email sent successfully!");
+    } else if (status === "error") {
+      notify("error", errorMessage || "Something went wrong. Try again.");
     }
 
-    return () => {
-      if (timer) clearTimeout(timer);
-    };
-  }, [status]);
+    if (status !== "success" && status !== "error") return;
 
-  useEffect(() => {
-    const event = new CustomEvent("toggleNavbar", {
-      detail: { visible: !shouldHideNavbar },
-    });
-    window.dispatchEvent(event);
-  }, [shouldHideNavbar]);
+    const hold = status === "error" ? 5500 : 4000;
+    const timer = setTimeout(() => {
+      setStatus("idle");
+      setErrorMessage("");
+    }, hold);
+    return () => clearTimeout(timer);
+  }, [status]);
 
   const handleButtonClick = (e: React.MouseEvent, callback: () => void) => {
     if (e.isTrusted) {
@@ -267,108 +251,6 @@ export default function Contact() {
     <div className="min-h-screen w-full text-ocean-ice relative py-10">
       {/* Background subtle glow similar to home page */}
       <div className="absolute inset-0 bg-gradient-to-tr from-ocean-cyan/8 to-ocean-aqua/8 filter blur-[80px] -z-10" />
-
-      <AnimatePresence>
-        {(status === "success" || status === "error") && (
-          <motion.div
-            initial={{
-              width: "120px",
-              height: "40px",
-              y: -100,
-              x: "-50%",
-              borderRadius: "20px",
-              opacity: 0,
-            }}
-            animate={{
-              width: islandExpanded ? "300px" : "120px",
-              height: islandExpanded ? "60px" : "40px",
-              y: islandExpanded ? 30 : 20,
-              x: "-50%",
-              borderRadius: islandExpanded ? "16px" : "20px",
-              opacity: 1,
-            }}
-            exit={{
-              width: "120px",
-              height: "40px",
-              y: -100,
-              opacity: 0,
-            }}
-            transition={{
-              type: "spring",
-              damping: 20,
-              stiffness: 300,
-            }}
-            className={`fixed top-0 left-1/2 z-[60] flex items-center justify-center shadow-xl backdrop-blur-lg border ${
-              status === "success"
-                ? "bg-green-950/80 border-green-500/30"
-                : "bg-red-950/80 border-red-500/30"
-            }`}
-          >
-            <AnimatePresence>
-              {islandExpanded && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="flex items-center gap-3 px-4"
-                >
-                  {status === "success" ? (
-                    <>
-                      <motion.div
-                        initial={{ scale: 0.8 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.1 }}
-                      >
-                        <CheckCircle className="w-6 h-6 text-green-400" />
-                      </motion.div>
-                      <motion.p
-                        initial={{ opacity: 0, x: 10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.2 }}
-                        className="text-sm font-medium text-green-300"
-                      >
-                        Email sent successfully!
-                      </motion.p>
-                    </>
-                  ) : (
-                    <>
-                      <motion.div
-                        initial={{ scale: 0.8 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.1 }}
-                      >
-                        <XCircle className="w-6 h-6 text-red-400" />
-                      </motion.div>
-                      <motion.p
-                        initial={{ opacity: 0, x: 10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.2 }}
-                        className="text-sm font-medium text-red-300"
-                      >
-                        {errorMessage}
-                      </motion.p>
-                    </>
-                  )}
-                </motion.div>
-              )}
-              {!islandExpanded && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="flex items-center justify-center"
-                >
-                  {status === "success" ? (
-                    <CheckCircle className="w-5 h-5 text-green-400" />
-                  ) : (
-                    <XCircle className="w-5 h-5 text-red-400" />
-                  )}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       <div
         className={`transition-all duration-300 ${

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaEnvelope, FaPaperPlane, FaCheck, FaSpinner, FaMagic, FaEdit } from "react-icons/fa";
 import { HiSparkles } from "react-icons/hi";
+import { notify } from "@/lib/notify";
 
 interface EmailComposeCardProps {
     onClose?: () => void;
@@ -67,7 +68,9 @@ export const EmailComposeCard: React.FC<EmailComposeCardProps> = ({
             }));
             setShowGeneratePrompt(false);
         } catch (err) {
-            setError(err instanceof Error ? err.message : "Failed to generate email");
+            const message = err instanceof Error ? err.message : "Failed to generate email";
+            setError(message);
+            notify("error", message);
         } finally {
             setIsGenerating(false);
         }
@@ -99,12 +102,15 @@ export const EmailComposeCard: React.FC<EmailComposeCardProps> = ({
             }
 
             setIsSuccess(true);
+            notify("success", "Email sent successfully!");
             window.dispatchEvent(new CustomEvent("clippy-mail-sent"));
             setTimeout(() => {
                 if (onClose) onClose();
             }, 2000);
         } catch (err) {
-            setError(err instanceof Error ? err.message : "Failed to send email");
+            const message = err instanceof Error ? err.message : "Failed to send email";
+            setError(message);
+            notify("error", message);
         } finally {
             setIsSubmitting(false);
         }

@@ -1,11 +1,13 @@
 "use client";
 import { motion } from "framer-motion";
 import PDFViewer from "@/components/resume/pdf-viewer";
-import { FiCode, FiBookOpen, FiAward, FiGlobe } from "react-icons/fi";
+import RequestResumeModal from "@/components/resume/request-resume-modal";
+import { FiCode, FiBookOpen, FiAward, FiGlobe, FiSend, FiDownload, FiExternalLink } from "react-icons/fi";
 import { useEffect, useState } from "react";
 
 export default function ResumePage() {
   const [mounted, setMounted] = useState(false);
+  const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
   const nameLetters = "Rushikesh Nimkar Resume ".split("");
 
   useEffect(() => {
@@ -86,9 +88,15 @@ export default function ResumePage() {
                 transition={{ duration: 0.6 }}
                 className="mb-4 sm:mb-8"
               >
-                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent inline-block">
-                  Resume
-                </h1>
+                <div className="flex flex-wrap items-center gap-3">
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent inline-block">
+                    Resume
+                  </h1>
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-sm shadow-emerald-500/5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    Last updated: Oct 2024
+                  </span>
+                </div>
                 <p className="text-neutral-400 mt-2 max-w-2xl">
                   My qualifications, experience, and skills presented in a
                   comprehensive document.
@@ -103,12 +111,43 @@ export default function ResumePage() {
               >
                 <div className="flex flex-col lg:grid lg:grid-cols-12">
                   {/* Sidebar */}
-                  <div className="lg:col-span-3 bg-neutral-900/80 p-4 sm:p-6 border-b lg:border-b-0 lg:border-r border-neutral-800/50">
-                    <div className="mb-4 sm:mb-6">
+                  <div className="lg:col-span-3 bg-neutral-900/80 p-4 sm:p-6 border-b lg:border-b-0 lg:border-r border-neutral-800/50 flex flex-col">
+                    <div className="mb-4 sm:mb-5">
                       <h2 className="text-lg sm:text-xl font-semibold text-white">
                         About This Resume
                       </h2>
-                      <p className="text-blue-400 text-sm">Interactive guide</p>
+                      <p className="text-blue-400 text-sm">Interactive guide & actions</p>
+                    </div>
+
+                    {/* Resume Action Buttons in Left Panel */}
+                    <div className="space-y-2.5 mb-6 pb-6 border-b border-neutral-800/50">
+                      <a
+                        href="/Rushikesh_Nimkar.pdf"
+                        download
+                        className="w-full px-4 py-2.5 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 rounded-xl text-white font-medium text-sm shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition-all duration-200 flex items-center justify-center gap-2 group"
+                      >
+                        <FiDownload className="w-4 h-4 transition-transform group-hover:translate-y-0.5" />
+                        <span>Download Resume</span>
+                      </a>
+
+                      <a
+                        href="/Rushikesh_Nimkar.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full px-4 py-2 bg-neutral-800/90 hover:bg-neutral-800 border border-neutral-700/60 hover:border-neutral-600 rounded-xl text-neutral-200 hover:text-white text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2"
+                      >
+                        <FiExternalLink className="w-4 h-4 text-neutral-400" />
+                        <span>Open in New Tab</span>
+                      </a>
+
+                      <button
+                        type="button"
+                        onClick={() => setIsRequestModalOpen(true)}
+                        className="w-full px-4 py-2 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 hover:border-blue-400/50 rounded-xl text-blue-300 hover:text-white text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2"
+                      >
+                        <FiSend className="w-3.5 h-3.5 text-blue-400" />
+                        <span>Request New Resume</span>
+                      </button>
                     </div>
 
                     <div className="space-y-4 sm:space-y-6 flex-1">
@@ -245,6 +284,12 @@ export default function ResumePage() {
           </div>
         </>
       )}
+
+      {/* Request Resume Modal */}
+      <RequestResumeModal
+        isOpen={isRequestModalOpen}
+        onClose={() => setIsRequestModalOpen(false)}
+      />
     </main>
   );
 }

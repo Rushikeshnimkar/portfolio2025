@@ -3,7 +3,8 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { HoveredLink, Menu, MenuItem } from "../ui/navbar-menu";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import { MenuIcon, X } from "lucide-react";
+import { MenuIcon, X, CheckCircle, XCircle } from "lucide-react";
+import type { AppNotice } from "@/lib/notify";
 
 // Apple-like spring configurations
 const appleSpring = {
@@ -43,6 +44,9 @@ export function Navbar() {
   const [currentSection, setCurrentSection] = useState<string>("");
   const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
+  const [notice, setNotice] = useState<AppNotice | null>(null);
+  const [islandExpanded, setIslandExpanded] = useState(false);
+  const noticeTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   // Throttle ref to limit scroll handler frequency
   const lastScrollTime = useRef<number>(0);
@@ -102,6 +106,33 @@ export function Navbar() {
     };
   }, []);
 
+  useEffect(() => {
+    const handleNotify = (event: WindowEventMap["app:notify"]) => {
+      noticeTimers.current.forEach(clearTimeout);
+      noticeTimers.current = [];
+
+      setNotice(event.detail);
+      setIslandExpanded(true);
+
+      const hold = event.detail.type === "error" ? 5200 : 3000;
+      const collapse = setTimeout(() => {
+        setIslandExpanded(false);
+        const hide = setTimeout(() => {
+          setNotice(null);
+          setIsVisible(true);
+        }, 450);
+        noticeTimers.current.push(hide);
+      }, hold);
+      noticeTimers.current.push(collapse);
+    };
+
+    window.addEventListener("app:notify", handleNotify);
+    return () => {
+      window.removeEventListener("app:notify", handleNotify);
+      noticeTimers.current.forEach(clearTimeout);
+    };
+  }, []);
+
   // Determine if About or any of its subsections are active
   const isAboutActive = () => {
     return ["about", "experience", "skills"].includes(currentSection);
@@ -134,11 +165,93 @@ export function Navbar() {
     if (active) setActive(null);
   };
 
+  const showNav = isVisible && !notice;
+
   return (
     <>
+      <AnimatePresence>
+        {notice && (
+          <motion.div
+            initial={{
+              width: 120,
+              height: 40,
+              y: -80,
+              x: "-50%",
+              borderRadius: 20,
+              opacity: 0,
+            }}
+            animate={{
+              width: islandExpanded ? "auto" : 120,
+              height: islandExpanded ? "auto" : 40,
+              minWidth: islandExpanded ? 220 : 120,
+              maxWidth: islandExpanded ? 420 : 120,
+              y: 16,
+              x: "-50%",
+              borderRadius: islandExpanded ? 16 : 20,
+              opacity: 1,
+            }}
+            exit={{
+              width: 120,
+              height: 40,
+              y: -80,
+              opacity: 0,
+            }}
+            transition={{ type: "spring", damping: 20, stiffness: 300 }}
+            className={cn(
+              "fixed top-0 left-1/2 z-[60] flex items-center justify-center shadow-xl backdrop-blur-lg border overflow-hidden",
+              notice.type === "success"
+                ? "bg-green-950/80 border-green-500/30"
+                : "bg-red-950/80 border-red-500/30"
+            )}
+          >
+            <AnimatePresence>
+              {islandExpanded ? (
+                <motion.div
+                  key="expanded"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="flex items-start gap-3 px-4 py-2.5 max-w-[420px]"
+                >
+                  {notice.type === "success" ? (
+                    <CheckCircle className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
+                  ) : (
+                    <XCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+                  )}
+                  <p
+                    className={cn(
+                      "text-sm font-medium leading-snug break-words",
+                      notice.type === "success"
+                        ? "text-green-300"
+                        : "text-red-300"
+                    )}
+                  >
+                    {notice.message}
+                  </p>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="collapsed"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="flex items-center justify-center"
+                >
+                  {notice.type === "success" ? (
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                  ) : (
+                    <XCircle className="w-5 h-5 text-red-400" />
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Desktop Navigation */}
       <AnimatePresence>
-        {isVisible && (
+        {showNav && (
           <motion.div
             initial={{ opacity: 0, y: -30, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -243,7 +356,7 @@ export function Navbar() {
 
       {/* Mobile Navigation */}
       <AnimatePresence>
-        {isVisible && (
+        {showNav && (
           <motion.div
             initial={{ opacity: 0, y: -30, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}

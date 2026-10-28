@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { Message, StructuredContent, ThemeChange } from "./types";
+import { notify } from "@/lib/notify";
 
 const useJWTAuth = () => {
   const [isTokenLoading, setIsTokenLoading] = useState(false);
@@ -449,6 +450,7 @@ export const useMessageHandler = (
         const errorMessage =
           error instanceof Error ? error.message : "An error occurred";
         setError(errorMessage);
+        notify("error", errorMessage);
         throw new Error(errorMessage);
       } finally {
         setIsLoading(false);
@@ -534,5 +536,6 @@ export const initializeChat = async (
   } catch (error) {
     console.error("Failed to initialize chat:", error);
     setError("Failed to initialize chat. Please try again.");
+    notify("error", "Failed to initialize chat. Please try again.");
   }
 };

@@ -35,7 +35,7 @@ export default function PDFViewer() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center w-full">
+    <div className="flex flex-col items-center w-full h-full">
       {isLoading && (
         <div className="w-full h-[400px] flex items-center justify-center">
           <div className="animate-pulse text-neutral-400">
@@ -45,12 +45,12 @@ export default function PDFViewer() {
       )}
 
       <div
-        className={`border border-neutral-800 rounded-lg overflow-hidden shadow-xl bg-neutral-900/50 backdrop-blur-sm w-full ${
+        className={`border border-neutral-800 rounded-lg overflow-hidden shadow-xl bg-neutral-900/50 backdrop-blur-sm w-full h-full ${
           isLoading ? "hidden" : ""
         }`}
       >
         {isMobile ? (
-          // Mobile view with preview image and call-to-action
+          // Mobile view with preview card
           <div className="flex flex-col items-center justify-center p-6 text-center">
             <div className="mb-4">
               <svg
@@ -70,22 +70,21 @@ export default function PDFViewer() {
             </div>
             <h3 className="text-lg font-medium text-white mb-2">View Resume</h3>
             <p className="text-neutral-400 text-sm mb-6">
-              For the best viewing experience on mobile, please choose one of
-              the options below:
+              For the best viewing experience on mobile, use the action buttons in the panel above or open directly:
             </p>
             <div className="flex flex-col gap-3 w-full max-w-xs">
               <a
                 href={resumePath}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full px-4 py-2 bg-blue-500 hover:bg-blue-600 rounded-lg transition-colors duration-200 text-center"
+                className="w-full px-4 py-2 bg-blue-500 hover:bg-blue-600 rounded-lg transition-colors duration-200 text-center text-white"
               >
                 Open in New Tab
               </a>
               <a
                 href={resumePath}
                 download
-                className="w-full px-4 py-2 bg-neutral-700 hover:bg-neutral-600 rounded-lg transition-colors duration-200 text-center"
+                className="w-full px-4 py-2 bg-neutral-700 hover:bg-neutral-600 rounded-lg transition-colors duration-200 text-center text-white"
               >
                 Download PDF
               </a>
@@ -95,60 +94,13 @@ export default function PDFViewer() {
           // Desktop view with iframe
           <iframe
             src={`${resumePath}#view=FitH`}
-            className="w-full rounded-md"
+            className="w-full rounded-md h-full min-h-[750px]"
             height={iframeHeight}
             style={{ border: "none" }}
             title="Resume PDF"
           />
         )}
       </div>
-
-      {!isMobile && (
-        <div className="mt-6 flex flex-row gap-3 space-x-4 px-4 sm:px-0">
-          <a
-            href={resumePath}
-            download
-            className="px-4 sm:px-6 py-1.5 sm:py-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full hover:shadow-lg transition-all duration-300 flex items-center justify-center text-sm sm:text-base"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5 sm:mr-2"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L10 12.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                clipRule="evenodd"
-              />
-              <path
-                fillRule="evenodd"
-                d="M10 3a1 1 0 011 1v9.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 111.414-1.414L9 13.586V4a1 1 0 011-1z"
-                clipRule="evenodd"
-              />
-            </svg>
-            Download Resume
-          </a>
-
-          <a
-            href={resumePath}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 sm:px-6 py-1.5 sm:py-2 bg-neutral-800 hover:bg-neutral-700 rounded-full transition-all duration-300 flex items-center justify-center text-sm sm:text-base"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5 sm:mr-2"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
-              <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
-            </svg>
-            Open in New Tab
-          </a>
-        </div>
-      )}
     </div>
   );
 }
