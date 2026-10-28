@@ -108,11 +108,72 @@ export const ClippyAssistant: React.FC<ClippyAssistantProps> = ({
         animationTimersRef.current = [];
     };
 
+    const positionBalloon = () => {
+        const agent = agentRef.current;
+        if (!agent) return;
+        const balloon = agent._balloon;
+        const balloonEl = balloon?._balloon as HTMLElement | undefined;
+        const agentEl = agent._el as HTMLElement | undefined;
+        if (!balloonEl || !agentEl) return;
+
+        const clippyRect = agentEl.getBoundingClientRect();
+        if (clippyRect.width === 0 && clippyRect.height === 0) {
+            requestAnimationFrame(positionBalloon);
+            return;
+        }
+
+        // Measure balloon dimensions even if it was display: none
+        const prevDisplay = balloonEl.style.display;
+        const wasHidden = prevDisplay === "none" || !prevDisplay;
+        if (wasHidden) {
+            balloonEl.style.visibility = "hidden";
+            balloonEl.style.display = "block";
+        }
+
+        const bW = balloonEl.offsetWidth || 240;
+        const bH = balloonEl.offsetHeight || 60;
+
+        if (wasHidden) {
+            balloonEl.style.display = prevDisplay;
+            balloonEl.style.visibility = "";
+        }
+
+        const margin = 12;
+
+        // Position vertically: prefer above Clippy, fallback to below if clipped at top
+        let top = clippyRect.top - bH - margin;
+        if (top < 10) {
+            top = clippyRect.bottom + margin;
+        }
+
+        // Position horizontally: align to Clippy based on which half of viewport Clippy is on
+        let left: number;
+        const clippyCenter = clippyRect.left + clippyRect.width / 2;
+        if (clippyCenter > window.innerWidth / 2) {
+            left = clippyRect.right - bW;
+        } else {
+            left = clippyRect.left;
+        }
+
+        // Clamp to stay on screen
+        const minLeft = 12;
+        const maxLeft = Math.max(minLeft, window.innerWidth - bW - 12);
+        left = Math.max(minLeft, Math.min(maxLeft, left));
+
+        balloonEl.style.position = "fixed";
+        balloonEl.style.top = `${Math.round(top)}px`;
+        balloonEl.style.left = `${Math.round(left)}px`;
+        balloonEl.style.bottom = "auto";
+        balloonEl.style.right = "auto";
+    };
+
     const styleBalloon = () => {
         const balloon = agentRef.current?._balloon;
         const el = balloon?._balloon as HTMLElement | undefined;
         const content = balloon?._content as HTMLElement | undefined;
         if (!el) return;
+
+        el.setAttribute("data-clippy-balloon", "true");
 
         Object.assign(el.style, {
             background: "#161a24",
@@ -121,7 +182,7 @@ export const ClippyAssistant: React.FC<ClippyAssistantProps> = ({
             borderRadius: "12px",
             padding: "10px 12px",
             boxShadow: "0 16px 40px rgba(0,0,0,0.55)",
-            zIndex: "80",
+            zIndex: "10001",
             maxWidth: "min(280px, calc(100vw - 32px))",
             fontFamily: "IBM Plex Sans, system-ui, sans-serif",
             pointerEvents: "none",
@@ -140,7 +201,11 @@ export const ClippyAssistant: React.FC<ClippyAssistantProps> = ({
         if (balloon) {
             balloon.WORD_SPEAK_TIME = 35;
             balloon.CLOSE_BALLOON_DELAY = 4200;
+            balloon.reposition = positionBalloon;
+            balloon._position = positionBalloon;
         }
+
+        positionBalloon();
     };
 
     const cancelBalloonHide = () => {
@@ -168,11 +233,14 @@ export const ClippyAssistant: React.FC<ClippyAssistantProps> = ({
 
         if (balloon?.speak) {
             balloon.speak(() => {}, text, false);
-            requestAnimationFrame(() => balloon.reposition?.());
+            positionBalloon();
+            requestAnimationFrame(positionBalloon);
             return;
         }
 
         agent.speak(text);
+        positionBalloon();
+        requestAnimationFrame(positionBalloon);
     };
 
     const playWhenFree = (name: string, onDone?: () => void) => {
@@ -280,8 +348,6 @@ export const ClippyAssistant: React.FC<ClippyAssistantProps> = ({
                 }
 
                 agentRef.current = agent;
-                agent.show();
-                styleBalloon();
 
                 const el = agent._el as HTMLElement;
                 if (el) {
@@ -293,12 +359,50 @@ export const ClippyAssistant: React.FC<ClippyAssistantProps> = ({
                     el.style.zIndex = "60";
                     el.style.cursor = "pointer";
 
+                    let downPos = { x: 0, y: 0 };
+                    el.addEventListener("mousedown", (e: MouseEvent) => {
+                        downPos = { x: e.clientX, y: e.clientY };
+                    });
+
                     el.addEventListener("click", (e: MouseEvent) => {
                         e.stopPropagation();
+                        const dist = Math.hypot(e.clientX - downPos.x, e.clientY - downPos.y);
+                        if (dist > 6) return; // Ignore drag operations
                         cue(randomPick(CLICK_ANIMATIONS));
                         onClickRef.current();
                     });
                 }
+
+                // If user drags Clippy, capture current pixel position before clearing bottom/right
+                const origStartDrag = agent._startDrag?.bind(agent);
+                if (origStartDrag) {
+                    agent._startDrag = (e: MouseEvent) => {
+                        if (el) {
+                            const rect = el.getBoundingClientRect();
+                            el.style.top = `${rect.top}px`;
+                            el.style.left = `${rect.left}px`;
+                            el.style.bottom = "auto";
+                            el.style.right = "auto";
+                            agent._targetX = rect.left;
+                            agent._targetY = rect.top;
+                        }
+                        origStartDrag(e);
+                    };
+                }
+
+                const origFinishDrag = agent._finishDrag?.bind(agent);
+                if (origFinishDrag) {
+                    agent._finishDrag = () => {
+                        origFinishDrag();
+                        positionBalloon();
+                    };
+                }
+
+                agent.show(true);
+                styleBalloon();
+
+                window.addEventListener("resize", positionBalloon);
+                window.addEventListener("scroll", positionBalloon, { passive: true });
 
                 startIdleLoop();
                 cue("Wave", "Hey! I'm Clippy! Click me to chat with Rushikesh's AI assistant!");
@@ -311,6 +415,8 @@ export const ClippyAssistant: React.FC<ClippyAssistantProps> = ({
 
         return () => {
             disposed = true;
+            window.removeEventListener("resize", positionBalloon);
+            window.removeEventListener("scroll", positionBalloon);
             if (intervalRef.current) {
                 clearInterval(intervalRef.current);
             }

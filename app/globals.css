@@ -585,3 +585,12 @@
   content-visibility: auto;
   contain-intrinsic-size: auto 720px;
 }
+
+/* Clippy speech balloon */
+[data-clippy-balloon] {
+  z-index: 9999 !important;
+}
+
+[data-clippy-balloon] > div:first-child {
+  display: none !important;
+}
